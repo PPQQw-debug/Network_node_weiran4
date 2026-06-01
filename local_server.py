@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import importlib.util
 import mimetypes
 import os
 import re
@@ -14,6 +15,43 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parent
 HOST = "127.0.0.1"
 PORT = int(os.environ.get("PORT", "4177"))
+
+
+def ensure_runtime_dependencies() -> None:
+    missing = []
+    if importlib.util.find_spec("sympy") is None:
+        missing.append("sympy")
+
+    if not missing:
+        return
+
+    print(f"Installing missing Python package(s): {', '.join(missing)}")
+    pip_command = [
+        sys.executable,
+        "-m",
+        "pip",
+        "install",
+        "--disable-pip-version-check",
+    ]
+    wheels_dir = ROOT / "wheels"
+    if wheels_dir.exists():
+        pip_command.extend(["--no-index", "--find-links", str(wheels_dir)])
+    pip_command.extend(missing)
+
+    try:
+        subprocess.check_call(pip_command)
+    except subprocess.CalledProcessError as exc:
+        packages = " ".join(missing)
+        offline_hint = (
+            f"\nA local wheels folder was found at {wheels_dir}, but installation still failed."
+            if wheels_dir.exists()
+            else "\nIf this computer is offline, copy a wheels folder prepared with: python -m pip download sympy -d wheels"
+        )
+        raise SystemExit(
+            "Unable to install required Python packages automatically.\n"
+            f"{offline_hint}\n"
+            f"Please run this command manually:\n\n    {sys.executable} -m pip install {packages}\n"
+        ) from exc
 
 
 def safe_file_name(name: str) -> str:
@@ -127,6 +165,7 @@ class BranchBuilderHandler(SimpleHTTPRequestHandler):
 
 
 if __name__ == "__main__":
+    ensure_runtime_dependencies()
     os.chdir(ROOT)
     server = ThreadingHTTPServer((HOST, PORT), BranchBuilderHandler)
     print(f"Branch Builder running at http://{HOST}:{PORT}/")
