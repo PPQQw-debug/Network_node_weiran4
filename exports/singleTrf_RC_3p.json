@@ -1,0 +1,604 @@
+{
+  "fileType": "branch-builder-circuit",
+  "version": 2,
+  "savedAt": "2026-05-27T20:21:01.477Z",
+  "world": {
+    "width": 2000,
+    "height": 2400
+  },
+  "canvases": [
+    {
+      "id": "canvas1",
+      "name": "画布 1",
+      "data": {
+        "name": "画布 1",
+        "branches": [
+          {
+            "id": "T1",
+            "name": "Tr1",
+            "kind": "single_phase_transformer",
+            "x": 1101.2099609375,
+            "y": 1270,
+            "width": 100,
+            "height": 112,
+            "rotation": 0,
+            "nodes": {
+              "P": "tr2p",
+              "N": "tr2n",
+              "S": "tr2s",
+              "T": "tr2t"
+            },
+            "gMatrix": "[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]",
+            "ihisVector": "[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]",
+            "currents": [
+              {
+                "name": "primary",
+                "from": "P",
+                "to": "N",
+                "expression": "G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A"
+              },
+              {
+                "name": "secondary",
+                "from": "S",
+                "to": "T",
+                "expression": "G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a"
+              }
+            ],
+            "terminalLayout": {
+              "P": {
+                "x": -140.6,
+                "y": -34.2
+              },
+              "N": {
+                "x": -105.4,
+                "y": 29.3
+              },
+              "S": {
+                "x": 198.2,
+                "y": -29
+              },
+              "T": {
+                "x": 96.1,
+                "y": 28.7
+              }
+            }
+          },
+          {
+            "id": "B3",
+            "name": "R3",
+            "kind": "two_node_branch",
+            "x": 1267.5985412597656,
+            "y": 1369.7284698486328,
+            "width": 150,
+            "height": 48,
+            "rotation": 90,
+            "nodeA": "n3a",
+            "nodeB": "n3b",
+            "g": "G_rc",
+            "ihis": "IAhis_rc",
+            "direction": "AtoB"
+          },
+          {
+            "id": "T2",
+            "name": "Tr2",
+            "kind": "single_phase_transformer",
+            "x": 1095.6111450195312,
+            "y": 1531.822280883789,
+            "width": 100,
+            "height": 112,
+            "rotation": 0,
+            "nodes": {
+              "P": "tr3p",
+              "N": "tr3n",
+              "S": "tr3s",
+              "T": "tr3t"
+            },
+            "gMatrix": "[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]",
+            "ihisVector": "[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]",
+            "currents": [
+              {
+                "name": "primary",
+                "from": "P",
+                "to": "N",
+                "expression": "G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B"
+              },
+              {
+                "name": "secondary",
+                "from": "S",
+                "to": "T",
+                "expression": "G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b"
+              }
+            ],
+            "terminalLayout": {
+              "P": {
+                "x": -95.9,
+                "y": -35.2
+              },
+              "N": {
+                "x": -105.4,
+                "y": 29.3
+              },
+              "S": {
+                "x": 198.2,
+                "y": -29
+              },
+              "T": {
+                "x": 96.1,
+                "y": 28.7
+              }
+            }
+          },
+          {
+            "id": "B4",
+            "name": "R4",
+            "kind": "two_node_branch",
+            "x": 1261.9997253417969,
+            "y": 1631.5507507324219,
+            "width": 150,
+            "height": 48,
+            "rotation": 90,
+            "nodeA": "n4a",
+            "nodeB": "n4b",
+            "g": "G_rc",
+            "ihis": "IBhis_rc",
+            "direction": "AtoB"
+          },
+          {
+            "id": "T3",
+            "name": "Tr3",
+            "kind": "single_phase_transformer",
+            "x": 1095,
+            "y": 1816.2153930664062,
+            "width": 100,
+            "height": 112,
+            "rotation": 0,
+            "nodes": {
+              "P": "tr4p",
+              "N": "tr4n",
+              "S": "tr4s",
+              "T": "tr4t"
+            },
+            "gMatrix": "[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]",
+            "ihisVector": "[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]",
+            "currents": [
+              {
+                "name": "primary",
+                "from": "P",
+                "to": "N",
+                "expression": "G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C"
+              },
+              {
+                "name": "secondary",
+                "from": "S",
+                "to": "T",
+                "expression": "G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c"
+              }
+            ],
+            "terminalLayout": {
+              "P": {
+                "x": -102,
+                "y": -32.1
+              },
+              "N": {
+                "x": -129.2,
+                "y": 32.7
+              },
+              "S": {
+                "x": 198.2,
+                "y": -29
+              },
+              "T": {
+                "x": 96.1,
+                "y": 28.7
+              }
+            }
+          },
+          {
+            "id": "B5",
+            "name": "R5",
+            "kind": "two_node_branch",
+            "x": 1261.3885803222656,
+            "y": 1915.943862915039,
+            "width": 150,
+            "height": 48,
+            "rotation": 90,
+            "nodeA": "n5a",
+            "nodeB": "n5b",
+            "g": "G_rc",
+            "ihis": "IChis_rc",
+            "direction": "AtoB"
+          }
+        ],
+        "wires": [
+          {
+            "id": "W2",
+            "from": "T1.S",
+            "to": "B3.A",
+            "mid": null
+          },
+          {
+            "id": "W3",
+            "from": "T2.S",
+            "to": "B4.A",
+            "mid": null
+          },
+          {
+            "id": "W4",
+            "from": "T3.S",
+            "to": "B5.A",
+            "mid": null
+          },
+          {
+            "id": "W5",
+            "from": "T1.T",
+            "to": "T2.T",
+            "mid": null
+          },
+          {
+            "id": "W6",
+            "from": "T2.T",
+            "to": "T3.T",
+            "mid": null
+          },
+          {
+            "id": "W7",
+            "from": "T1.N",
+            "to": "T2.P",
+            "mid": null
+          },
+          {
+            "id": "W8",
+            "from": "T2.N",
+            "to": "T3.P",
+            "mid": null
+          },
+          {
+            "id": "W9",
+            "from": "T3.N",
+            "to": "T1.P",
+            "mid": null
+          }
+        ],
+        "groups": [],
+        "nodeOrder": [
+          "N1",
+          "N2",
+          "N6",
+          "N3",
+          "N7",
+          "N9",
+          "N4",
+          "N5",
+          "N8",
+          "N10"
+        ],
+        "nodeLabels": {
+          "N1": "A",
+          "N2": "B",
+          "N6": "C",
+          "N3": "a",
+          "N4": "G",
+          "N5": "RC_a",
+          "N7": "b",
+          "N9": "c",
+          "N8": "RC_b",
+          "N10": "RC_c"
+        },
+        "internalNodes": [],
+        "selectedId": null,
+        "selectedIds": [],
+        "selectedWireId": null,
+        "nextBranch": 6,
+        "nextTransformer": 4,
+        "nextCustom": 1,
+        "nextWire": 10,
+        "nextGroup": 1,
+        "zoom": 1.2116496839381072,
+        "viewCenter": {
+          "x": 953.8393523541115,
+          "y": 1536.2252389543132
+        },
+        "history": [
+          "{\"branches\":[{\"id\":\"B1\",\"name\":\"R1\",\"kind\":\"two_node_branch\",\"x\":300,\"y\":210,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n1a\",\"nodeB\":\"n1b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B2\",\"name\":\"R2\",\"kind\":\"two_node_branch\",\"x\":570,\"y\":330,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n2a\",\"nodeB\":\"n2b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W1\",\"from\":\"B1.B\",\"to\":\"B2.A\",\"mid\":null}],\"selectedId\":\"B1\",\"selectedIds\":[\"B1\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":3,\"nextTransformer\":1,\"nextCustom\":1,\"nextWire\":2}",
+          "{\"branches\":[{\"id\":\"B1\",\"name\":\"R1\",\"kind\":\"two_node_branch\",\"x\":1348.52685546875,\"y\":809.3587646484375,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n1a\",\"nodeB\":\"n1b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B2\",\"name\":\"R2\",\"kind\":\"two_node_branch\",\"x\":570,\"y\":330,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n2a\",\"nodeB\":\"n2b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W1\",\"from\":\"B1.B\",\"to\":\"B2.A\",\"mid\":null}],\"selectedId\":\"B1\",\"selectedIds\":[\"B1\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":3,\"nextTransformer\":1,\"nextCustom\":1,\"nextWire\":2}",
+          "{\"branches\":[{\"id\":\"B1\",\"name\":\"R1\",\"kind\":\"two_node_branch\",\"x\":1799.1334228515625,\"y\":982.6690063476562,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n1a\",\"nodeB\":\"n1b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B2\",\"name\":\"R2\",\"kind\":\"two_node_branch\",\"x\":570,\"y\":330,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n2a\",\"nodeB\":\"n2b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W1\",\"from\":\"B1.B\",\"to\":\"B2.A\",\"mid\":null}],\"selectedId\":\"B1\",\"selectedIds\":[\"B1\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":3,\"nextTransformer\":1,\"nextCustom\":1,\"nextWire\":2}",
+          "{\"branches\":[{\"id\":\"B1\",\"name\":\"R1\",\"kind\":\"two_node_branch\",\"x\":303.46624755859375,\"y\":883.8821411132812,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n1a\",\"nodeB\":\"n1b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B2\",\"name\":\"R2\",\"kind\":\"two_node_branch\",\"x\":570,\"y\":330,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n2a\",\"nodeB\":\"n2b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W1\",\"from\":\"B1.B\",\"to\":\"B2.A\",\"mid\":null}],\"selectedId\":\"B1\",\"selectedIds\":[\"B1\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":3,\"nextTransformer\":1,\"nextCustom\":1,\"nextWire\":2}",
+          "{\"branches\":[{\"id\":\"B1\",\"name\":\"R1\",\"kind\":\"two_node_branch\",\"x\":307.6835632324219,\"y\":520.0853271484375,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n1a\",\"nodeB\":\"n1b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B2\",\"name\":\"R2\",\"kind\":\"two_node_branch\",\"x\":570,\"y\":330,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n2a\",\"nodeB\":\"n2b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W1\",\"from\":\"B1.B\",\"to\":\"B2.A\",\"mid\":null}],\"selectedId\":\"B1\",\"selectedIds\":[\"B1\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":3,\"nextTransformer\":1,\"nextCustom\":1,\"nextWire\":2}",
+          "{\"branches\":[{\"id\":\"B1\",\"name\":\"R1\",\"kind\":\"two_node_branch\",\"x\":1323.1081237792969,\"y\":1744.0021057128906,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n1a\",\"nodeB\":\"n1b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B2\",\"name\":\"R2\",\"kind\":\"two_node_branch\",\"x\":570,\"y\":330,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n2a\",\"nodeB\":\"n2b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W1\",\"from\":\"B1.B\",\"to\":\"B2.A\",\"mid\":null}],\"selectedId\":\"B1\",\"selectedIds\":[\"B1\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":3,\"nextTransformer\":1,\"nextCustom\":1,\"nextWire\":2}",
+          "{\"branches\":[{\"id\":\"B1\",\"name\":\"R1\",\"kind\":\"two_node_branch\",\"x\":387.6882629394531,\"y\":256.6062469482422,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n1a\",\"nodeB\":\"n1b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B2\",\"name\":\"R2\",\"kind\":\"two_node_branch\",\"x\":570,\"y\":330,\"width\":150,\"height\":48,\"rotation\":0,\"nodeA\":\"n2a\",\"nodeB\":\"n2b\",\"g\":\"1/R\",\"ihis\":\"0\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W1\",\"from\":\"B1.B\",\"to\":\"B2.A\",\"mid\":null}],\"selectedId\":\"B1\",\"selectedIds\":[\"B1\",\"B2\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":3,\"nextTransformer\":1,\"nextCustom\":1,\"nextWire\":2}",
+          "{\"branches\":[],\"wires\":[],\"selectedId\":null,\"selectedIds\":[],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":3,\"nextTransformer\":1,\"nextCustom\":1,\"nextWire\":2}",
+          "{\"branches\":[{\"id\":\"T1\",\"name\":\"Tr1\",\"kind\":\"single_phase_transformer\",\"x\":1101.2099609375,\"y\":1270,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B3\",\"name\":\"R3\",\"kind\":\"two_node_branch\",\"x\":1267.5985412597656,\"y\":1369.7284698486328,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T2\",\"name\":\"Tr2\",\"kind\":\"single_phase_transformer\",\"x\":1095.6111450195312,\"y\":1531.822280883789,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B4\",\"name\":\"R4\",\"kind\":\"two_node_branch\",\"x\":1261.9997253417969,\"y\":1631.5507507324219,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T3\",\"name\":\"Tr3\",\"kind\":\"single_phase_transformer\",\"x\":1095,\"y\":1816.2153930664062,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B5\",\"name\":\"R5\",\"kind\":\"two_node_branch\",\"x\":1261.3885803222656,\"y\":1915.943862915039,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W2\",\"from\":\"T1.S\",\"to\":\"B3.A\",\"mid\":null},{\"id\":\"W3\",\"from\":\"T2.S\",\"to\":\"B4.A\",\"mid\":null},{\"id\":\"W4\",\"from\":\"T3.S\",\"to\":\"B5.A\",\"mid\":null}],\"selectedId\":null,\"selectedIds\":[],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":6,\"nextTransformer\":4,\"nextCustom\":1,\"nextWire\":5}",
+          "{\"branches\":[{\"id\":\"T1\",\"name\":\"Tr1\",\"kind\":\"single_phase_transformer\",\"x\":1101.2099609375,\"y\":1270,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B3\",\"name\":\"R3\",\"kind\":\"two_node_branch\",\"x\":1267.5985412597656,\"y\":1369.7284698486328,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T2\",\"name\":\"Tr2\",\"kind\":\"single_phase_transformer\",\"x\":1095.6111450195312,\"y\":1531.822280883789,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B4\",\"name\":\"R4\",\"kind\":\"two_node_branch\",\"x\":1261.9997253417969,\"y\":1631.5507507324219,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T3\",\"name\":\"Tr3\",\"kind\":\"single_phase_transformer\",\"x\":1095,\"y\":1816.2153930664062,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B5\",\"name\":\"R5\",\"kind\":\"two_node_branch\",\"x\":1261.3885803222656,\"y\":1915.943862915039,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W2\",\"from\":\"T1.S\",\"to\":\"B3.A\",\"mid\":null},{\"id\":\"W3\",\"from\":\"T2.S\",\"to\":\"B4.A\",\"mid\":null},{\"id\":\"W4\",\"from\":\"T3.S\",\"to\":\"B5.A\",\"mid\":null},{\"id\":\"W5\",\"from\":\"T1.T\",\"to\":\"T2.T\",\"mid\":null}],\"selectedId\":null,\"selectedIds\":[],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":6,\"nextTransformer\":4,\"nextCustom\":1,\"nextWire\":6}",
+          "{\"branches\":[{\"id\":\"T1\",\"name\":\"Tr1\",\"kind\":\"single_phase_transformer\",\"x\":1101.2099609375,\"y\":1270,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B3\",\"name\":\"R3\",\"kind\":\"two_node_branch\",\"x\":1267.5985412597656,\"y\":1369.7284698486328,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T2\",\"name\":\"Tr2\",\"kind\":\"single_phase_transformer\",\"x\":1095.6111450195312,\"y\":1531.822280883789,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B4\",\"name\":\"R4\",\"kind\":\"two_node_branch\",\"x\":1261.9997253417969,\"y\":1631.5507507324219,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T3\",\"name\":\"Tr3\",\"kind\":\"single_phase_transformer\",\"x\":1095,\"y\":1816.2153930664062,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B5\",\"name\":\"R5\",\"kind\":\"two_node_branch\",\"x\":1261.3885803222656,\"y\":1915.943862915039,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W2\",\"from\":\"T1.S\",\"to\":\"B3.A\",\"mid\":null},{\"id\":\"W3\",\"from\":\"T2.S\",\"to\":\"B4.A\",\"mid\":null},{\"id\":\"W4\",\"from\":\"T3.S\",\"to\":\"B5.A\",\"mid\":null},{\"id\":\"W5\",\"from\":\"T1.T\",\"to\":\"T2.T\",\"mid\":null},{\"id\":\"W6\",\"from\":\"T2.T\",\"to\":\"T3.T\",\"mid\":null}],\"selectedId\":null,\"selectedIds\":[],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":6,\"nextTransformer\":4,\"nextCustom\":1,\"nextWire\":7}",
+          "{\"branches\":[{\"id\":\"T1\",\"name\":\"Tr1\",\"kind\":\"single_phase_transformer\",\"x\":1101.2099609375,\"y\":1270,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B3\",\"name\":\"R3\",\"kind\":\"two_node_branch\",\"x\":1267.5985412597656,\"y\":1369.7284698486328,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T2\",\"name\":\"Tr2\",\"kind\":\"single_phase_transformer\",\"x\":1095.6111450195312,\"y\":1531.822280883789,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B4\",\"name\":\"R4\",\"kind\":\"two_node_branch\",\"x\":1261.9997253417969,\"y\":1631.5507507324219,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T3\",\"name\":\"Tr3\",\"kind\":\"single_phase_transformer\",\"x\":1095,\"y\":1816.2153930664062,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B5\",\"name\":\"R5\",\"kind\":\"two_node_branch\",\"x\":1261.3885803222656,\"y\":1915.943862915039,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W2\",\"from\":\"T1.S\",\"to\":\"B3.A\",\"mid\":null},{\"id\":\"W3\",\"from\":\"T2.S\",\"to\":\"B4.A\",\"mid\":null},{\"id\":\"W4\",\"from\":\"T3.S\",\"to\":\"B5.A\",\"mid\":null},{\"id\":\"W5\",\"from\":\"T1.T\",\"to\":\"T2.T\",\"mid\":null},{\"id\":\"W6\",\"from\":\"T2.T\",\"to\":\"T3.T\",\"mid\":null},{\"id\":\"W7\",\"from\":\"T1.N\",\"to\":\"T2.P\",\"mid\":null}],\"selectedId\":null,\"selectedIds\":[],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":6,\"nextTransformer\":4,\"nextCustom\":1,\"nextWire\":8}",
+          "{\"branches\":[{\"id\":\"T1\",\"name\":\"Tr1\",\"kind\":\"single_phase_transformer\",\"x\":1101.2099609375,\"y\":1270,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B3\",\"name\":\"R3\",\"kind\":\"two_node_branch\",\"x\":1267.5985412597656,\"y\":1369.7284698486328,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T2\",\"name\":\"Tr2\",\"kind\":\"single_phase_transformer\",\"x\":1095.6111450195312,\"y\":1531.822280883789,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B4\",\"name\":\"R4\",\"kind\":\"two_node_branch\",\"x\":1261.9997253417969,\"y\":1631.5507507324219,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T3\",\"name\":\"Tr3\",\"kind\":\"single_phase_transformer\",\"x\":1095,\"y\":1816.2153930664062,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B5\",\"name\":\"R5\",\"kind\":\"two_node_branch\",\"x\":1261.3885803222656,\"y\":1915.943862915039,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W2\",\"from\":\"T1.S\",\"to\":\"B3.A\",\"mid\":null},{\"id\":\"W3\",\"from\":\"T2.S\",\"to\":\"B4.A\",\"mid\":null},{\"id\":\"W4\",\"from\":\"T3.S\",\"to\":\"B5.A\",\"mid\":null},{\"id\":\"W5\",\"from\":\"T1.T\",\"to\":\"T2.T\",\"mid\":null},{\"id\":\"W6\",\"from\":\"T2.T\",\"to\":\"T3.T\",\"mid\":null},{\"id\":\"W7\",\"from\":\"T1.N\",\"to\":\"T2.P\",\"mid\":null},{\"id\":\"W8\",\"from\":\"T2.N\",\"to\":\"T3.P\",\"mid\":null}],\"selectedId\":null,\"selectedIds\":[],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":6,\"nextTransformer\":4,\"nextCustom\":1,\"nextWire\":9}",
+          "{\"branches\":[{\"id\":\"T1\",\"name\":\"Tr1\",\"kind\":\"single_phase_transformer\",\"x\":1101.2099609375,\"y\":1270,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B3\",\"name\":\"R3\",\"kind\":\"two_node_branch\",\"x\":1267.5985412597656,\"y\":1369.7284698486328,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T2\",\"name\":\"Tr2\",\"kind\":\"single_phase_transformer\",\"x\":1095.6111450195312,\"y\":1531.822280883789,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B4\",\"name\":\"R4\",\"kind\":\"two_node_branch\",\"x\":1261.9997253417969,\"y\":1631.5507507324219,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T3\",\"name\":\"Tr3\",\"kind\":\"single_phase_transformer\",\"x\":1095,\"y\":1816.2153930664062,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B5\",\"name\":\"R5\",\"kind\":\"two_node_branch\",\"x\":1261.3885803222656,\"y\":1915.943862915039,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W2\",\"from\":\"T1.S\",\"to\":\"B3.A\",\"mid\":null},{\"id\":\"W3\",\"from\":\"T2.S\",\"to\":\"B4.A\",\"mid\":null},{\"id\":\"W4\",\"from\":\"T3.S\",\"to\":\"B5.A\",\"mid\":null},{\"id\":\"W5\",\"from\":\"T1.T\",\"to\":\"T2.T\",\"mid\":null},{\"id\":\"W6\",\"from\":\"T2.T\",\"to\":\"T3.T\",\"mid\":null},{\"id\":\"W7\",\"from\":\"T1.N\",\"to\":\"T2.P\",\"mid\":null},{\"id\":\"W8\",\"from\":\"T2.N\",\"to\":\"T3.P\",\"mid\":null},{\"id\":\"W9\",\"from\":\"T3.N\",\"to\":\"T1.P\",\"mid\":null}],\"selectedId\":\"T2\",\"selectedIds\":[\"T2\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":6,\"nextTransformer\":4,\"nextCustom\":1,\"nextWire\":10}",
+          "{\"branches\":[{\"id\":\"T1\",\"name\":\"Tr1\",\"kind\":\"single_phase_transformer\",\"x\":1101.2099609375,\"y\":1270,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B3\",\"name\":\"R3\",\"kind\":\"two_node_branch\",\"x\":1267.5985412597656,\"y\":1369.7284698486328,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T2\",\"name\":\"Tr2\",\"kind\":\"single_phase_transformer\",\"x\":1095.6111450195312,\"y\":1531.822280883789,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-95.9,\"y\":-35.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B4\",\"name\":\"R4\",\"kind\":\"two_node_branch\",\"x\":1261.9997253417969,\"y\":1631.5507507324219,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T3\",\"name\":\"Tr3\",\"kind\":\"single_phase_transformer\",\"x\":1095,\"y\":1816.2153930664062,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B5\",\"name\":\"R5\",\"kind\":\"two_node_branch\",\"x\":1261.3885803222656,\"y\":1915.943862915039,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W2\",\"from\":\"T1.S\",\"to\":\"B3.A\",\"mid\":null},{\"id\":\"W3\",\"from\":\"T2.S\",\"to\":\"B4.A\",\"mid\":null},{\"id\":\"W4\",\"from\":\"T3.S\",\"to\":\"B5.A\",\"mid\":null},{\"id\":\"W5\",\"from\":\"T1.T\",\"to\":\"T2.T\",\"mid\":null},{\"id\":\"W6\",\"from\":\"T2.T\",\"to\":\"T3.T\",\"mid\":null},{\"id\":\"W7\",\"from\":\"T1.N\",\"to\":\"T2.P\",\"mid\":null},{\"id\":\"W8\",\"from\":\"T2.N\",\"to\":\"T3.P\",\"mid\":null},{\"id\":\"W9\",\"from\":\"T3.N\",\"to\":\"T1.P\",\"mid\":null}],\"selectedId\":\"T3\",\"selectedIds\":[\"T3\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":6,\"nextTransformer\":4,\"nextCustom\":1,\"nextWire\":10}",
+          "{\"branches\":[{\"id\":\"T1\",\"name\":\"Tr1\",\"kind\":\"single_phase_transformer\",\"x\":1101.2099609375,\"y\":1270,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B3\",\"name\":\"R3\",\"kind\":\"two_node_branch\",\"x\":1267.5985412597656,\"y\":1369.7284698486328,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T2\",\"name\":\"Tr2\",\"kind\":\"single_phase_transformer\",\"x\":1095.6111450195312,\"y\":1531.822280883789,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-95.9,\"y\":-35.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B4\",\"name\":\"R4\",\"kind\":\"two_node_branch\",\"x\":1261.9997253417969,\"y\":1631.5507507324219,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T3\",\"name\":\"Tr3\",\"kind\":\"single_phase_transformer\",\"x\":1095,\"y\":1816.2153930664062,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-102,\"y\":-32.1},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B5\",\"name\":\"R5\",\"kind\":\"two_node_branch\",\"x\":1261.3885803222656,\"y\":1915.943862915039,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W2\",\"from\":\"T1.S\",\"to\":\"B3.A\",\"mid\":null},{\"id\":\"W3\",\"from\":\"T2.S\",\"to\":\"B4.A\",\"mid\":null},{\"id\":\"W4\",\"from\":\"T3.S\",\"to\":\"B5.A\",\"mid\":null},{\"id\":\"W5\",\"from\":\"T1.T\",\"to\":\"T2.T\",\"mid\":null},{\"id\":\"W6\",\"from\":\"T2.T\",\"to\":\"T3.T\",\"mid\":null},{\"id\":\"W7\",\"from\":\"T1.N\",\"to\":\"T2.P\",\"mid\":null},{\"id\":\"W8\",\"from\":\"T2.N\",\"to\":\"T3.P\",\"mid\":null},{\"id\":\"W9\",\"from\":\"T3.N\",\"to\":\"T1.P\",\"mid\":null}],\"selectedId\":\"T3\",\"selectedIds\":[\"T3\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"internalNodes\":[],\"nextBranch\":6,\"nextTransformer\":4,\"nextCustom\":1,\"nextWire\":10}"
+        ],
+        "future": []
+      }
+    }
+  ],
+  "activeCanvasId": "canvas1",
+  "nextCanvas": 2,
+  "branches": [
+    {
+      "id": "T1",
+      "name": "Tr1",
+      "kind": "single_phase_transformer",
+      "x": 1101.2099609375,
+      "y": 1270,
+      "width": 100,
+      "height": 112,
+      "rotation": 0,
+      "nodes": {
+        "P": "tr2p",
+        "N": "tr2n",
+        "S": "tr2s",
+        "T": "tr2t"
+      },
+      "gMatrix": "[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]",
+      "ihisVector": "[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]",
+      "currents": [
+        {
+          "name": "primary",
+          "from": "P",
+          "to": "N",
+          "expression": "G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A"
+        },
+        {
+          "name": "secondary",
+          "from": "S",
+          "to": "T",
+          "expression": "G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a"
+        }
+      ],
+      "terminalLayout": {
+        "P": {
+          "x": -140.6,
+          "y": -34.2
+        },
+        "N": {
+          "x": -105.4,
+          "y": 29.3
+        },
+        "S": {
+          "x": 198.2,
+          "y": -29
+        },
+        "T": {
+          "x": 96.1,
+          "y": 28.7
+        }
+      }
+    },
+    {
+      "id": "B3",
+      "name": "R3",
+      "kind": "two_node_branch",
+      "x": 1267.5985412597656,
+      "y": 1369.7284698486328,
+      "width": 150,
+      "height": 48,
+      "rotation": 90,
+      "nodeA": "n3a",
+      "nodeB": "n3b",
+      "g": "G_rc",
+      "ihis": "IAhis_rc",
+      "direction": "AtoB"
+    },
+    {
+      "id": "T2",
+      "name": "Tr2",
+      "kind": "single_phase_transformer",
+      "x": 1095.6111450195312,
+      "y": 1531.822280883789,
+      "width": 100,
+      "height": 112,
+      "rotation": 0,
+      "nodes": {
+        "P": "tr3p",
+        "N": "tr3n",
+        "S": "tr3s",
+        "T": "tr3t"
+      },
+      "gMatrix": "[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]",
+      "ihisVector": "[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]",
+      "currents": [
+        {
+          "name": "primary",
+          "from": "P",
+          "to": "N",
+          "expression": "G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B"
+        },
+        {
+          "name": "secondary",
+          "from": "S",
+          "to": "T",
+          "expression": "G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b"
+        }
+      ],
+      "terminalLayout": {
+        "P": {
+          "x": -95.9,
+          "y": -35.2
+        },
+        "N": {
+          "x": -105.4,
+          "y": 29.3
+        },
+        "S": {
+          "x": 198.2,
+          "y": -29
+        },
+        "T": {
+          "x": 96.1,
+          "y": 28.7
+        }
+      }
+    },
+    {
+      "id": "B4",
+      "name": "R4",
+      "kind": "two_node_branch",
+      "x": 1261.9997253417969,
+      "y": 1631.5507507324219,
+      "width": 150,
+      "height": 48,
+      "rotation": 90,
+      "nodeA": "n4a",
+      "nodeB": "n4b",
+      "g": "G_rc",
+      "ihis": "IBhis_rc",
+      "direction": "AtoB"
+    },
+    {
+      "id": "T3",
+      "name": "Tr3",
+      "kind": "single_phase_transformer",
+      "x": 1095,
+      "y": 1816.2153930664062,
+      "width": 100,
+      "height": 112,
+      "rotation": 0,
+      "nodes": {
+        "P": "tr4p",
+        "N": "tr4n",
+        "S": "tr4s",
+        "T": "tr4t"
+      },
+      "gMatrix": "[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]",
+      "ihisVector": "[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]",
+      "currents": [
+        {
+          "name": "primary",
+          "from": "P",
+          "to": "N",
+          "expression": "G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C"
+        },
+        {
+          "name": "secondary",
+          "from": "S",
+          "to": "T",
+          "expression": "G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c"
+        }
+      ],
+      "terminalLayout": {
+        "P": {
+          "x": -102,
+          "y": -32.1
+        },
+        "N": {
+          "x": -129.2,
+          "y": 32.7
+        },
+        "S": {
+          "x": 198.2,
+          "y": -29
+        },
+        "T": {
+          "x": 96.1,
+          "y": 28.7
+        }
+      }
+    },
+    {
+      "id": "B5",
+      "name": "R5",
+      "kind": "two_node_branch",
+      "x": 1261.3885803222656,
+      "y": 1915.943862915039,
+      "width": 150,
+      "height": 48,
+      "rotation": 90,
+      "nodeA": "n5a",
+      "nodeB": "n5b",
+      "g": "G_rc",
+      "ihis": "IChis_rc",
+      "direction": "AtoB"
+    }
+  ],
+  "wires": [
+    {
+      "id": "W2",
+      "from": "T1.S",
+      "to": "B3.A",
+      "mid": null
+    },
+    {
+      "id": "W3",
+      "from": "T2.S",
+      "to": "B4.A",
+      "mid": null
+    },
+    {
+      "id": "W4",
+      "from": "T3.S",
+      "to": "B5.A",
+      "mid": null
+    },
+    {
+      "id": "W5",
+      "from": "T1.T",
+      "to": "T2.T",
+      "mid": null
+    },
+    {
+      "id": "W6",
+      "from": "T2.T",
+      "to": "T3.T",
+      "mid": null
+    },
+    {
+      "id": "W7",
+      "from": "T1.N",
+      "to": "T2.P",
+      "mid": null
+    },
+    {
+      "id": "W8",
+      "from": "T2.N",
+      "to": "T3.P",
+      "mid": null
+    },
+    {
+      "id": "W9",
+      "from": "T3.N",
+      "to": "T1.P",
+      "mid": null
+    }
+  ],
+  "groups": [],
+  "nodeOrder": [
+    "N1",
+    "N2",
+    "N6",
+    "N3",
+    "N7",
+    "N9",
+    "N4",
+    "N5",
+    "N8",
+    "N10"
+  ],
+  "nodeLabels": {
+    "N1": "A",
+    "N2": "B",
+    "N6": "C",
+    "N3": "a",
+    "N4": "G",
+    "N5": "RC_a",
+    "N7": "b",
+    "N9": "c",
+    "N8": "RC_b",
+    "N10": "RC_c"
+  },
+  "internalNodes": [],
+  "language": "zh",
+  "nextBranch": 6,
+  "nextTransformer": 4,
+  "nextCustom": 1,
+  "nextWire": 10,
+  "nextGroup": 1
+}
