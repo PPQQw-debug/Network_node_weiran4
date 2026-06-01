@@ -1405,6 +1405,7 @@
     const CACHE_LIMIT = 16;
     const reducedCache = new Map();
     const branchCurrentCache = new Map();
+    const pythonDraftCache = new Map();
 
     function cacheGet(cache, key) {
       const value = cache.get(key);
@@ -4179,9 +4180,8 @@
       }
     }
 
-    function pythonDraft(reducedResult = null) {
+    function pythonDraft(reducedResult = null, payload = buildReducedPayload()) {
       const lines = [];
-      const payload = buildReducedPayload();
       lines.push("# Generated from Branch Builder");
       lines.push("# Each two-node branch stamps [[G, -G], [-G, G]] and [Ihis, -Ihis].");
       lines.push("import sympy as sp");
@@ -4216,18 +4216,50 @@
       return lines.join("\n");
     }
 
-    async function renderPythonDraftAsync(token) {
-      const payload = buildReducedPayload();
+    async function renderPythonDraftAsync(token, payload) {
       const staticHtml = reducedStaticMessage(payload);
       if (staticHtml) return;
-      try {
-        const result = await requestReduction(payload);
+      const key = reducedCacheKey(payload);
+      const cachedEntry = cacheGet(pythonDraftCache, key);
+      if (cachedEntry?.result) {
         if (token === pythonDraftRenderToken && state.activeOutput === "python") {
-          outputText.textContent = pythonDraft(result);
+          outputText.textContent = pythonDraft(cachedEntry.result, payload);
+        }
+        return;
+      }
+      if (cachedEntry?.pending) {
+        try {
+          const result = await cachedEntry.pending;
+          if (token === pythonDraftRenderToken && state.activeOutput === "python") {
+            outputText.textContent = pythonDraft(result, payload);
+          }
+        } catch (error) {
+          if (token === pythonDraftRenderToken && state.activeOutput === "python") {
+            outputText.textContent = `${pythonDraft(null, payload)}\n# Node reduction failed: ${error.message || String(error)}\n`;
+          }
+        }
+        return;
+      }
+
+      const pending = requestReduction(payload).then(result => {
+        const current = pythonDraftCache.get(key);
+        if (current?.pending === pending) cacheSet(pythonDraftCache, key, { result, pending: null });
+        return result;
+      }).catch(error => {
+        const current = pythonDraftCache.get(key);
+        if (current?.pending === pending) pythonDraftCache.delete(key);
+        throw error;
+      });
+      cacheSet(pythonDraftCache, key, { result: null, pending });
+
+      try {
+        const result = await pending;
+        if (token === pythonDraftRenderToken && state.activeOutput === "python") {
+          outputText.textContent = pythonDraft(result, payload);
         }
       } catch (error) {
         if (token === pythonDraftRenderToken && state.activeOutput === "python") {
-          outputText.textContent = `${pythonDraft()}\n# Node reduction failed: ${error.message || String(error)}\n`;
+          outputText.textContent = `${pythonDraft(null, payload)}\n# Node reduction failed: ${error.message || String(error)}\n`;
         }
       }
     }
@@ -4241,8 +4273,9 @@
       if (state.activeOutput === "python") {
         outputText.className = "output-body code";
         const token = ++pythonDraftRenderToken;
-        outputText.textContent = pythonDraft();
-        renderPythonDraftAsync(token);
+        const payload = buildReducedPayload();
+        outputText.textContent = pythonDraft(null, payload);
+        renderPythonDraftAsync(token, payload);
         return;
       }
       if (state.activeOutput === "nodeEquations") {
