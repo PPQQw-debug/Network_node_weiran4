@@ -1401,6 +1401,7 @@
     };
     let reducedRenderToken = 0;
     let branchCurrentRenderToken = 0;
+    let pythonDraftRenderToken = 0;
     const CACHE_LIMIT = 16;
     const reducedCache = new Map();
     const branchCurrentCache = new Map();
@@ -1429,6 +1430,7 @@
     function invalidateMathCaches() {
       reducedRenderToken += 1;
       branchCurrentRenderToken += 1;
+      pythonDraftRenderToken += 1;
     }
 
     function blankCanvasData(name = "画布") {
@@ -4038,6 +4040,129 @@
       outputDialog.classList.remove("open");
     }
 
+    function pythonStringList(items) {
+      return `[${items.map(item => JSON.stringify(String(item))).join(", ")}]`;
+    }
+
+    function pythonRecoveryExpression(row, history, externalNames) {
+      const terms = row
+        .map((coeff, index) => isZero(coeff) ? "" : `(${coeff})*V_${externalNames[index]}`)
+        .filter(Boolean);
+      if (!isZero(history)) terms.push(`(${history})`);
+      return terms.length ? terms.join(" + ") : "0";
+    }
+
+    function appendPythonReductionSection(lines, payload, result = null) {
+      const displayNames = payload.node_display_names || {};
+      const allNames = payload.all_nodes.map(node => displayNames[node] || nodeDisplayName(node));
+      const externalNames = payload.external_nodes.map(node => displayNames[node] || nodeDisplayName(node));
+      const internalNames = payload.internal_nodes.map(node => displayNames[node] || nodeDisplayName(node));
+
+      lines.push("# Global system before node reduction");
+      lines.push(`all_nodes = ${pythonStringList(allNames)}`);
+      lines.push(`external_nodes = ${pythonStringList(externalNames)}`);
+      lines.push(`internal_nodes = ${pythonStringList(internalNames)}`);
+      lines.push(`G_full = sp.Matrix(${matrixLiteral(payload.G_full)})`);
+      lines.push(`Ihis_full = sp.Matrix(${vectorLiteral(payload.Ihis_full)})`);
+      lines.push("");
+      lines.push('print("Before reduction: G_full")');
+      lines.push("print(G_full)");
+      lines.push('print("Before reduction: Ihis_full")');
+      lines.push("print(Ihis_full)");
+      lines.push("");
+
+      if (!payload.internal_nodes.length) {
+        lines.push("# No internal nodes are selected, so there is no reduced system yet.");
+        lines.push("");
+        return;
+      }
+      if (!payload.external_nodes.length) {
+        lines.push("# At least one external node must remain before reduction can be computed.");
+        lines.push("");
+        return;
+      }
+      if (!result) {
+        lines.push("# Reduced system is being computed by the local SymPy backend...");
+        lines.push("");
+        return;
+      }
+
+      const reducedExternalNames = result.external_nodes.map(node => displayNames[node] || nodeDisplayName(node));
+      const reducedInternalNames = result.internal_nodes.map(node => displayNames[node] || nodeDisplayName(node));
+
+      lines.push("# Global system after eliminating internal nodes");
+      lines.push(`reduced_external_nodes = ${pythonStringList(reducedExternalNames)}`);
+      lines.push(`eliminated_internal_nodes = ${pythonStringList(reducedInternalNames)}`);
+      lines.push(`G_red = sp.Matrix(${matrixLiteral(result.G_red)})`);
+      lines.push(`Ihis_red = sp.Matrix(${vectorLiteral(result.Ihis_red)})`);
+      lines.push("");
+      lines.push('print("After reduction: G_red")');
+      lines.push("print(G_red)");
+      lines.push('print("After reduction: Ihis_red")');
+      lines.push("print(Ihis_red)");
+      lines.push("");
+      lines.push("# Eliminated internal-node voltage recovery");
+      lines.push("# V_internal = K_v * V_external + K_h");
+      lines.push(`K_v = sp.Matrix(${matrixLiteral(result.K_v)})`);
+      lines.push(`K_h = sp.Matrix(${vectorLiteral(result.K_h)})`);
+      lines.push("internal_voltage_recovery = {");
+      reducedInternalNames.forEach((name, index) => {
+        const expression = pythonRecoveryExpression(result.K_v[index] || [], result.K_h[index], reducedExternalNames);
+        lines.push(`    ${JSON.stringify(`V_${name}`)}: ${JSON.stringify(expression)},`);
+      });
+      lines.push("}");
+      lines.push('print("Eliminated internal-node voltage recovery")');
+      lines.push("for node, expression in internal_voltage_recovery.items():");
+      lines.push('    print(f"{node} = {expression}")');
+      lines.push("");
+    }
+
+    function collectPythonDraftSymbolNames(payload, result = null) {
+      const reserved = new Set([
+        "Abs", "False", "None", "True", "acos", "asin", "atan", "cos", "cosh",
+        "def", "elif", "else", "exp", "for", "from", "if", "import", "in",
+        "lambda", "log", "not", "or", "print", "return", "sin", "sinh", "sp",
+        "sqrt", "tan", "tanh"
+      ]);
+      const names = new Set();
+      const addText = text => {
+        String(text || "").replace(/\b[A-Za-z_]\w*\b/g, name => {
+          if (!reserved.has(name)) names.add(name);
+          return name;
+        });
+      };
+      state.branches.forEach(branch => {
+        addText(branch.g);
+        addText(branch.ihis);
+        addText(branch.gMatrix);
+        addText(branch.ihisVector);
+        (branch.currents || []).forEach(current => {
+          addText(current.g);
+          addText(current.ihis);
+        });
+      });
+      (payload.G_full || []).forEach(row => row.forEach(addText));
+      (payload.Ihis_full || []).forEach(addText);
+      if (result) {
+        (result.G_red || []).forEach(row => row.forEach(addText));
+        (result.Ihis_red || []).forEach(addText);
+        (result.K_v || []).forEach(row => row.forEach(addText));
+        (result.K_h || []).forEach(addText);
+      }
+      return [...names].sort((a, b) => a.localeCompare(b, "en", { numeric: true }));
+    }
+
+    function appendPythonSymbolDeclarations(lines, symbolNames) {
+      if (!symbolNames.length) return;
+      lines.push("# Symbol declarations inferred from the current circuit");
+      if (symbolNames.length === 1) {
+        lines.push(`${symbolNames[0]} = sp.symbols(${JSON.stringify(symbolNames[0])})`);
+      } else {
+        lines.push(`${symbolNames.join(", ")} = sp.symbols(${JSON.stringify(symbolNames.join(" "))})`);
+      }
+      lines.push("");
+    }
+
     async function importCircuitFile(file) {
       try {
         const text = await file.text();
@@ -4054,11 +4179,14 @@
       }
     }
 
-    function pythonDraft() {
+    function pythonDraft(reducedResult = null) {
       const lines = [];
+      const payload = buildReducedPayload();
       lines.push("# Generated from Branch Builder");
       lines.push("# Each two-node branch stamps [[G, -G], [-G, G]] and [Ihis, -Ihis].");
+      lines.push("import sympy as sp");
       lines.push("");
+      appendPythonSymbolDeclarations(lines, collectPythonDraftSymbolNames(payload, reducedResult));
       state.branches.forEach(branch => {
         if (branch.kind === "single_phase_transformer") {
           lines.push(`G_${branch.name} = sp.Matrix(${branch.gMatrix})`);
@@ -4083,7 +4211,25 @@
       lines.push("");
       lines.push("# Branch current formulas:");
       state.branches.forEach(branch => lines.push(`# ${currentFormula(branch)}`));
+      lines.push("");
+      appendPythonReductionSection(lines, payload, reducedResult);
       return lines.join("\n");
+    }
+
+    async function renderPythonDraftAsync(token) {
+      const payload = buildReducedPayload();
+      const staticHtml = reducedStaticMessage(payload);
+      if (staticHtml) return;
+      try {
+        const result = await requestReduction(payload);
+        if (token === pythonDraftRenderToken && state.activeOutput === "python") {
+          outputText.textContent = pythonDraft(result);
+        }
+      } catch (error) {
+        if (token === pythonDraftRenderToken && state.activeOutput === "python") {
+          outputText.textContent = `${pythonDraft()}\n# Node reduction failed: ${error.message || String(error)}\n`;
+        }
+      }
     }
 
     function renderOutput() {
@@ -4094,7 +4240,9 @@
       }
       if (state.activeOutput === "python") {
         outputText.className = "output-body code";
+        const token = ++pythonDraftRenderToken;
         outputText.textContent = pythonDraft();
+        renderPythonDraftAsync(token);
         return;
       }
       if (state.activeOutput === "nodeEquations") {
