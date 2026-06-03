@@ -41,12 +41,11 @@ def _parse_expr(text: str) -> sp.Expr:
 
 
 def _clean_expr(expr: sp.Expr) -> str:
-    return str(sp.simplify(expr))
+    return str(expr)
 
 
 def _clean_observer_expr(expr: sp.Expr) -> str:
-    simplified = sp.expand(sp.cancel(sp.simplify(expr)))
-    return str(simplified)
+    return str(expr)
 
 
 def _clean_matrix(matrix: sp.Matrix) -> list[list[str]]:
