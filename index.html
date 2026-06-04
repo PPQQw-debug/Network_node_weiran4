@@ -1253,6 +1253,221 @@
       color: #fff;
     }
 
+    @media (min-width: 1700px) and (min-height: 850px), (min-width: 1400px) and (min-height: 1100px) {
+      .topbar {
+        gap: 12px;
+        min-height: 62px;
+        padding: 10px 18px;
+      }
+
+      .brand {
+        font-size: 17px;
+        padding-top: 10px;
+      }
+
+      .toolbar {
+        gap: 8px;
+      }
+
+      .toolbar-group {
+        gap: 5px;
+        padding: 4px 6px;
+      }
+
+      .toolbar-label {
+        font-size: 11px;
+      }
+
+      .tool {
+        width: 42px;
+        height: 40px;
+      }
+
+      .tool.text-tool,
+      .tab,
+      .output-action.text-action,
+      .text-button {
+        font-size: 13px;
+      }
+
+      .main {
+        grid-template-columns: minmax(760px, 1fr) 410px;
+      }
+
+      .workspace {
+        grid-template-rows: auto minmax(320px, 1fr) 9px 270px;
+      }
+
+      .canvas-tabs {
+        gap: 8px;
+        padding: 9px 12px;
+      }
+
+      .canvas-tab {
+        padding: 7px 12px;
+        font-size: 13px;
+      }
+
+      .canvas-tab-delete {
+        width: 18px;
+        height: 18px;
+      }
+
+      .panel-section {
+        padding: 18px;
+      }
+
+      .panel-title {
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+
+      label,
+      .field-caption,
+      .compact-check,
+      .node-order-id,
+      .node-internal-button,
+      .editable-text,
+      .formula-empty,
+      .modal-help,
+      .status {
+        font-size: 13px;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 9px 10px;
+      }
+
+      textarea,
+      .output-body.code {
+        font-size: 13px;
+      }
+
+      .editor-group summary {
+        min-height: 42px;
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      .editor-group-body {
+        padding: 0 12px 12px;
+      }
+
+      .node-order-item {
+        min-height: 40px;
+        padding: 8px 10px;
+      }
+
+      .node-order-name {
+        font-size: 14px;
+      }
+
+      .node-edit-button {
+        width: 30px;
+        height: 28px;
+      }
+
+      .output {
+        grid-template-rows: 44px 1fr;
+      }
+
+      .output-tabs {
+        gap: 8px;
+        padding: 6px 10px;
+      }
+
+      .tab {
+        padding: 7px 12px;
+      }
+
+      .output-action {
+        width: 34px;
+        height: 32px;
+      }
+
+      .formula-name {
+        font-size: 12px;
+      }
+
+      .formula-line,
+      .matrix-equation {
+        font-size: 20px;
+      }
+
+      .matrix-cell {
+        min-width: 66px;
+      }
+    }
+
+    @media (min-width: 2400px) and (min-height: 1200px) {
+      .topbar {
+        min-height: 70px;
+        padding: 12px 22px;
+      }
+
+      .brand {
+        font-size: 19px;
+      }
+
+      .tool {
+        width: 48px;
+        height: 46px;
+      }
+
+      .main {
+        grid-template-columns: minmax(860px, 1fr) 460px;
+      }
+
+      .workspace {
+        grid-template-rows: auto minmax(360px, 1fr) 10px 310px;
+      }
+
+      .toolbar-label {
+        font-size: 12px;
+      }
+
+      .canvas-tab,
+      .panel-title,
+      .node-order-name {
+        font-size: 15px;
+      }
+
+      label,
+      .field-caption,
+      .compact-check,
+      .tool.text-tool,
+      .tab,
+      .output-action.text-action,
+      .text-button,
+      .editable-text,
+      .formula-empty,
+      .modal-help,
+      .status {
+        font-size: 14px;
+      }
+
+      textarea,
+      .output-body.code {
+        font-size: 14px;
+      }
+
+      .editor-group summary {
+        min-height: 46px;
+        font-size: 14px;
+      }
+
+      .output {
+        grid-template-rows: 50px 1fr;
+      }
+
+      .formula-line,
+      .matrix-equation {
+        font-size: 22px;
+      }
+    }
+
     @media (max-width: 920px) {
       body {
         min-width: 0;
