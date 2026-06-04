@@ -1,0 +1,468 @@
+{
+  "fileType": "branch-builder-circuit",
+  "version": 3,
+  "savedAt": "2026-06-04T15:50:45.828Z",
+  "generator": "Branch Builder",
+  "world": {
+    "width": 1600,
+    "height": 1000
+  },
+  "ui": {
+    "language": "zh",
+    "activeOutput": "formulas",
+    "showLocalLabels": true,
+    "showReducedBranchCurrents": false,
+    "editorGroups": {}
+  },
+  "canvasOrder": [
+    "canvas1"
+  ],
+  "canvases": [
+    {
+      "id": "canvas1",
+      "name": "画布 1",
+      "data": {
+        "name": "画布 1",
+        "branches": [
+          {
+            "id": "B3",
+            "name": "R3",
+            "kind": "two_node_branch",
+            "x": 139.46432495117188,
+            "y": 666.0577621459961,
+            "width": 150,
+            "height": 48,
+            "rotation": 0,
+            "nodeA": "n1a",
+            "nodeB": "n1b",
+            "g": "1/R",
+            "ihis": "0",
+            "direction": "AtoB",
+            "activeSwitchCase": 0
+          },
+          {
+            "id": "B4",
+            "name": "R4",
+            "kind": "two_node_branch",
+            "x": 374.26432495117206,
+            "y": 666.0577621459961,
+            "width": 150,
+            "height": 48,
+            "rotation": 0,
+            "nodeA": "n2a",
+            "nodeB": "n2b",
+            "g": "1/R",
+            "ihis": "0",
+            "direction": "AtoB",
+            "activeSwitchCase": 0
+          },
+          {
+            "id": "B5",
+            "name": "R5",
+            "kind": "two_node_branch",
+            "x": 252.66432495117192,
+            "y": 732.2268905639648,
+            "width": 150,
+            "height": 48,
+            "rotation": 0,
+            "nodeA": "n3a",
+            "nodeB": "n3b",
+            "g": "1/R",
+            "ihis": "0",
+            "direction": "AtoB",
+            "terminalLayout": {
+              "A": {
+                "x": -188.2,
+                "y": 0
+              },
+              "B": {
+                "x": 196.6,
+                "y": 0
+              }
+            },
+            "activeSwitchCase": 0
+          },
+          {
+            "id": "B6",
+            "name": "R6",
+            "kind": "two_node_branch",
+            "x": 139.46432495117188,
+            "y": 585.1785888671875,
+            "width": 150,
+            "height": 48,
+            "rotation": 0,
+            "nodeA": "n4a",
+            "nodeB": "n4b",
+            "g": "1/R",
+            "ihis": "0",
+            "direction": "AtoB",
+            "activeSwitchCase": 0
+          },
+          {
+            "id": "B7",
+            "name": "R7",
+            "kind": "two_node_branch",
+            "x": 374.26432495117206,
+            "y": 585.1785888671875,
+            "width": 150,
+            "height": 48,
+            "rotation": 0,
+            "nodeA": "n5a",
+            "nodeB": "n5b",
+            "g": "1/R",
+            "ihis": "0",
+            "direction": "AtoB",
+            "activeSwitchCase": 0
+          },
+          {
+            "id": "B8",
+            "name": "R8",
+            "kind": "two_node_branch",
+            "x": 140.07189178466797,
+            "y": 507.7388916015625,
+            "width": 150,
+            "height": 48,
+            "rotation": 0,
+            "nodeA": "n8a",
+            "nodeB": "n8b",
+            "g": "G8",
+            "ihis": "0",
+            "direction": "AtoB",
+            "activeSwitchCase": 0
+          },
+          {
+            "id": "B9",
+            "name": "R9",
+            "kind": "two_node_branch",
+            "x": 374.26432495117206,
+            "y": 507.7388916015625,
+            "width": 150,
+            "height": 48,
+            "rotation": 0,
+            "nodeA": "n9a",
+            "nodeB": "n9b",
+            "g": "G9",
+            "ihis": "0",
+            "direction": "AtoB",
+            "activeSwitchCase": 0
+          }
+        ],
+        "wires": [
+          {
+            "id": "W2",
+            "from": "B3.B",
+            "to": "B4.A",
+            "mid": null
+          },
+          {
+            "id": "W3",
+            "from": "B7.A",
+            "to": "B6.B",
+            "mid": null
+          },
+          {
+            "id": "W4",
+            "from": "B6.B",
+            "to": "B3.B",
+            "mid": null
+          },
+          {
+            "id": "W5",
+            "from": "B6.A",
+            "to": "B3.A",
+            "mid": null
+          },
+          {
+            "id": "W6",
+            "from": "B7.B",
+            "to": "B4.B",
+            "mid": null
+          },
+          {
+            "id": "W7",
+            "from": "B5.A",
+            "to": "B3.A",
+            "mid": null
+          },
+          {
+            "id": "W8",
+            "from": "B5.B",
+            "to": "B4.B",
+            "mid": null
+          },
+          {
+            "id": "W9",
+            "from": "B8.B",
+            "to": "B9.A",
+            "mid": null
+          },
+          {
+            "id": "W10",
+            "from": "B7.B",
+            "to": "B9.B",
+            "mid": null
+          },
+          {
+            "id": "W11",
+            "from": "B8.A",
+            "to": "B6.A",
+            "mid": null
+          }
+        ],
+        "groups": [],
+        "nodeOrder": [],
+        "nodeLabels": {},
+        "nodeColors": {},
+        "internalNodes": [
+          "N2",
+          "N4"
+        ],
+        "selectedId": "B4",
+        "selectedIds": [
+          "B4",
+          "B7",
+          "B9"
+        ],
+        "selectedNetIds": [],
+        "selectedWireId": null,
+        "nextBranch": 10,
+        "nextTransformer": 1,
+        "nextCustom": 1,
+        "nextWire": 12,
+        "nextGroup": 1,
+        "zoom": 2.2106814074060823,
+        "viewCenter": {
+          "x": 547.2727608371569,
+          "y": 532.2526788411685
+        },
+        "reducedEquationCache": [],
+        "branchCurrentCache": [],
+        "pythonDraftCache": [],
+        "history": [],
+        "future": []
+      }
+    }
+  ],
+  "activeCanvasId": "canvas1",
+  "nextCanvas": 2,
+  "branches": [
+    {
+      "id": "B3",
+      "name": "R3",
+      "kind": "two_node_branch",
+      "x": 139.46432495117188,
+      "y": 666.0577621459961,
+      "width": 150,
+      "height": 48,
+      "rotation": 0,
+      "nodeA": "n1a",
+      "nodeB": "n1b",
+      "g": "1/R",
+      "ihis": "0",
+      "direction": "AtoB",
+      "activeSwitchCase": 0
+    },
+    {
+      "id": "B4",
+      "name": "R4",
+      "kind": "two_node_branch",
+      "x": 374.26432495117206,
+      "y": 666.0577621459961,
+      "width": 150,
+      "height": 48,
+      "rotation": 0,
+      "nodeA": "n2a",
+      "nodeB": "n2b",
+      "g": "1/R",
+      "ihis": "0",
+      "direction": "AtoB",
+      "activeSwitchCase": 0
+    },
+    {
+      "id": "B5",
+      "name": "R5",
+      "kind": "two_node_branch",
+      "x": 252.66432495117192,
+      "y": 732.2268905639648,
+      "width": 150,
+      "height": 48,
+      "rotation": 0,
+      "nodeA": "n3a",
+      "nodeB": "n3b",
+      "g": "1/R",
+      "ihis": "0",
+      "direction": "AtoB",
+      "terminalLayout": {
+        "A": {
+          "x": -188.2,
+          "y": 0
+        },
+        "B": {
+          "x": 196.6,
+          "y": 0
+        }
+      },
+      "activeSwitchCase": 0
+    },
+    {
+      "id": "B6",
+      "name": "R6",
+      "kind": "two_node_branch",
+      "x": 139.46432495117188,
+      "y": 585.1785888671875,
+      "width": 150,
+      "height": 48,
+      "rotation": 0,
+      "nodeA": "n4a",
+      "nodeB": "n4b",
+      "g": "1/R",
+      "ihis": "0",
+      "direction": "AtoB",
+      "activeSwitchCase": 0
+    },
+    {
+      "id": "B7",
+      "name": "R7",
+      "kind": "two_node_branch",
+      "x": 374.26432495117206,
+      "y": 585.1785888671875,
+      "width": 150,
+      "height": 48,
+      "rotation": 0,
+      "nodeA": "n5a",
+      "nodeB": "n5b",
+      "g": "1/R",
+      "ihis": "0",
+      "direction": "AtoB",
+      "activeSwitchCase": 0
+    },
+    {
+      "id": "B8",
+      "name": "R8",
+      "kind": "two_node_branch",
+      "x": 140.07189178466797,
+      "y": 507.7388916015625,
+      "width": 150,
+      "height": 48,
+      "rotation": 0,
+      "nodeA": "n8a",
+      "nodeB": "n8b",
+      "g": "G8",
+      "ihis": "0",
+      "direction": "AtoB",
+      "activeSwitchCase": 0
+    },
+    {
+      "id": "B9",
+      "name": "R9",
+      "kind": "two_node_branch",
+      "x": 374.26432495117206,
+      "y": 507.7388916015625,
+      "width": 150,
+      "height": 48,
+      "rotation": 0,
+      "nodeA": "n9a",
+      "nodeB": "n9b",
+      "g": "G9",
+      "ihis": "0",
+      "direction": "AtoB",
+      "activeSwitchCase": 0
+    }
+  ],
+  "wires": [
+    {
+      "id": "W2",
+      "from": "B3.B",
+      "to": "B4.A",
+      "mid": null
+    },
+    {
+      "id": "W3",
+      "from": "B7.A",
+      "to": "B6.B",
+      "mid": null
+    },
+    {
+      "id": "W4",
+      "from": "B6.B",
+      "to": "B3.B",
+      "mid": null
+    },
+    {
+      "id": "W5",
+      "from": "B6.A",
+      "to": "B3.A",
+      "mid": null
+    },
+    {
+      "id": "W6",
+      "from": "B7.B",
+      "to": "B4.B",
+      "mid": null
+    },
+    {
+      "id": "W7",
+      "from": "B5.A",
+      "to": "B3.A",
+      "mid": null
+    },
+    {
+      "id": "W8",
+      "from": "B5.B",
+      "to": "B4.B",
+      "mid": null
+    },
+    {
+      "id": "W9",
+      "from": "B8.B",
+      "to": "B9.A",
+      "mid": null
+    },
+    {
+      "id": "W10",
+      "from": "B7.B",
+      "to": "B9.B",
+      "mid": null
+    },
+    {
+      "id": "W11",
+      "from": "B8.A",
+      "to": "B6.A",
+      "mid": null
+    }
+  ],
+  "groups": [],
+  "nodeOrder": [],
+  "nodeLabels": {},
+  "nodeColors": {},
+  "internalNodes": [
+    "N2",
+    "N4"
+  ],
+  "language": "zh",
+  "activeOutput": "formulas",
+  "showLocalLabels": true,
+  "showReducedBranchCurrents": false,
+  "editorGroups": {},
+  "selectedId": "B4",
+  "selectedIds": [
+    "B4",
+    "B7",
+    "B9"
+  ],
+  "selectedNetIds": [],
+  "selectedWireId": null,
+  "zoom": 2.2106814074060823,
+  "viewCenter": {
+    "x": 547.2727608371569,
+    "y": 532.2526788411685
+  },
+  "reducedEquationCache": [],
+  "branchCurrentCache": [],
+  "pythonDraftCache": [],
+  "nextBranch": 10,
+  "nextTransformer": 1,
+  "nextCustom": 1,
+  "nextWire": 12,
+  "nextGroup": 1
+}

@@ -7,3 +7,16 @@ server.err.log
 venv/
 node_modules/
 wheels/
+
+# Local-only/private working notes for AI or personal context.
+PROJECT_NOTES.md
+UCM_Trf.md
+*.private.md
+LOCAL_*.md
+AI_*.md
+
+# Temporary screenshots and ad-hoc root-level exports.
+/branch-builder-*.png
+/branch-builder-circuit-*.json
+/test*.json
+/demo-import-branch.json

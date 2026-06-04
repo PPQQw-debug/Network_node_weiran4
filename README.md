@@ -40,6 +40,7 @@ Branch Builder 是一个本地运行的浏览器工具，用于绘制和分析�
 
 ## Recent Updates / 最近更新
 
+- Canvas tabs can be reordered by dragging. Circuit exports now use `version: 3` and preserve more project state, including all canvases, node styling, switch cases, packaged-box settings, UI options, and cached derivation results.
 - Switch cases are stored with each component. For ordinary branches, edit case-specific `G` and `Ihis`; for matrix components, edit case-specific local `G` and `Ihis` matrices. Double-click the component to cycle cases.
 - Packaged Y-boxes do not use an outer switch case. Instead, their editor lists internal branches that have multiple cases; changing an internal case recomputes the packaged box through the local SymPy backend.
 - Formula highlighting is provenance-aware. The app sends hidden tagged expressions to the backend and strips the tags before display. When formula highlighting is enabled in reduced equations, some merged symbolic terms may appear more expanded so that the highlight remains trustworthy.
@@ -48,11 +49,22 @@ Branch Builder 是一个本地运行的浏览器工具，用于绘制和分析�
 
 中文最近更新：
 
+- 画布标签支持拖拽排序。电路导出升级为 `version: 3`，会保存更完整的工程状态，包括所有画布、节点样式、开关工况、打包黑盒设置、界面选项和已缓存的推导结果。
 - 开关工况保存在每个元件上。普通支路可编辑每个工况的 `G` 和 `Ihis`；矩阵元件可编辑每个工况的局部 `G` 矩阵和 `Ihis` 向量。画布中双击元件可切换工况。
 - 打包后的 YBox 不使用外层 switch case。它会在编辑器中列出内部具有多个工况的支路；切换内部工况后，通过本地 SymPy 后端重新计算打包黑盒。
 - 公式高亮带有来源追踪。前端会把隐藏标签表达式发送给后端，显示时再去掉标签。开启消去公式高亮时，部分合并项可能比普通显示更展开，以保证高亮来源可信。
 - 消去版本在启用来源高亮时会显示提示说明。
 - 小窗口布局已优化，浏览器窗口较窄时右侧面板和公式输出不会互相覆盖。
+
+## Repository Hygiene / 仓库整理原则
+
+The public GitHub repository should contain only useful, non-private project material: source code, tests, public documentation, and curated circuit examples under `exports/`.
+
+Local AI notes, personal working notes, temporary screenshots, logs, ad-hoc root-level JSON exports, and private derivation scratch files should stay local and must not be committed. The `.gitignore` file includes patterns for these local-only files.
+
+公开 GitHub 仓库只应包含有用且非私人的项目内容：源码、测试、公开说明文档，以及 `exports/` 下整理过的测试/示例电路。
+
+本地 AI 备忘录、个人工作笔记、临时截图、日志、根目录临时导出的 JSON、私人推导草稿都应只保留在本地，不提交到公开仓库。`.gitignore` 已包含这些本地文件的忽略规则。
 
 ## Requirements / 环境要求
 

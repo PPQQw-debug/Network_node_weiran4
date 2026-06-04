@@ -165,6 +165,19 @@
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.14);
     }
 
+    .canvas-tab.dragging {
+      opacity: 0.62;
+      cursor: grabbing;
+    }
+
+    .canvas-tab.drop-before {
+      box-shadow: inset 3px 0 0 var(--blue);
+    }
+
+    .canvas-tab.drop-after {
+      box-shadow: inset -3px 0 0 var(--blue);
+    }
+
     .canvas-tab.add {
       color: var(--muted);
     }
@@ -647,6 +660,57 @@
       font-weight: 750;
     }
 
+    .editor-groups {
+      display: grid;
+      gap: 10px;
+    }
+
+    .editor-group {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+      overflow: hidden;
+    }
+
+    .editor-group summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-height: 38px;
+      padding: 9px 10px;
+      cursor: pointer;
+      user-select: none;
+      font-size: 12px;
+      font-weight: 800;
+      color: #32424c;
+      list-style: none;
+    }
+
+    .editor-group summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .editor-group summary::after {
+      content: "▾";
+      color: var(--muted);
+      font-size: 12px;
+      transform: rotate(-90deg);
+      transition: transform 0.16s ease;
+    }
+
+    .editor-group[open] summary::after {
+      transform: rotate(0deg);
+    }
+
+    .editor-group-body {
+      padding: 0 10px 10px;
+    }
+
+    .editor-group-body > :last-child {
+      margin-bottom: 0;
+    }
+
     input, textarea, select {
       width: 100%;
       border: 1px solid var(--line);
@@ -686,7 +750,7 @@
 
     .highlight-controls {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(68px, auto);
       align-items: end;
       gap: 8px;
       margin-bottom: 8px;
@@ -697,21 +761,30 @@
       align-items: center;
       gap: 7px;
       min-height: 34px;
-      padding: 7px 9px;
+      min-width: 0;
+      padding: 7px 8px;
       border: 1px solid var(--line);
       border-radius: 6px;
       background: #fff;
       font-size: 12px;
       font-weight: 650;
       color: var(--muted);
-      white-space: nowrap;
+      white-space: normal;
     }
 
     .compact-check input {
+      flex: 0 0 auto;
       width: 14px;
       height: 14px;
       margin: 0;
       padding: 0;
+    }
+
+    .compact-check span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .color-chip-field {
@@ -1553,6 +1626,7 @@
       canvases: [],
       activeCanvasId: "canvas1",
       nextCanvas: 2,
+      canvasTabDrag: null,
       language: "zh",
       activeOutput: "formulas",
       nextBranch: 1,
@@ -1561,6 +1635,7 @@
       nextWire: 1,
       zoom: 1,
       viewCenter: { x: 800, y: 500 },
+      editorGroups: {},
       history: [],
       future: [],
       restoring: false
@@ -1622,6 +1697,8 @@
         zoom: 1,
         viewCenter: { x: WORLD.width / 2, y: WORLD.height / 2 },
         reducedEquationCache: [],
+        branchCurrentCache: [],
+        pythonDraftCache: [],
         history: [],
         future: []
       };
@@ -1649,6 +1726,8 @@
         zoom: state.zoom,
         viewCenter: structuredClone(state.viewCenter),
         reducedEquationCache: currentReducedCacheSnapshot(),
+        branchCurrentCache: currentCacheSnapshot(branchCurrentCache, ["html"]),
+        pythonDraftCache: currentCacheSnapshot(pythonDraftCache, ["result"]),
         history: structuredClone(state.history),
         future: structuredClone(state.future)
       };
@@ -1677,6 +1756,8 @@
       state.zoom = data.zoom || 1;
       state.viewCenter = structuredClone(data.viewCenter || { x: WORLD.width / 2, y: WORLD.height / 2 });
       restoreReducedCacheSnapshot(data.reducedEquationCache || []);
+      restoreCacheSnapshot(branchCurrentCache, data.branchCurrentCache || [], ["html"]);
+      restoreCacheSnapshot(pythonDraftCache, data.pythonDraftCache || [], ["result"]);
       state.history = structuredClone(data.history || []);
       state.future = structuredClone(data.future || []);
       state.pendingTerminal = null;
@@ -1687,6 +1768,7 @@
       state.hoverCurrent = null;
       state.panDrag = null;
       state.marquee = null;
+      state.canvasTabDrag = null;
       invalidateMathCaches();
     }
 
@@ -1694,11 +1776,43 @@
       return state.canvases.find(item => item.id === state.activeCanvasId) || null;
     }
 
+    function normalizeCanvasState(canvasState, index = 0) {
+      const id = canvasState?.id || `canvas${index + 1}`;
+      const name = canvasState?.name || canvasState?.data?.name || `画布 ${index + 1}`;
+      return {
+        id,
+        name,
+        data: structuredClone(canvasState?.data || blankCanvasData(name))
+      };
+    }
+
     function currentReducedCacheSnapshot() {
       try {
         return Array.from(reducedCache.entries())
           .filter(([, value]) => value?.html)
-          .map(([key, value]) => ({ key, html: value.html, savedAt: new Date().toISOString() }));
+          .map(([key, value]) => ({
+            key,
+            html: value.html,
+            result: value.result || null,
+            savedAt: new Date().toISOString()
+          }));
+      } catch {
+        return [];
+      }
+    }
+
+    function currentCacheSnapshot(cache, fields) {
+      try {
+        return Array.from(cache.entries())
+          .map(([key, value]) => {
+            if (!value || value.pending) return null;
+            const entry = { key, savedAt: new Date().toISOString() };
+            fields.forEach(field => {
+              if (value[field] !== undefined && value[field] !== null) entry[field] = value[field];
+            });
+            return Object.keys(entry).length > 2 ? entry : null;
+          })
+          .filter(Boolean);
       } catch {
         return [];
       }
@@ -1707,13 +1821,40 @@
     function restoreReducedCacheSnapshot(entries = []) {
       (Array.isArray(entries) ? entries : []).forEach(entry => {
         if (!entry?.key || !entry?.html) return;
-        cacheSet(reducedCache, entry.key, { html: entry.html, pending: null, restored: true });
+        cacheSet(reducedCache, entry.key, {
+          html: entry.html,
+          result: entry.result || null,
+          pending: null,
+          restored: true
+        });
+      });
+    }
+
+    function restoreCacheSnapshot(cache, entries = [], fields = []) {
+      (Array.isArray(entries) ? entries : []).forEach(entry => {
+        if (!entry?.key) return;
+        const value = { pending: null, restored: true };
+        fields.forEach(field => {
+          if (entry[field] !== undefined && entry[field] !== null) value[field] = entry[field];
+        });
+        if (Object.keys(value).length > 2) cacheSet(cache, entry.key, value);
       });
     }
 
     function saveActiveCanvas() {
       const canvasState = currentCanvas();
       if (canvasState) canvasState.data = currentCanvasData();
+    }
+
+    function syncCanvasOrderFromTabs() {
+      if (!canvasTabs) return;
+      const ids = Array.from(canvasTabs.querySelectorAll(".canvas-tab[data-canvas-id]"))
+        .map(tab => tab.dataset.canvasId)
+        .filter(Boolean);
+      if (!ids.length || ids.length !== state.canvases.length) return;
+      const byId = new Map(state.canvases.map(item => [item.id, item]));
+      if (ids.some(id => !byId.has(id))) return;
+      state.canvases = ids.map(id => byId.get(id));
     }
 
     function switchCanvas(id) {
@@ -1842,14 +1983,20 @@
       "当前工况": "Active Case",
       "工况名称": "Case Name",
       "在画布中双击元件可切换工况。": "Double-click the component on the canvas to switch cases.",
-      "高亮": "Highlight",
-      "公式高亮": "Formula Highlight",
+      "高亮": "Formula Highlighting",
+      "公式高亮": "Formula",
       "高亮颜色": "Highlight Color",
-      "画布高亮": "Canvas Highlight",
+      "画布高亮": "Canvas",
       "颜色": "Color",
       "公式高亮只改变匹配 G/Ihis 片段的字体颜色；画布高亮只标记画布里的元件。": "Formula highlight only changes the text color of matching G/Ihis fragments; canvas highlight only marks the component on the canvas.",
       "高亮来源提示": "Highlight Provenance Note",
       "开启公式高亮时，消去版本会优先使用带隐藏来源标签的表达式来保证同名 symbol 不串色；因此部分合并项可能比普通显示更展开。": "When formula highlight is enabled, the reduced view prefers expressions with hidden provenance tags so same-name symbols do not cross-highlight; some merged terms may therefore appear more expanded than the normal display.",
+      "基本信息": "Name & Geometry",
+      "工况": "Multi-Case Options",
+      "数学模型": "Admittance Model",
+      "观测电流": "Current Observers",
+      "打包信息": "Package Metadata",
+      "端点标识": "Port IDs",
       "放大输出窗口": "Expand Output",
       "选中支路": "Selected Branch",
       "网络节点": "Network Nodes",
@@ -3027,6 +3174,21 @@
       `;
     }
 
+    function editorGroup(key, title, body, openByDefault = true) {
+      if (!String(body || "").trim()) return "";
+      const isOpen = state.editorGroups[key] ?? openByDefault;
+      return `
+        <details class="editor-group" data-editor-group="${escapeHtml(key)}" ${isOpen ? "open" : ""}>
+          <summary>${escapeHtml(tr(title))}</summary>
+          <div class="editor-group-body">${body}</div>
+        </details>
+      `;
+    }
+
+    function editorGroupList(groups) {
+      return `<div class="editor-groups">${groups.filter(Boolean).join("")}</div>`;
+    }
+
     function openFieldEditor(field, label, multiline) {
       const branch = findBranch(state.selectedId);
       if (!branch) return;
@@ -3532,13 +3694,13 @@
       return true;
     }
 
-    function switchCaseEditor(branch) {
+    function switchCaseEditor(branch, showCaption = true) {
       normalizeSwitchCases(branch);
       const count = branch.switchCases?.length || 1;
       const activeIndex = branch.activeSwitchCase || 0;
       const activeCase = activeSwitchCase(branch);
       return `
-        <div class="field-caption">${escapeHtml(tr("开关工况"))}</div>
+        ${showCaption ? `<div class="field-caption">${escapeHtml(tr("开关工况"))}</div>` : ""}
         <div class="row">
           <div class="field">
             <label>${escapeHtml(tr("工况数量"))}</label>
@@ -3564,10 +3726,10 @@
         .filter(({ inner }) => Array.isArray(inner.switchCases) && inner.switchCases.length > 1);
     }
 
-    function packagedCaseEditor(branch) {
+    function packagedCaseEditor(branch, showCaption = true) {
       const items = packagedCaseBranches(branch);
       return `
-        <div class="field-caption">${escapeHtml(tr("内部工况"))}</div>
+        ${showCaption ? `<div class="field-caption">${escapeHtml(tr("内部工况"))}</div>` : ""}
         ${items.length ? `
           <div class="packaged-case-list">
             ${items.map(({ inner, index }) => {
@@ -3595,10 +3757,10 @@
       return /^#[0-9A-Fa-f]{6}$/.test(color) ? color : "#ef4444";
     }
 
-    function branchHighlightEditor(branch) {
+    function branchHighlightEditor(branch, showCaption = true) {
       const color = branchHighlightColor(branch);
       return `
-        <div class="field-caption">${escapeHtml(tr("高亮"))}</div>
+        ${showCaption ? `<div class="field-caption">${escapeHtml(tr("高亮"))}</div>` : ""}
         <div class="highlight-controls">
           <label class="compact-check">
             <input data-field="formulaHighlightEnabled" type="checkbox" ${branch.formulaHighlightEnabled ? "checked" : ""}>
@@ -3843,22 +4005,51 @@
     }
 
     function circuitStateJson() {
+      syncCanvasOrderFromTabs();
       saveActiveCanvas();
+      const canvases = state.canvases.map(canvasState => ({
+        id: canvasState.id,
+        name: canvasState.name,
+        data: structuredClone(canvasState.data || blankCanvasData(canvasState.name))
+      }));
       return {
         fileType: "branch-builder-circuit",
-        version: 2,
+        version: 3,
         savedAt: new Date().toISOString(),
+        generator: "Branch Builder",
         world: WORLD,
-        canvases: state.canvases,
+        ui: {
+          language: state.language,
+          activeOutput: state.activeOutput,
+          showLocalLabels: state.showLocalLabels,
+          showReducedBranchCurrents: state.showReducedBranchCurrents,
+          editorGroups: structuredClone(state.editorGroups || {})
+        },
+        canvasOrder: canvases.map(item => item.id),
+        canvases,
         activeCanvasId: state.activeCanvasId,
         nextCanvas: state.nextCanvas,
-        branches: state.branches,
-        wires: state.wires,
-        groups: state.groups,
-        nodeOrder: state.nodeOrder,
-        nodeLabels: state.nodeLabels,
-        internalNodes: state.internalNodes,
+        branches: structuredClone(state.branches),
+        wires: structuredClone(state.wires),
+        groups: structuredClone(state.groups),
+        nodeOrder: structuredClone(state.nodeOrder),
+        nodeLabels: structuredClone(state.nodeLabels),
+        nodeColors: structuredClone(state.nodeColors),
+        internalNodes: structuredClone(state.internalNodes),
         language: state.language,
+        activeOutput: state.activeOutput,
+        showLocalLabels: state.showLocalLabels,
+        showReducedBranchCurrents: state.showReducedBranchCurrents,
+        editorGroups: structuredClone(state.editorGroups || {}),
+        selectedId: state.selectedId,
+        selectedIds: structuredClone(state.selectedIds || []),
+        selectedNetIds: structuredClone(state.selectedNetIds || []),
+        selectedWireId: state.selectedWireId,
+        zoom: state.zoom,
+        viewCenter: structuredClone(state.viewCenter),
+        reducedEquationCache: currentReducedCacheSnapshot(),
+        branchCurrentCache: currentCacheSnapshot(branchCurrentCache, ["html"]),
+        pythonDraftCache: currentCacheSnapshot(pythonDraftCache, ["result"]),
         nextBranch: state.nextBranch,
         nextTransformer: state.nextTransformer,
         nextCustom: state.nextCustom,
@@ -3867,16 +4058,33 @@
       };
     }
 
+    function applyProjectUiState(data) {
+      const ui = data?.ui || data || {};
+      state.language = ui.language || data?.language || state.language || "zh";
+      state.activeOutput = ui.activeOutput || data?.activeOutput || state.activeOutput || "formulas";
+      state.showLocalLabels = ui.showLocalLabels ?? data?.showLocalLabels ?? state.showLocalLabels;
+      state.showReducedBranchCurrents = ui.showReducedBranchCurrents ?? data?.showReducedBranchCurrents ?? state.showReducedBranchCurrents;
+      state.editorGroups = structuredClone(ui.editorGroups || data?.editorGroups || state.editorGroups || {});
+    }
+
     function loadCircuitState(data) {
       if (!isCircuitState(data)) {
         throw new Error("不是有效的 Branch Builder 电路组合文件。");
       }
+      applyProjectUiState(data);
       if (data.world) {
         WORLD.width = Math.max(BASE_VIEW.width, Number(data.world.width) || BASE_VIEW.width);
         WORLD.height = Math.max(BASE_VIEW.height, Number(data.world.height) || BASE_VIEW.height);
       }
       if (Array.isArray(data.canvases) && data.canvases.length) {
-        state.canvases = structuredClone(data.canvases);
+        state.canvases = data.canvases.map(normalizeCanvasState);
+        if (Array.isArray(data.canvasOrder) && data.canvasOrder.length) {
+          const byId = new Map(state.canvases.map(item => [item.id, item]));
+          state.canvases = [
+            ...data.canvasOrder.map(id => byId.get(id)).filter(Boolean),
+            ...state.canvases.filter(item => !data.canvasOrder.includes(item.id))
+          ];
+        }
         state.activeCanvasId = data.activeCanvasId || state.canvases[0].id;
         state.nextCanvas = data.nextCanvas || inferNextNumber(state.canvases, "canvas");
         const active = currentCanvas() || state.canvases[0];
@@ -3893,7 +4101,6 @@
       state.nodeColors = data.nodeColors || {};
       cleanupAutoYBoxNodeLabels();
       state.internalNodes = data.internalNodes || [];
-      state.language = data.language || state.language || "zh";
       state.nextBranch = data.nextBranch || inferNextNumber(state.branches, "B");
       state.nextTransformer = data.nextTransformer || inferNextNumber(state.branches, "T");
       state.nextCustom = data.nextCustom || inferNextNumber(state.branches, "C");
@@ -3908,6 +4115,11 @@
       state.drag = null;
       state.wireDrag = null;
       state.marquee = null;
+      state.zoom = data.zoom || state.zoom || 1;
+      state.viewCenter = structuredClone(data.viewCenter || state.viewCenter || { x: WORLD.width / 2, y: WORLD.height / 2 });
+      restoreReducedCacheSnapshot(data.reducedEquationCache || []);
+      restoreCacheSnapshot(branchCurrentCache, data.branchCurrentCache || [], ["html"]);
+      restoreCacheSnapshot(pythonDraftCache, data.pythonDraftCache || [], ["result"]);
       render();
     }
 
@@ -4446,14 +4658,23 @@
       return max + 1;
     }
 
+    function totalCircuitBranches() {
+      syncCanvasOrderFromTabs();
+      saveActiveCanvas();
+      return state.canvases.reduce((sum, canvasState) => {
+        return sum + (canvasState.data?.branches?.length || 0);
+      }, 0);
+    }
+
     async function exportCircuit() {
       const data = JSON.stringify(circuitStateJson(), null, 2);
       const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
       const suggestedName = `branch-builder-circuit-${stamp}.json`;
       const bytes = new Blob([data]).size;
+      const totalBranches = totalCircuitBranches();
 
-      if (!state.branches.length) {
-        statusEl.textContent = "当前画布没有可导出的元件";
+      if (!totalBranches) {
+        statusEl.textContent = "所有画布都没有可导出的元件";
         return;
       }
 
@@ -4463,7 +4684,7 @@
       exportDialog.classList.add("open");
       exportFileName.focus();
       exportFileName.select();
-      statusEl.textContent = `准备保存全部 ${state.branches.length} 个元件 (${bytes} bytes)`;
+      statusEl.textContent = `准备保存 ${state.canvases.length} 个画布、全部 ${totalBranches} 个元件 (${bytes} bytes)`;
     }
 
     async function saveViaLocalServer(data, filename, bytes) {
@@ -4477,7 +4698,7 @@
           if (!response.ok) continue;
           const result = await response.json();
           if (!result.ok || !result.bytes) continue;
-          statusEl.textContent = `已保存 ${state.branches.length} 个元件 (${result.bytes} bytes) 到 ${result.path}`;
+          statusEl.textContent = `已保存 ${totalCircuitBranches()} 个元件 (${result.bytes} bytes) 到 ${result.path}`;
           return true;
         } catch (error) {}
       }
@@ -7342,10 +7563,8 @@
       }
 
       if (branch.kind === "single_phase_transformer") {
-        editor.innerHTML = `
+        const basics = `
           ${editableField("元件名", "name", branch.name)}
-          ${switchCaseEditor(branch)}
-          ${branchHighlightEditor(branch)}
           <div class="row">
             ${editableField("宽度", "width", branch.width || 170)}
             ${editableField("高度", "height", branch.height || 112)}
@@ -7355,31 +7574,37 @@
               ${editableField(`${side} 节点`, `node.${side}`, branch.nodes[side])}
             `).join("")}
           </div>
-          ${branch.packageOriginal
+        `;
+        const mathModel = branch.packageOriginal
             ? `${readonlyMultilineField("局部 G 矩阵", branchValue(branch, "gMatrix"))}${readonlyMultilineField("局部 Ihis 向量", branchValue(branch, "ihisVector"))}`
-            : `${editableField("局部 G 矩阵", "gMatrix", branchValue(branch, "gMatrix"), true)}${editableField("局部 Ihis 向量", "ihisVector", branchValue(branch, "ihisVector"), true)}`}
-          ${branch.currents.map((current, index) => `
+            : `${editableField("局部 G 矩阵", "gMatrix", branchValue(branch, "gMatrix"), true)}${editableField("局部 Ihis 向量", "ihisVector", branchValue(branch, "ihisVector"), true)}`;
+        const currents = branch.currents.map((current, index) => `
             ${editableField(`观测电流 ${index + 1}`, `current.${index}.name`, current.name)}
             <div class="row">
               ${editableField("from", `current.${index}.from`, current.from)}
               ${editableField("to", `current.${index}.to`, current.to)}
             </div>
             ${editableField("公式", `current.${index}.expression`, current.expression)}
-          `).join("")}
-        `;
+          `).join("");
+        editor.innerHTML = editorGroupList([
+          editorGroup("basics", "基本信息", basics, false),
+          editorGroup("cases", "工况", switchCaseEditor(branch, false), false),
+          editorGroup("highlight", "高亮", branchHighlightEditor(branch, false), false),
+          editorGroup("math", "数学模型", mathModel, true),
+          editorGroup("currents", "观测电流", currents, false)
+        ]);
         bindEditorInputs();
         bindEditorEditButtons();
+        bindEditorGroups();
         return;
       }
 
       if (branch.kind === "custom_n_port") {
         const portList = terminalSides(branch).join(", ");
         const validation = validateCustomBranch(branch);
-        editor.innerHTML = `
-          ${packagedInfo(branch)}
+        const packageInfo = packagedInfo(branch);
+        const basics = `
           ${editableField("元件名", "name", branch.name)}
-          ${branch.packageOriginal ? packagedCaseEditor(branch) : switchCaseEditor(branch)}
-          ${branchHighlightEditor(branch)}
           <div class="row">
             ${editableField("宽度", "width", branch.width || 170)}
             ${editableField("高度", "height", branch.height || 120)}
@@ -7395,18 +7620,23 @@
               : readonlyField(`${side} 节点`, terminalNetName(terminalKey(branch.id, side)))
             ).join("")}
           </div>
-          ${editableField("局部 G 矩阵", "gMatrix", branchValue(branch, "gMatrix"), true)}
-          ${editableField("局部 Ihis 向量", "ihisVector", branchValue(branch, "ihisVector"), true)}
-          ${editableField("端口显示布局", "portLayout", JSON.stringify(customPortLayout(branch), null, 2), true)}
           <div class="row">
             <button class="text-button" id="alignPortRoots" type="button">端口根部对齐</button>
             <button class="text-button" id="alignPortEnds" type="button">同侧端点对齐</button>
           </div>
-          ${branch.packageOriginal ? "" : `
+        `;
+        const mathModel = `
+          ${branch.packageOriginal
+            ? `${readonlyMultilineField("局部 G 矩阵", branchValue(branch, "gMatrix"))}${readonlyMultilineField("局部 Ihis 向量", branchValue(branch, "ihisVector"))}`
+            : `${editableField("局部 G 矩阵", "gMatrix", branchValue(branch, "gMatrix"), true)}${editableField("局部 Ihis 向量", "ihisVector", branchValue(branch, "ihisVector"), true)}`}
+          ${editableField("端口显示布局", "portLayout", JSON.stringify(customPortLayout(branch), null, 2), true)}
+        `;
+        const observerSetup = branch.packageOriginal ? "" : `
             <div class="field-caption">${escapeHtml(tr("定义支路电流观测器"))}</div>
             <div class="modal-help">${escapeHtml(tr("仅根据 G/Ihis 不能唯一恢复物理支路分解；如果需要支路电流，请显式定义 observers。"))}</div>
             ${editableField("观测器数量", "observerCount", branch.currents?.length || 0)}
-          `}
+          `;
+        const currents = `${observerSetup}
           ${(branch.currents || []).map((current, index) => {
             const fromField = branch.packageOriginal ? `current.${index}.fromLabel` : `current.${index}.fromNode`;
             const toField = branch.packageOriginal ? `current.${index}.toLabel` : `current.${index}.toNode`;
@@ -7429,31 +7659,42 @@
                 ${observerFormulaPreviewCard(branch, current)}
               `}
           `;
-          }).join("")}
-          ${branch.packageOriginal ? "" : `
+          }).join("")}`;
+        const validationCheck = branch.packageOriginal ? "" : `
             <div class="field-caption">${escapeHtml(tr("一致性校验"))}</div>
             <div id="blackBoxValidationResult" class="formula-empty">${escapeHtml(tr("正在校验黑盒支路电流观测器..."))}</div>
-          `}
-        `;
+          `;
+        editor.innerHTML = editorGroupList([
+          editorGroup("package", "打包信息", packageInfo, false),
+          editorGroup("basics", "基本信息", basics, false),
+          editorGroup("cases", "工况", branch.packageOriginal ? packagedCaseEditor(branch, false) : switchCaseEditor(branch, false), false),
+          editorGroup("highlight", "高亮", branchHighlightEditor(branch, false), false),
+          editorGroup("math", "数学模型", mathModel, true),
+          editorGroup("currents", "观测电流", currents, false),
+          editorGroup("validation", "一致性校验", validationCheck, false)
+        ]);
         bindEditorInputs();
         bindEditorEditButtons();
+        bindEditorGroups();
         bindAutoAlignPortsButton(branch.id);
         if (!branch.packageOriginal) renderBlackBoxValidationAsync(branch.id);
         return;
       }
 
-      editor.innerHTML = `
+      const basics = `
         ${editableField("支路名", "name", branch.name)}
-        ${switchCaseEditor(branch)}
-        ${branchHighlightEditor(branch)}
         <div class="row">
           ${editableField("宽度", "width", branch.width || 150)}
           ${editableField("高度", "height", branch.height || 48)}
         </div>
+      `;
+      const terminalIds = `
         <div class="row">
           ${editableField("A 节点", "nodeA", branch.nodeA)}
           ${editableField("B 节点", "nodeB", branch.nodeB)}
         </div>
+      `;
+      const mathModel = `
         ${editableField("G", "g", branchValue(branch, "g"))}
         ${editableField("Ihis", "ihis", branchValue(branch, "ihis"))}
         <div class="field">
@@ -7465,8 +7706,17 @@
         </div>
       `;
 
+      editor.innerHTML = editorGroupList([
+        editorGroup("basics", "基本信息", basics, false),
+        editorGroup("cases", "工况", switchCaseEditor(branch, false), false),
+        editorGroup("highlight", "高亮", branchHighlightEditor(branch, false), false),
+        editorGroup("math", "数学模型", mathModel, true),
+        editorGroup("terminals", "端点标识", terminalIds, false)
+      ]);
+
       bindEditorInputs();
       bindEditorEditButtons();
+      bindEditorGroups();
     }
 
     function bindEditorEditButtons() {
@@ -7479,6 +7729,14 @@
         button.addEventListener("click", event => {
           event.preventDefault();
           event.stopPropagation();
+        });
+      });
+    }
+
+    function bindEditorGroups() {
+      editor.querySelectorAll("[data-editor-group]").forEach(group => {
+        group.addEventListener("toggle", () => {
+          state.editorGroups[group.dataset.editorGroup] = group.open;
         });
       });
     }
@@ -8907,21 +9165,32 @@
       document.getElementById("packYTool").disabled = selectedBranchSet().size === 0;
       document.getElementById("unpackYTool").disabled = !findBranch(state.selectedId)?.packageOriginal;
       document.getElementById("localLabelTool").classList.toggle("active", state.showLocalLabels);
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.output === state.activeOutput));
       document.getElementById("undoTool").disabled = state.history.length === 0;
       document.getElementById("redoTool").disabled = state.future.length === 0;
       applyLanguage();
     }
 
     function renderCanvasTabs() {
+      const drag = state.canvasTabDrag;
       canvasTabs.innerHTML = `
-        ${state.canvases.map(item => `
-          <button class="canvas-tab ${item.id === state.activeCanvasId ? "active" : ""}" type="button" data-canvas-id="${item.id}" title="${escapeHtml(canvasDisplayName(item))}" aria-label="${escapeHtml(canvasDisplayName(item))}">
+        ${state.canvases.map((item, index) => {
+          const isDragged = drag?.id === item.id && drag.dragging;
+          const dropClass = drag?.dropIndex === index ? " drop-before" : "";
+          const classes = [
+            "canvas-tab",
+            item.id === state.activeCanvasId ? "active" : "",
+            isDragged ? "dragging" : "",
+            dropClass
+          ].filter(Boolean).join(" ");
+          return `
+          <button class="${classes}" type="button" data-canvas-id="${item.id}" title="${escapeHtml(canvasDisplayName(item))}" aria-label="${escapeHtml(canvasDisplayName(item))}">
             <span>${escapeHtml(canvasDisplayName(item))}</span>
             ${state.canvases.length > 1 ? `
               <span class="canvas-tab-delete" data-canvas-action="delete" data-canvas-id="${item.id}" title="${escapeHtml(tr("删除画布"))}" aria-label="${escapeHtml(tr("删除画布"))}">×</span>
             ` : ""}
           </button>
-        `).join("")}
+        `}).join("")}
         <button class="canvas-tab add" id="addCanvasTab" type="button" data-canvas-action="add">${escapeHtml(tr("+ 新建画布"))}</button>
       `;
     }
@@ -8940,7 +9209,71 @@
         deleteCanvas(event.target.closest("[data-canvas-action='delete']").dataset.canvasId);
         return;
       }
-      if (button.dataset.canvasId) switchCanvas(button.dataset.canvasId);
+      if (!button.dataset.canvasId) return;
+      const drag = {
+        id: button.dataset.canvasId,
+        startX: event.clientX,
+        startY: event.clientY,
+        dragging: false,
+        saved: false,
+        dropIndex: null
+      };
+      state.canvasTabDrag = drag;
+      const move = moveEvent => {
+        const distance = Math.hypot(moveEvent.clientX - drag.startX, moveEvent.clientY - drag.startY);
+        if (!drag.dragging && distance < 6) return;
+        if (!drag.dragging) {
+          drag.dragging = true;
+          drag.saved = true;
+          saveActiveCanvas();
+        }
+        moveEvent.preventDefault();
+        const dropIndex = canvasTabDropIndex(moveEvent.clientX);
+        drag.dropIndex = dropIndex;
+        reorderCanvas(drag.id, dropIndex);
+        renderCanvasTabs();
+      };
+      const up = upEvent => {
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", up);
+        if (state.canvasTabDrag !== drag) return;
+        const wasDragging = drag.dragging;
+        state.canvasTabDrag = null;
+        if (wasDragging) {
+          statusEl.textContent = "已调整画布顺序";
+          renderCanvasTabs();
+        } else {
+          switchCanvas(drag.id);
+        }
+        upEvent.preventDefault();
+        upEvent.stopPropagation();
+      };
+      window.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", up);
+    }
+
+    function canvasTabDropIndex(x) {
+      const tabs = Array.from(canvasTabs.querySelectorAll(".canvas-tab[data-canvas-id]"));
+      const draggedId = state.canvasTabDrag?.id;
+      const visible = tabs.filter(tab => tab.dataset.canvasId !== draggedId);
+      const before = visible.find(tab => {
+        const box = tab.getBoundingClientRect();
+        return x < box.left + box.width / 2;
+      });
+      if (!before) return state.canvases.length;
+      const beforeId = before.dataset.canvasId;
+      const index = state.canvases.findIndex(item => item.id === beforeId);
+      return index < 0 ? state.canvases.length : index;
+    }
+
+    function reorderCanvas(id, dropIndex) {
+      const from = state.canvases.findIndex(item => item.id === id);
+      if (from < 0) return;
+      const [item] = state.canvases.splice(from, 1);
+      const adjusted = from < dropIndex ? dropIndex - 1 : dropIndex;
+      const target = Math.max(0, Math.min(adjusted, state.canvases.length));
+      state.canvases.splice(target, 0, item);
+      if (state.canvasTabDrag) state.canvasTabDrag.dropIndex = target;
     }
 
     function handleCanvasTabContextMenu(event) {
