@@ -17,6 +17,29 @@
 
 后续 AI agent 接手时，优先读本文件，再按任务读取相关代码。不要一上来重构整个 `index.html`。
 
+### Git / GitHub 约定
+
+用户说“上传 git”“推到 git”“更新 GitHub”时，默认指的是：
+
+```text
+https://github.com/weiran4/network_node
+```
+
+本地 remote 名称通常是 `origin`，应指向：
+
+```text
+https://github.com/weiran4/network_node.git
+```
+
+推送前必须先确认当前分支，例如：
+
+```powershell
+git branch --show-current
+git remote -v
+```
+
+如果用户没有特别指定 `main`，不要擅自切换分支或合并；按当前工作分支提交并推送，同时在最终回复里明确说明推到了哪个分支。历史上常用分支是 `codex-upload-20260601`。
+
 ### 本地启动
 
 推荐启动方式：
