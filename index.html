@@ -6,12 +6,12 @@
   <title>Two-Port Branch Builder</title>
   <style>
     :root {
-      --bg: #f6f7f9;
+      --bg: #eefaf0;
       --panel: #ffffff;
       --ink: #172026;
       --muted: #65717a;
       --line: #cfd7dd;
-      --grid: #e5ebef;
+      --grid: #cfe8d5;
       --blue: #2563eb;
       --green: #15803d;
       --red: #b42318;
@@ -51,7 +51,7 @@
       min-height: 52px;
       padding: 8px 14px;
       border-bottom: 1px solid var(--line);
-      background: #fbfcfd;
+      background: #f7fcf8;
     }
 
     .brand {
@@ -76,7 +76,7 @@
       padding: 3px 5px;
       border: 1px solid #e3e9ee;
       border-radius: 8px;
-      background: #f7fafc;
+      background: #f4fbf5;
     }
 
     .toolbar-label {
@@ -139,7 +139,7 @@
       gap: 6px;
       padding: 7px 10px;
       border-bottom: 1px solid var(--line);
-      background: #f7fafc;
+      background: #f4fbf5;
       overflow-x: auto;
     }
 
@@ -207,7 +207,7 @@
         linear-gradient(var(--grid) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid) 1px, transparent 1px);
       background-size: 24px 24px;
-      background-color: #f9fbfc;
+      background-color: #f2fbf3;
     }
 
     svg {
@@ -289,6 +289,19 @@
     .branch.current-hover .terminal,
     .branch.current-hover .transformer-coil {
       stroke: #f59e0b;
+      stroke-width: 4;
+    }
+
+    .branch.formula-highlight .branch-body {
+      stroke: var(--branch-highlight-color, #ef4444);
+      stroke-width: 4;
+      filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.45));
+    }
+
+    .branch.formula-highlight .lead,
+    .branch.formula-highlight .terminal,
+    .branch.formula-highlight .transformer-coil {
+      stroke: var(--branch-highlight-color, #ef4444);
       stroke-width: 4;
     }
 
@@ -545,6 +558,16 @@
       -webkit-user-select: none;
     }
 
+    .switch-label {
+      font-size: 11px;
+      font-weight: 800;
+      fill: var(--green);
+      text-anchor: middle;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
     .node-label {
       font-size: 11px;
       fill: var(--muted);
@@ -659,6 +682,84 @@
 
     .check-row input {
       width: auto;
+    }
+
+    .highlight-controls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+      align-items: end;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .compact-check {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 34px;
+      padding: 7px 9px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 650;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .compact-check input {
+      width: 14px;
+      height: 14px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .color-chip-field {
+      display: grid;
+      gap: 4px;
+      min-width: 84px;
+    }
+
+    input[type="color"].color-chip {
+      width: 42px;
+      height: 34px;
+      min-width: 42px;
+      padding: 2px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .color-chip-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .color-chip-value {
+      font-family: Consolas, "SFMono-Regular", monospace;
+      font-size: 11px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .packaged-case-list {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .packaged-case-row {
+      display: grid;
+      grid-template-columns: minmax(70px, 0.8fr) minmax(110px, 1.2fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .packaged-case-row label {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .empty {
@@ -862,6 +963,10 @@
     .matrix-cell {
       min-width: 58px;
       text-align: center;
+    }
+
+    .math-branch-highlight {
+      color: var(--branch-highlight-color, #ef4444);
     }
 
     .math-frac {
@@ -1076,18 +1181,79 @@
     }
 
     @media (max-width: 920px) {
+      body {
+        min-width: 0;
+        overflow: auto;
+      }
+
+      .app {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        padding: 8px 10px;
+      }
+
+      .brand {
+        margin-right: 4px;
+        max-width: 130px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .toolbar {
+        align-items: flex-start;
+      }
+
+      .toolbar-group {
+        padding: 3px 4px;
+      }
+
+      .tool {
+        width: 34px;
+        height: 32px;
+      }
+
       .main {
         grid-template-columns: 1fr;
+        overflow: visible;
+        min-height: 0;
       }
 
       .panel {
         border-left: 0;
         border-top: 1px solid var(--line);
-        max-height: 420px;
+        max-height: none;
+        overflow: visible;
       }
 
       .workspace {
-        grid-template-rows: auto minmax(300px, 1fr) 8px 220px;
+        grid-template-rows: auto 260px 8px minmax(220px, auto);
+        min-height: 0;
+      }
+
+      .canvas-wrap {
+        min-height: 260px;
+      }
+
+      .output {
+        min-height: 220px;
+      }
+
+      .output-body {
+        overflow: auto;
+      }
+
+      .formula-card {
+        max-width: calc(100vw - 28px);
+        overflow-x: auto;
+      }
+
+      .matrix-equation {
+        min-width: max-content;
       }
     }
   </style>
@@ -1530,11 +1696,9 @@
 
     function currentReducedCacheSnapshot() {
       try {
-        const payload = buildReducedPayload();
-        const staticHtml = reducedStaticMessage(payload);
-        const key = reducedCacheKey(payload);
-        const html = staticHtml || cacheGet(reducedCache, key)?.html;
-        return html ? [{ key, html, savedAt: new Date().toISOString() }] : [];
+        return Array.from(reducedCache.entries())
+          .filter(([, value]) => value?.html)
+          .map(([key, value]) => ({ key, html: value.html, savedAt: new Date().toISOString() }));
       } catch {
         return [];
       }
@@ -1670,6 +1834,22 @@
       "支路电流消去版本默认关闭。可用内部节点电压恢复公式代入原始支路电流；需要完全展开时再打开。": "Reduced branch currents are hidden by default. Substitute the internal-node voltage recovery formula into the original branch current; turn this on only when full expansion is needed.",
       "模型 JSON": "Model JSON",
       "Python 草稿": "Python Draft",
+      "开关工况": "Switch Cases",
+      "内部工况": "Internal Cases",
+      "没有内部支路包含多个工况。": "No internal branch has multiple cases.",
+      "切换内部支路工况后，会重新计算这个打包黑盒的 G/Ihis 和观测公式。": "Changing an internal branch case recomputes this packaged box's G/Ihis and observer formulas.",
+      "工况数量": "Case Count",
+      "当前工况": "Active Case",
+      "工况名称": "Case Name",
+      "在画布中双击元件可切换工况。": "Double-click the component on the canvas to switch cases.",
+      "高亮": "Highlight",
+      "公式高亮": "Formula Highlight",
+      "高亮颜色": "Highlight Color",
+      "画布高亮": "Canvas Highlight",
+      "颜色": "Color",
+      "公式高亮只改变匹配 G/Ihis 片段的字体颜色；画布高亮只标记画布里的元件。": "Formula highlight only changes the text color of matching G/Ihis fragments; canvas highlight only marks the component on the canvas.",
+      "高亮来源提示": "Highlight Provenance Note",
+      "开启公式高亮时，消去版本会优先使用带隐藏来源标签的表达式来保证同名 symbol 不串色；因此部分合并项可能比普通显示更展开。": "When formula highlight is enabled, the reduced view prefers expressions with hidden provenance tags so same-name symbols do not cross-highlight; some merged terms may therefore appear more expanded than the normal display.",
       "放大输出窗口": "Expand Output",
       "选中支路": "Selected Branch",
       "网络节点": "Network Nodes",
@@ -2838,6 +3018,15 @@
       `;
     }
 
+    function readonlyMultilineField(label, value) {
+      return `
+        <div class="field">
+          <label>${escapeHtml(label)}</label>
+          <textarea readonly>${escapeHtml(value)}</textarea>
+        </div>
+      `;
+    }
+
     function openFieldEditor(field, label, multiline) {
       const branch = findBranch(state.selectedId);
       if (!branch) return;
@@ -2859,6 +3048,7 @@
     }
 
     function getBranchFieldValue(branch, field) {
+      if (field === "switchCaseName") return activeSwitchCase(branch)?.name || "";
       if (field.startsWith("node.")) return branch.nodes[field.slice(5)] || "";
       if (field.startsWith("current.")) {
         const [, index, key] = field.split(".");
@@ -2868,6 +3058,7 @@
         return current[key] || "";
       }
       if (field === "portLayout") return JSON.stringify(customPortLayout(branch), null, 2);
+      if (switchedValueFields(branch).includes(field)) return branchValue(branch, field);
       return branch[field] || "";
     }
 
@@ -3229,6 +3420,320 @@
       return terminalNetNameFromMap(terminalKey(branch.id, side), groupByTerminal);
     }
 
+    function branchUsesMatrix(branch) {
+      return branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port";
+    }
+
+    function switchedValueFields(branch) {
+      return branchUsesMatrix(branch) ? ["gMatrix", "ihisVector"] : ["g", "ihis"];
+    }
+
+    function switchCaseFromBranch(branch, index = 0) {
+      const item = {
+        name: `Case ${index + 1}`
+      };
+      switchedValueFields(branch).forEach(field => {
+        item[field] = branch[field] || (field === "g" ? "1/R" : field === "ihis" ? "0" : "[]");
+      });
+      return item;
+    }
+
+    function normalizeSwitchCases(branch) {
+      if (branch?.packageOriginal) {
+        delete branch.switchCases;
+        branch.activeSwitchCase = 0;
+        return;
+      }
+      if (!Array.isArray(branch.switchCases) || branch.switchCases.length <= 1) {
+        delete branch.switchCases;
+        branch.activeSwitchCase = 0;
+        return;
+      }
+      const fields = switchedValueFields(branch);
+      branch.switchCases = branch.switchCases.map((source, index) => {
+        const item = {
+          ...switchCaseFromBranch(branch, index),
+          ...(source || {}),
+          name: String(source?.name || `Case ${index + 1}`)
+        };
+        fields.forEach(field => {
+          if (!item[field]) item[field] = branch[field] || switchCaseFromBranch(branch, index)[field];
+        });
+        return item;
+      });
+      branch.activeSwitchCase = Math.max(0, Math.min(branch.switchCases.length - 1, Number(branch.activeSwitchCase) || 0));
+    }
+
+    function activeSwitchCase(branch) {
+      normalizeSwitchCases(branch);
+      return branch.switchCases?.[branch.activeSwitchCase || 0] || null;
+    }
+
+    function branchValue(branch, field) {
+      if (branch?.packageOriginal) return branch[field] ?? "";
+      return activeSwitchCase(branch)?.[field] ?? branch[field] ?? "";
+    }
+
+    function setBranchSwitchedValue(branch, field, value) {
+      if (branch?.packageOriginal) return false;
+      const activeCase = activeSwitchCase(branch);
+      if (activeCase && switchedValueFields(branch).includes(field)) {
+        activeCase[field] = value;
+        return true;
+      }
+      return false;
+    }
+
+    function switchCaseLabel(branch) {
+      const activeCase = activeSwitchCase(branch);
+      if (!activeCase || !branch.switchCases?.length) return "";
+      return activeCase.name || `Case ${(branch.activeSwitchCase || 0) + 1}`;
+    }
+
+    function switchCaseLabelSvg(branch, yOffset = 22) {
+      const label = switchCaseLabel(branch);
+      return label ? `<text class="switch-label" x="${branch.x}" y="${branch.y + yOffset}">${escapeSvg(label)}</text>` : "";
+    }
+
+    function setSwitchCaseCount(branch, value) {
+      const count = Math.max(1, Math.min(12, Math.floor(Number(value))));
+      if (!Number.isFinite(count)) return;
+      if (count <= 1) {
+        const activeCase = activeSwitchCase(branch);
+        if (activeCase) {
+          switchedValueFields(branch).forEach(field => { branch[field] = activeCase[field] || branch[field]; });
+        }
+        delete branch.switchCases;
+        branch.activeSwitchCase = 0;
+        return;
+      }
+      normalizeSwitchCases(branch);
+      const next = branch.switchCases?.slice(0, count) || [switchCaseFromBranch(branch, 0)];
+      while (next.length < count) next.push({ ...switchCaseFromBranch(branch, next.length), name: `Case ${next.length + 1}` });
+      branch.switchCases = next;
+      branch.activeSwitchCase = Math.max(0, Math.min(next.length - 1, Number(branch.activeSwitchCase) || 0));
+    }
+
+    function setActiveSwitchCase(branch, value) {
+      normalizeSwitchCases(branch);
+      if (!branch.switchCases?.length) return;
+      branch.activeSwitchCase = Math.max(0, Math.min(branch.switchCases.length - 1, Number(value) || 0));
+    }
+
+    function cycleSwitchCase(branch) {
+      normalizeSwitchCases(branch);
+      if (!branch.switchCases?.length || branch.switchCases.length <= 1) return false;
+      commitHistory();
+      branch.activeSwitchCase = ((branch.activeSwitchCase || 0) + 1) % branch.switchCases.length;
+      invalidateMathCaches();
+      selectBranch(branch.id);
+      statusEl.textContent = `${branch.name} switch: ${switchCaseLabel(branch)}`;
+      render();
+      return true;
+    }
+
+    function switchCaseEditor(branch) {
+      normalizeSwitchCases(branch);
+      const count = branch.switchCases?.length || 1;
+      const activeIndex = branch.activeSwitchCase || 0;
+      const activeCase = activeSwitchCase(branch);
+      return `
+        <div class="field-caption">${escapeHtml(tr("开关工况"))}</div>
+        <div class="row">
+          <div class="field">
+            <label>${escapeHtml(tr("工况数量"))}</label>
+            <input data-field="switchCount" type="number" min="1" max="12" value="${count}">
+          </div>
+          <div class="field">
+            <label>${escapeHtml(tr("当前工况"))}</label>
+            <select data-field="switchActive" ${count <= 1 ? "disabled" : ""}>
+              ${Array.from({ length: count }, (_, index) => `
+                <option value="${index}" ${index === activeIndex ? "selected" : ""}>${escapeHtml(branch.switchCases?.[index]?.name || `Case ${index + 1}`)}</option>
+              `).join("")}
+            </select>
+          </div>
+        </div>
+        ${activeCase ? editableField("工况名称", "switchCaseName", activeCase.name || `Case ${activeIndex + 1}`) : ""}
+        <div class="modal-help">${escapeHtml(tr("在画布中双击元件可切换工况。"))}</div>
+      `;
+    }
+
+    function packagedCaseBranches(branch) {
+      return (branch.packageOriginal?.branches || [])
+        .map((inner, index) => ({ inner, index }))
+        .filter(({ inner }) => Array.isArray(inner.switchCases) && inner.switchCases.length > 1);
+    }
+
+    function packagedCaseEditor(branch) {
+      const items = packagedCaseBranches(branch);
+      return `
+        <div class="field-caption">${escapeHtml(tr("内部工况"))}</div>
+        ${items.length ? `
+          <div class="packaged-case-list">
+            ${items.map(({ inner, index }) => {
+              normalizeSwitchCases(inner);
+              const activeIndex = Math.max(0, Math.min(inner.switchCases.length - 1, Number(inner.activeSwitchCase) || 0));
+              return `
+                <div class="packaged-case-row">
+                  <label>${escapeHtml(inner.name || inner.id)}</label>
+                  <select data-package-case-index="${index}">
+                    ${inner.switchCases.map((item, caseIndex) => `
+                      <option value="${caseIndex}" ${caseIndex === activeIndex ? "selected" : ""}>${escapeHtml(item.name || `Case ${caseIndex + 1}`)}</option>
+                    `).join("")}
+                  </select>
+                </div>
+              `;
+            }).join("")}
+          </div>
+          <div class="modal-help">${escapeHtml(tr("切换内部支路工况后，会重新计算这个打包黑盒的 G/Ihis 和观测公式。"))}</div>
+        ` : `<div class="modal-help">${escapeHtml(tr("没有内部支路包含多个工况。"))}</div>`}
+      `;
+    }
+
+    function branchHighlightColor(branch) {
+      const color = String(branch.formulaHighlightColor || "#ef4444").trim();
+      return /^#[0-9A-Fa-f]{6}$/.test(color) ? color : "#ef4444";
+    }
+
+    function branchHighlightEditor(branch) {
+      const color = branchHighlightColor(branch);
+      return `
+        <div class="field-caption">${escapeHtml(tr("高亮"))}</div>
+        <div class="highlight-controls">
+          <label class="compact-check">
+            <input data-field="formulaHighlightEnabled" type="checkbox" ${branch.formulaHighlightEnabled ? "checked" : ""}>
+            <span>${escapeHtml(tr("公式高亮"))}</span>
+          </label>
+          <label class="compact-check">
+            <input data-field="formulaHighlightCanvas" type="checkbox" ${branch.formulaHighlightCanvas ? "checked" : ""}>
+            <span>${escapeHtml(tr("画布高亮"))}</span>
+          </label>
+          <div class="color-chip-field">
+            <label>${escapeHtml(tr("颜色"))}</label>
+            <div class="color-chip-row">
+              <input class="color-chip" data-field="formulaHighlightColor" type="color" value="${escapeHtml(color)}">
+              <span class="color-chip-value">${escapeHtml(color.toUpperCase())}</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-help">${escapeHtml(tr("公式高亮只改变匹配 G/Ihis 片段的字体颜色；画布高亮只标记画布里的元件。"))}</div>
+      `;
+    }
+
+    function activeHighlightedBranches() {
+      return state.branches.filter(branch => branch.formulaHighlightEnabled);
+    }
+
+    function branchHighlightSourceIds(branch) {
+      const ids = new Set([branch?.id].filter(Boolean));
+      if (branch?.packageOriginal?.branches) {
+        branch.packageOriginal.branches.forEach(inner => ids.add(inner.id));
+      }
+      return ids;
+    }
+
+    function normalizeHighlightText(text) {
+      return String(text || "")
+        .replace(/\s+/g, "")
+        .replace(/^\((.*)\)$/g, "$1");
+    }
+
+    function highlightSymbolsFromText(text) {
+      const ignored = new Set(["Abs", "V", "I", "Ihis", "sin", "cos", "tan", "exp", "log", "sqrt"]);
+      const out = new Set();
+      String(text || "").replace(/\b[A-Za-z_]\w*\b/g, name => {
+        if (!ignored.has(name)) out.add(name);
+        return name;
+      });
+      return [...out];
+    }
+
+    function branchHighlightMarkers(branch) {
+      const texts = [];
+      if (branchUsesMatrix(branch)) {
+        parseMatrixRows(branchValue(branch, "gMatrix")).flat().forEach(item => texts.push(item));
+        parseMatrixRows(branchValue(branch, "ihisVector")).flat().forEach(item => texts.push(item));
+      } else {
+        texts.push(branchValue(branch, "g"), branchValue(branch, "ihis"));
+      }
+      const raw = [];
+      const symbols = new Set();
+      texts.forEach(text => {
+        const normalized = normalizeHighlightText(text);
+        if (normalized && normalized !== "0") raw.push(normalized);
+        highlightSymbolsFromText(text).forEach(name => symbols.add(name));
+      });
+      return { raw, symbols: [...symbols] };
+    }
+
+    function sourceTagForBranch(branchOrId) {
+      const raw = typeof branchOrId === "string" ? branchOrId : branchOrId?.id;
+      return `bbsrc_${String(raw || "unknown").replace(/[^A-Za-z0-9_]/g, "_")}`;
+    }
+
+    function sourceMarkerForBranch(branchOrId) {
+      return `__${sourceTagForBranch(branchOrId)}`;
+    }
+
+    function activeSourceHighlightBranch(sourceIds) {
+      const ids = new Set([].concat(sourceIds || []));
+      return activeHighlightedBranches().find(branch => {
+        const branchIds = branchHighlightSourceIds(branch);
+        return [...ids].some(id => branchIds.has(id));
+      }) || null;
+    }
+
+    function taggedExprMatchesBranch(expr, branch) {
+      if (!branch) return false;
+      const text = String(expr || "");
+      return [...branchHighlightSourceIds(branch)].some(id => text.includes(sourceMarkerForBranch(id)));
+    }
+
+    function activeTaggedHighlightBranch(expr) {
+      const text = String(expr || "");
+      if (!text || text.trim() === "0") return null;
+      return activeHighlightedBranches().find(branch => taggedExprMatchesBranch(text, branch)) || null;
+    }
+
+    function expressionMatchesBranchHighlight(expr, branch) {
+      const text = String(expr || "0");
+      if (!text || text.trim() === "0") return false;
+      const normalized = normalizeHighlightText(text);
+      const markers = branchHighlightMarkers(branch);
+      if (markers.raw.some(item => item && item !== "0" && normalized.includes(item))) return true;
+      return markers.symbols.some(symbol => new RegExp(`\\b${escapeRegExp(symbol)}\\b`).test(text));
+    }
+
+    function exactExpressionHighlightBranch(expr) {
+      const normalized = normalizeHighlightText(expr);
+      if (!normalized || normalized === "0") return null;
+      return activeHighlightedBranches().find(branch =>
+        branchHighlightMarkers(branch).raw.some(item => item && item !== "0" && normalizeHighlightText(item) === normalized)
+      ) || null;
+    }
+
+    function wrapMathHighlight(expr, html) {
+      const branch = exactExpressionHighlightBranch(expr);
+      if (!branch) return null;
+      const color = branchHighlightColor(branch);
+      return `<span class="math-branch-highlight" style="--branch-highlight-color:${escapeHtml(color)}">${html}</span>`;
+    }
+
+    function wrapMathSourceHighlight(branch, html) {
+      if (!branch) return html;
+      const color = branchHighlightColor(branch);
+      return `<span class="math-branch-highlight" style="--branch-highlight-color:${escapeHtml(color)}">${html}</span>`;
+    }
+
+    function branchCanvasHighlight(branch) {
+      if (!branch?.formulaHighlightCanvas) return { className: "", style: "" };
+      const color = branchHighlightColor(branch);
+      return {
+        className: " formula-highlight",
+        style: `--branch-highlight-color:${escapeHtml(color)}`
+      };
+    }
+
     function currentFormula(branch, groupByTerminal = null) {
       const netName = side => terminalNetNameFromMap(terminalKey(branch.id, side), groupByTerminal);
       if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") {
@@ -3264,8 +3769,9 @@
       const toKey = branch.direction === "AtoB" ? rightKey : leftKey;
       const fromLabel = terminalNetNameFromMap(fromKey, groupByTerminal);
       const toLabel = terminalNetNameFromMap(toKey, groupByTerminal);
-      const sign = branch.direction === "AtoB" ? branch.ihis : `-(${branch.ihis})`;
-      return `i_${branch.name}_${fromLabel}_to_${toLabel} = (${branch.g}) * (V_${fromLabel} - V_${toLabel}) + ${sign}`;
+      const ihis = branchValue(branch, "ihis");
+      const sign = branch.direction === "AtoB" ? ihis : `-(${ihis})`;
+      return `i_${branch.name}_${fromLabel}_to_${toLabel} = (${branchValue(branch, "g")}) * (V_${fromLabel} - V_${toLabel}) + ${sign}`;
     }
 
     function currentFormulaEntries(branch, groupByTerminal = null) {
@@ -3316,8 +3822,10 @@
               net: terminalNetName(terminalKey(branch.id, side))
             }
           ])),
-          G: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.gMatrix : branch.g,
-          Ihis: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.ihisVector : branch.ihis,
+          switchCase: switchCaseLabel(branch) || null,
+          switchCases: branch.switchCases || null,
+          G: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "gMatrix") : branchValue(branch, "g"),
+          Ihis: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "ihisVector") : branchValue(branch, "ihis"),
           current: {
             from: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.from) : (branch.direction === "AtoB" ? "A" : "B"),
             to: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.to) : (branch.direction === "AtoB" ? "B" : "A"),
@@ -3959,35 +4467,39 @@
     }
 
     async function saveViaLocalServer(data, filename, bytes) {
-      try {
-        const response = await fetch("/save-circuit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ filename, data })
-        });
-        if (!response.ok) return false;
-        const result = await response.json();
-        if (!result.ok || !result.bytes) return false;
-        statusEl.textContent = `已保存 ${state.branches.length} 个元件 (${result.bytes} bytes) 到 ${result.path}`;
-        return true;
-      } catch (error) {
-        return false;
+      for (const url of localApiUrls("/save-circuit")) {
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ filename, data })
+          });
+          if (!response.ok) continue;
+          const result = await response.json();
+          if (!result.ok || !result.bytes) continue;
+          statusEl.textContent = `已保存 ${state.branches.length} 个元件 (${result.bytes} bytes) 到 ${result.path}`;
+          return true;
+        } catch (error) {}
       }
+      return false;
     }
 
     async function refreshExistingExportFiles() {
       existingExportFiles.innerHTML = `<option value="">不覆盖已有文件</option>`;
-      try {
-        const response = await fetch("/list-circuits");
-        if (!response.ok) return;
-        const result = await response.json();
-        (result.files || []).forEach(file => {
-          const option = document.createElement("option");
-          option.value = file.name;
-          option.textContent = `${file.name} (${file.size} bytes)`;
-          existingExportFiles.appendChild(option);
-        });
-      } catch {}
+      for (const url of localApiUrls("/list-circuits")) {
+        try {
+          const response = await fetch(url);
+          if (!response.ok) continue;
+          const result = await response.json();
+          (result.files || []).forEach(file => {
+            const option = document.createElement("option");
+            option.value = file.name;
+            option.textContent = `${file.name} (${file.size} bytes)`;
+            existingExportFiles.appendChild(option);
+          });
+          return;
+        } catch (error) {}
+      }
     }
 
     function downloadExportText() {
@@ -4012,6 +4524,14 @@
       document.body.appendChild(link);
       link.click();
       link.remove();
+    }
+
+    function localApiUrls(path) {
+      const cleanPath = path.startsWith("/") ? path : `/${path}`;
+      const urls = [];
+      if (location.protocol === "http:" || location.protocol === "https:") urls.push(cleanPath);
+      urls.push(`http://127.0.0.1:4177${cleanPath}`);
+      return [...new Set(urls)];
     }
 
     async function copyExportText() {
@@ -4133,10 +4653,13 @@
         });
       };
       state.branches.forEach(branch => {
-        addText(branch.g);
-        addText(branch.ihis);
-        addText(branch.gMatrix);
-        addText(branch.ihisVector);
+        addText(branchValue(branch, "g"));
+        addText(branchValue(branch, "ihis"));
+        addText(branchValue(branch, "gMatrix"));
+        addText(branchValue(branch, "ihisVector"));
+        (branch.switchCases || []).forEach(item => {
+          switchedValueFields(branch).forEach(field => addText(item[field]));
+        });
         (branch.currents || []).forEach(current => {
           addText(current.g);
           addText(current.ihis);
@@ -4189,12 +4712,21 @@
       appendPythonSymbolDeclarations(lines, collectPythonDraftSymbolNames(payload, reducedResult));
       state.branches.forEach(branch => {
         if (branch.kind === "single_phase_transformer") {
-          lines.push(`G_${branch.name} = sp.Matrix(${branch.gMatrix})`);
-          lines.push(`Ihis_${branch.name} = sp.Matrix(${branch.ihisVector})`);
+          if (switchCaseLabel(branch)) lines.push(`# Active switch case: ${switchCaseLabel(branch)}`);
+          lines.push(`G_${branch.name} = sp.Matrix(${branchValue(branch, "gMatrix")})`);
+          lines.push(`Ihis_${branch.name} = sp.Matrix(${branchValue(branch, "ihisVector")})`);
           lines.push(`${branch.name} = SubNetwork(name="${branch.name}", local_nodes=["P", "N", "S", "T"], G_local=G_${branch.name}, Ihis_local=Ihis_${branch.name})`);
+        } else if (branch.kind === "custom_n_port") {
+          if (switchCaseLabel(branch)) lines.push(`# Active switch case: ${switchCaseLabel(branch)}`);
+          lines.push(`G_${branch.name} = sp.Matrix(${branchValue(branch, "gMatrix")})`);
+          lines.push(`Ihis_${branch.name} = sp.Matrix(${branchValue(branch, "ihisVector")})`);
+          lines.push(`${branch.name} = SubNetwork(name="${branch.name}", local_nodes=${pythonStringList(terminalSides(branch))}, G_local=G_${branch.name}, Ihis_local=Ihis_${branch.name})`);
         } else {
-          lines.push(`G_${branch.name} = sp.Matrix([[${branch.g}, -(${branch.g})], [-(${branch.g}), ${branch.g}]])`);
-          lines.push(`Ihis_${branch.name} = sp.Matrix([[${branch.ihis}], [-(${branch.ihis})]])`);
+          if (switchCaseLabel(branch)) lines.push(`# Active switch case: ${switchCaseLabel(branch)}`);
+          const g = branchValue(branch, "g");
+          const ihis = branchValue(branch, "ihis");
+          lines.push(`G_${branch.name} = sp.Matrix([[${g}, -(${g})], [-(${g}), ${g}]])`);
+          lines.push(`Ihis_${branch.name} = sp.Matrix([[${ihis}], [-(${ihis})]])`);
           lines.push(`${branch.name} = SubNetwork(name="${branch.name}", local_nodes=["A", "B"], G_local=G_${branch.name}, Ihis_local=Ihis_${branch.name})`);
         }
         lines.push("");
@@ -4582,47 +5114,316 @@
     const MATH_FORMAT_MAX_EXPR_LENGTH = 9000;
 
     function formatMath(text) {
-      return formatExpr(String(text ?? "0").trim() || "0", 0);
+      return formatExpr(String(text ?? "0").trim() || "0", 0, true);
     }
 
-    function formatExpr(expr, depth = 0) {
-      expr = stripOuterParens(String(expr || "0").trim());
-      if (!expr) return "0";
-      if (depth > MATH_FORMAT_MAX_DEPTH || expr.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
-        return formatPlainMath(expr);
-      }
+    function formatMathNoHighlight(text) {
+      return formatExpr(String(text ?? "0").trim() || "0", 0, false);
+    }
 
-      const terms = splitAddSub(expr);
+    function formatMathWithTagged(displayText, taggedText = null) {
+      if (taggedText === null || taggedText === undefined) return formatMath(displayText);
+      const display = String(displayText ?? "0").trim() || "0";
+      const tagged = String(taggedText ?? display).trim() || "0";
+      if (taggedExprHasActiveSource(tagged)) return formatTaggedSourceExpr(tagged, 0);
+      return formatTaggedExpr(display, tagged, 0, tagged);
+    }
+
+    function sourceMarkerRegex() {
+      return /__bbsrc_[A-Za-z0-9_]+/g;
+    }
+
+    function stripSourceMarkers(text) {
+      return String(text || "").replace(sourceMarkerRegex(), "");
+    }
+
+    function taggedExprHasActiveSource(taggedExpr) {
+      const tagged = String(taggedExpr || "");
+      return activeHighlightedBranches().some(branch =>
+        [...branchHighlightSourceIds(branch)].some(sourceId => tagged.includes(sourceMarkerForBranch(sourceId)))
+      );
+    }
+
+    function taggedAtomHighlightBranch(taggedAtom) {
+      const tagged = String(taggedAtom || "");
+      return activeHighlightedBranches().find(branch =>
+        [...branchHighlightSourceIds(branch)].some(sourceId => tagged.includes(sourceMarkerForBranch(sourceId)))
+      ) || null;
+    }
+
+    function formatTaggedSourceExpr(taggedExpr, depth = 0) {
+      const tagged = stripOuterParens(String(taggedExpr || "0").trim()) || "0";
+      const display = stripSourceMarkers(tagged);
+      if (depth > MATH_FORMAT_MAX_DEPTH || display.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
+        return formatMathNoHighlight(display);
+      }
+      const terms = splitAddSub(tagged);
       if (terms.length > 1) {
         return terms.map((part, index) => {
-          const body = formatTerm(part.term, depth + 1);
+          const body = formatTaggedSourceTerm(part.term, depth + 1);
           if (index === 0) return part.sign === "-" ? `-${body}` : body;
           return ` <span class="math-op">${part.sign}</span> ${body}`;
         }).join("");
       }
-      return formatTerm(expr, depth + 1);
+      return formatTaggedSourceTerm(tagged, depth + 1);
     }
 
-    function formatTerm(expr, depth = 0) {
+    function formatTaggedSourceTerm(taggedExpr, depth = 0) {
+      const tagged = stripOuterParens(String(taggedExpr || "0").trim()) || "0";
+      const display = stripSourceMarkers(tagged);
+      if (depth > MATH_FORMAT_MAX_DEPTH || display.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
+        return formatMathNoHighlight(display);
+      }
+      if (hasTopLevelAddSub(tagged)) return `(${formatTaggedSourceExpr(tagged, depth + 1)})`;
+      if (tagged.startsWith("-")) return `-${formatTaggedSourceTerm(tagged.slice(1), depth + 1)}`;
+
+      const divIndex = findTopLevelOperator(tagged, "/");
+      if (divIndex > 0) {
+        const numerator = stripOuterParens(tagged.slice(0, divIndex).trim());
+        const denominator = stripOuterParens(tagged.slice(divIndex + 1).trim());
+        return `<span class="math-frac"><span class="math-frac-num">${formatTaggedSourceExpr(numerator, depth + 1)}</span><span class="math-frac-den">${formatTaggedSourceExpr(denominator, depth + 1)}</span></span>`;
+      }
+
+      const factors = splitTopLevelBy(tagged, "*");
+      if (factors.length > 1) {
+        return factors.map(factor => formatTaggedSourceTerm(factor, depth + 1)).join(" · ");
+      }
+
+      return formatTaggedSourceAtom(tagged, depth + 1);
+    }
+
+    function formatTaggedSourceAtom(taggedExpr, depth = 0) {
+      const tagged = stripOuterParens(String(taggedExpr || "0").trim()) || "0";
+      const display = stripSourceMarkers(tagged);
+      if (depth > MATH_FORMAT_MAX_DEPTH || display.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
+        return formatMathNoHighlight(display);
+      }
+      if (hasTopLevelAddSub(tagged)) return `(${formatTaggedSourceExpr(tagged, depth + 1)})`;
+      const powerIndex = findTopLevelPower(tagged);
+      if (powerIndex > 0) {
+        const base = stripOuterParens(tagged.slice(0, powerIndex).trim());
+        const exponent = stripOuterParens(tagged.slice(powerIndex + 2).trim());
+        return `${formatTaggedSourceTerm(base, depth + 1)}<sup>${formatTaggedSourceExpr(exponent, depth + 1)}</sup>`;
+      }
+      return wrapMathSourceHighlight(taggedAtomHighlightBranch(tagged), formatMathNoHighlight(display));
+    }
+
+    function splitTaggedAddSub(displayText, taggedText) {
+      const displayParts = splitAddSub(stripOuterParens(String(displayText || "0").trim()));
+      const taggedParts = splitAddSub(stripOuterParens(String(taggedText || "0").trim()));
+      if (!displayParts.length || displayParts.length !== taggedParts.length) return null;
+      return displayParts.map((part, index) => ({
+        sign: part.sign,
+        display: part.term,
+        tagged: `${taggedParts[index].sign === "-" ? "-" : ""}${taggedParts[index].term}`
+      }));
+    }
+
+    function formatTaggedExpr(displayExpr, taggedExpr, depth = 0, sourceTaggedExpr = taggedExpr) {
+      const display = stripOuterParens(String(displayExpr || "0").trim()) || "0";
+      const tagged = stripOuterParens(String(taggedExpr || display).trim()) || "0";
+      const sourceTagged = String(sourceTaggedExpr ?? taggedExpr ?? display).trim() || "0";
+      if (depth > MATH_FORMAT_MAX_DEPTH || display.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
+        return formatTaggedBySymbol(display, sourceTagged, depth + 1);
+      }
+      const parts = splitTaggedAddSub(display, tagged);
+      if (parts && parts.length > 1) {
+        return parts.map((part, index) => {
+          const body = formatTaggedTerm(part.display, part.tagged, depth + 1, sourceTagged);
+          if (index === 0) return part.sign === "-" ? `-${body}` : body;
+          return ` <span class="math-op">${part.sign}</span> ${body}`;
+        }).join("");
+      }
+      if (hasTopLevelAddSub(display) && !parts) {
+        return formatTaggedBySymbol(display, sourceTagged, depth + 1);
+      }
+      return formatTaggedTerm(display, tagged, depth + 1, sourceTagged);
+    }
+
+    function formatTaggedTerm(displayExpr, taggedExpr, depth = 0, sourceTaggedExpr = taggedExpr) {
+      const display = stripOuterParens(String(displayExpr || "0").trim()) || "0";
+      const tagged = stripOuterParens(String(taggedExpr || display).trim()) || "0";
+      const sourceTagged = String(sourceTaggedExpr ?? taggedExpr ?? display).trim() || "0";
+      if (depth > MATH_FORMAT_MAX_DEPTH || display.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
+        return formatTaggedBySymbol(display, sourceTagged, depth + 1);
+      }
+      if (hasTopLevelAddSub(display)) {
+        return formatTaggedBySymbol(display, sourceTagged, depth + 1);
+      }
+      if (display.startsWith("-")) {
+        const nextTagged = tagged.startsWith("-") ? tagged.slice(1) : tagged;
+        return `-${formatTaggedTerm(display.slice(1), nextTagged, depth + 1, sourceTagged)}`;
+      }
+
+      const displayDiv = findTopLevelOperator(display, "/");
+      const taggedDiv = findTopLevelOperator(tagged, "/");
+      if (displayDiv > 0 && taggedDiv > 0) {
+        const displayNumerator = stripOuterParens(display.slice(0, displayDiv).trim());
+        const displayDenominator = stripOuterParens(display.slice(displayDiv + 1).trim());
+        const taggedNumerator = stripOuterParens(tagged.slice(0, taggedDiv).trim());
+        const taggedDenominator = stripOuterParens(tagged.slice(taggedDiv + 1).trim());
+        return `<span class="math-frac"><span class="math-frac-num">${formatTaggedExpr(displayNumerator, taggedNumerator, depth + 1, sourceTagged)}</span><span class="math-frac-den">${formatTaggedExpr(displayDenominator, taggedDenominator, depth + 1, sourceTagged)}</span></span>`;
+      }
+
+      const displayFactors = splitTopLevelBy(display, "*");
+      const taggedFactors = splitTopLevelBy(tagged, "*");
+      if (displayFactors.length > 1 && displayFactors.length === taggedFactors.length) {
+        return displayFactors.map((factor, index) => formatTaggedTerm(factor, taggedFactors[index], depth + 1, sourceTagged)).join(" · ");
+      }
+
+      return formatTaggedAtom(display, tagged, depth + 1, sourceTagged);
+    }
+
+    function formatTaggedAtom(displayExpr, taggedExpr, depth = 0, sourceTaggedExpr = taggedExpr) {
+      const display = stripOuterParens(String(displayExpr || "0").trim()) || "0";
+      const tagged = stripOuterParens(String(taggedExpr || display).trim()) || "0";
+      const sourceTagged = String(sourceTaggedExpr ?? taggedExpr ?? display).trim() || "0";
+      if (depth > MATH_FORMAT_MAX_DEPTH || display.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
+        return formatTaggedBySymbol(display, sourceTagged, depth + 1);
+      }
+      if (hasTopLevelAddSub(display)) {
+        return formatTaggedBySymbol(display, sourceTagged, depth + 1);
+      }
+      const displayPower = findTopLevelPower(display);
+      const taggedPower = findTopLevelPower(tagged);
+      if (displayPower > 0 && taggedPower > 0) {
+        const displayBase = stripOuterParens(display.slice(0, displayPower).trim());
+        const displayExponent = stripOuterParens(display.slice(displayPower + 2).trim());
+        const taggedBase = stripOuterParens(tagged.slice(0, taggedPower).trim());
+        const taggedExponent = stripOuterParens(tagged.slice(taggedPower + 2).trim());
+        return `${formatTaggedTerm(displayBase, taggedBase, depth + 1, sourceTagged)}<sup>${formatTaggedExpr(displayExponent, taggedExponent, depth + 1, sourceTagged)}</sup>`;
+      }
+      const branch = symbolHighlightBranch(display, tagged) || symbolHighlightBranch(display, sourceTagged);
+      return wrapMathSourceHighlight(branch, formatMathNoHighlight(display));
+    }
+
+    function taggedSymbolHighlights(taggedExpr) {
+      const tagged = String(taggedExpr || "");
+      const matches = [];
+      activeHighlightedBranches().forEach(branch => {
+        branchHighlightSourceIds(branch).forEach(sourceId => {
+          const marker = sourceMarkerForBranch(sourceId);
+          const regex = new RegExp(`\\b([A-Za-z_]\\w*)${escapeRegExp(marker)}\\b`, "g");
+          let match;
+          while ((match = regex.exec(tagged))) {
+            matches.push({ symbol: match[1], branch });
+          }
+        });
+      });
+      return matches;
+    }
+
+    function symbolHighlightBranch(symbol, taggedExpr) {
+      const clean = String(symbol || "").trim();
+      return taggedSymbolHighlights(taggedExpr).find(item => item.symbol === clean)?.branch || null;
+    }
+
+    function formatTaggedBySymbol(displayExpr, taggedExpr, depth = 0) {
+      const display = stripOuterParens(String(displayExpr || "0").trim()) || "0";
+      if (depth > MATH_FORMAT_MAX_DEPTH || display.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
+        return formatMathNoHighlight(display);
+      }
+      const terms = splitAddSub(display);
+      if (terms.length > 1) {
+        return terms.map((part, index) => {
+          const body = formatTaggedBySymbolTerm(part.term, taggedExpr, depth + 1);
+          if (index === 0) return part.sign === "-" ? `-${body}` : body;
+          return ` <span class="math-op">${part.sign}</span> ${body}`;
+        }).join("");
+      }
+      return formatTaggedBySymbolTerm(display, taggedExpr, depth + 1);
+    }
+
+    function formatTaggedBySymbolTerm(displayExpr, taggedExpr, depth = 0) {
+      const display = stripOuterParens(String(displayExpr || "0").trim()) || "0";
+      if (depth > MATH_FORMAT_MAX_DEPTH || display.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
+        return formatMathNoHighlight(display);
+      }
+      if (hasTopLevelAddSub(display)) return `(${formatTaggedBySymbol(display, taggedExpr, depth + 1)})`;
+      if (display.startsWith("-")) return `-${formatTaggedBySymbolTerm(display.slice(1), taggedExpr, depth + 1)}`;
+      const divIndex = findTopLevelOperator(display, "/");
+      if (divIndex > 0) {
+        const numerator = stripOuterParens(display.slice(0, divIndex).trim());
+        const denominator = stripOuterParens(display.slice(divIndex + 1).trim());
+        return `<span class="math-frac"><span class="math-frac-num">${formatTaggedBySymbol(numerator, taggedExpr, depth + 1)}</span><span class="math-frac-den">${formatTaggedBySymbol(denominator, taggedExpr, depth + 1)}</span></span>`;
+      }
+      const factors = splitTopLevelBy(display, "*");
+      if (factors.length > 1) {
+        return factors.map(factor => formatTaggedBySymbolTerm(factor, taggedExpr, depth + 1)).join(" · ");
+      }
+      return formatTaggedBySymbolAtom(display, taggedExpr, depth + 1);
+    }
+
+    function formatTaggedBySymbolAtom(displayExpr, taggedExpr, depth = 0) {
+      const display = stripOuterParens(String(displayExpr || "0").trim()) || "0";
+      if (depth > MATH_FORMAT_MAX_DEPTH || display.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
+        return formatMathNoHighlight(display);
+      }
+      if (hasTopLevelAddSub(display)) return `(${formatTaggedBySymbol(display, taggedExpr, depth + 1)})`;
+      const powerIndex = findTopLevelPower(display);
+      if (powerIndex > 0) {
+        const base = stripOuterParens(display.slice(0, powerIndex).trim());
+        const exponent = stripOuterParens(display.slice(powerIndex + 2).trim());
+        return `${formatTaggedBySymbolTerm(base, taggedExpr, depth + 1)}<sup>${formatTaggedBySymbol(exponent, taggedExpr, depth + 1)}</sup>`;
+      }
+      return wrapMathSourceHighlight(symbolHighlightBranch(display, taggedExpr), formatMathNoHighlight(display));
+    }
+
+    function formatExpr(expr, depth = 0, allowHighlight = true) {
       expr = stripOuterParens(String(expr || "0").trim());
       if (!expr) return "0";
       if (depth > MATH_FORMAT_MAX_DEPTH || expr.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
-        return formatPlainMath(expr);
+        const html = formatPlainMath(expr);
+        return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
       }
-      if (hasTopLevelAddSub(expr)) return `(${formatExpr(expr, depth + 1)})`;
-      if (expr.startsWith("-")) return `-${formatTerm(expr.slice(1), depth + 1)}`;
+
+      let html;
+      const terms = splitAddSub(expr);
+      if (terms.length > 1) {
+        html = terms.map((part, index) => {
+          const body = formatTerm(part.term, depth + 1, allowHighlight);
+          if (index === 0) return part.sign === "-" ? `-${body}` : body;
+          return ` <span class="math-op">${part.sign}</span> ${body}`;
+        }).join("");
+      } else {
+        html = formatTerm(expr, depth + 1, allowHighlight);
+      }
+      return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
+    }
+
+    function formatTerm(expr, depth = 0, allowHighlight = true) {
+      expr = stripOuterParens(String(expr || "0").trim());
+      if (!expr) return "0";
+      if (depth > MATH_FORMAT_MAX_DEPTH || expr.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
+        const html = formatPlainMath(expr);
+        return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
+      }
+      let html;
+      if (hasTopLevelAddSub(expr)) {
+        html = `(${formatExpr(expr, depth + 1, allowHighlight)})`;
+        return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
+      }
+      if (expr.startsWith("-")) {
+        html = `-${formatTerm(expr.slice(1), depth + 1, allowHighlight)}`;
+        return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
+      }
 
       const divIndex = findTopLevelOperator(expr, "/");
       if (divIndex > 0) {
         const numerator = stripOuterParens(expr.slice(0, divIndex).trim());
         const denominator = stripOuterParens(expr.slice(divIndex + 1).trim());
-        return `<span class="math-frac"><span class="math-frac-num">${formatExpr(numerator, depth + 1)}</span><span class="math-frac-den">${formatExpr(denominator, depth + 1)}</span></span>`;
+        html = `<span class="math-frac"><span class="math-frac-num">${formatExpr(numerator, depth + 1, allowHighlight)}</span><span class="math-frac-den">${formatExpr(denominator, depth + 1, allowHighlight)}</span></span>`;
+        return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
       }
 
       const factors = splitTopLevelBy(expr, "*");
-      if (factors.length > 1) return factors.map(factor => formatTerm(factor, depth + 1)).join(" · ");
+      if (factors.length > 1) {
+        html = factors.map(factor => formatTerm(factor, depth + 1, allowHighlight)).join(" · ");
+        return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
+      }
 
-      return formatAtom(expr, depth + 1);
+      html = formatAtom(expr, depth + 1, allowHighlight);
+      return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
     }
 
     function hasTopLevelAddSub(expr) {
@@ -4636,20 +5437,27 @@
       return false;
     }
 
-    function formatAtom(expr, depth = 0) {
+    function formatAtom(expr, depth = 0, allowHighlight = true) {
       expr = stripOuterParens(String(expr || "0").trim());
       if (!expr) return "0";
       if (depth > MATH_FORMAT_MAX_DEPTH || expr.length > MATH_FORMAT_MAX_EXPR_LENGTH) {
-        return formatPlainMath(expr);
+        const html = formatPlainMath(expr);
+        return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
       }
-      if (hasTopLevelAddSub(expr)) return `(${formatExpr(expr, depth + 1)})`;
+      let html;
+      if (hasTopLevelAddSub(expr)) {
+        html = `(${formatExpr(expr, depth + 1, allowHighlight)})`;
+        return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
+      }
       const powerIndex = findTopLevelPower(expr);
       if (powerIndex > 0) {
         const base = stripOuterParens(expr.slice(0, powerIndex).trim());
         const exponent = stripOuterParens(expr.slice(powerIndex + 2).trim());
-        return `${formatTerm(base, depth + 1)}<sup>${formatExpr(exponent, depth + 1)}</sup>`;
+        html = `${formatTerm(base, depth + 1, allowHighlight)}<sup>${formatExpr(exponent, depth + 1, allowHighlight)}</sup>`;
+        return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
       }
-      return formatPlainMath(expr);
+      html = formatPlainMath(expr);
+      return allowHighlight ? (wrapMathHighlight(expr, html) || html) : html;
     }
 
     function formatPlainMath(expr) {
@@ -4777,32 +5585,51 @@
               ${renderGMatrix(assembled)}
               ${renderVectorMatrix(displayNodes.map(node => `V_${node}`))}
               <span class="formula-eq">+</span>
-              ${renderVectorMatrix(assembled.Ihis.map(sumTerms))}
+              ${renderTermVectorMatrix(assembled.Ihis)}
             </div>
           </div>
         </div>
       `;
     }
 
-    function renderVectorMatrix(items) {
+    function renderVectorMatrix(items, taggedItems = null) {
       return `<span class="matrix" style="grid-template-columns: 1fr;">${
-        items.map(item => `<span class="matrix-cell">${formatMath(item)}</span>`).join("")
+        items.map((item, index) => `<span class="matrix-cell">${formatMathWithTagged(item, taggedItems?.[index])}</span>`).join("")
+      }</span>`;
+    }
+
+    function renderTermVectorMatrix(termRows) {
+      return `<span class="matrix" style="grid-template-columns: 1fr;">${
+        termRows.map(terms => `<span class="matrix-cell">${renderTermSum(terms)}</span>`).join("")
       }</span>`;
     }
 
     function renderGMatrix(assembled) {
       const n = assembled.nodes.length;
-      return renderMatrix(assembled.G.map(row => row.map(sumTerms)), n);
+      return renderTermMatrix(assembled.G, n);
     }
 
-    function renderMatrix(rows, cols = null) {
+    function renderTermMatrix(rows, cols = null) {
       const columnCount = cols || Math.max(1, ...rows.map(row => row.length));
       return `<span class="matrix" style="grid-template-columns: repeat(${columnCount}, minmax(58px, auto));">${
         rows.flatMap(row => {
           const filled = [...row];
-          while (filled.length < columnCount) filled.push("");
+          while (filled.length < columnCount) filled.push([]);
           return filled;
-        }).map(item => `<span class="matrix-cell">${formatMath(item || "0")}</span>`).join("")
+        }).map(item => `<span class="matrix-cell">${renderTermSum(item)}</span>`).join("")
+      }</span>`;
+    }
+
+    function renderMatrix(rows, cols = null, taggedRows = null) {
+      const columnCount = cols || Math.max(1, ...rows.map(row => row.length));
+      return `<span class="matrix" style="grid-template-columns: repeat(${columnCount}, minmax(58px, auto));">${
+        rows.flatMap((row, rowIndex) => {
+          const filled = [...row];
+          const taggedFilled = taggedRows?.[rowIndex] ? [...taggedRows[rowIndex]] : null;
+          while (filled.length < columnCount) filled.push("");
+          while (taggedFilled && taggedFilled.length < columnCount) taggedFilled.push("");
+          return filled.map((item, colIndex) => ({ item, tagged: taggedFilled?.[colIndex] }));
+        }).map(({ item, tagged }) => `<span class="matrix-cell">${formatMathWithTagged(item || "0", tagged)}</span>`).join("")
       }</span>`;
     }
 
@@ -4817,7 +5644,11 @@
       const key = reducedCacheKey(payload);
       const cachedEntry = cacheGet(reducedCache, key);
       if (cachedEntry?.html) {
-        if (token === reducedRenderToken) outputText.innerHTML = cachedEntry.html;
+        if (token === reducedRenderToken) {
+          outputText.innerHTML = cachedEntry.result
+            ? renderReducedEquationsResult(cachedEntry.result, payload.node_display_names || {})
+            : cachedEntry.html;
+        }
         return;
       }
 
@@ -4852,7 +5683,7 @@
           `;
         }
         const current = reducedCache.get(key);
-        if (current?.pending === pending) cacheSet(reducedCache, key, { html, pending: null });
+        if (current?.pending === pending) cacheSet(reducedCache, key, { html, result, pending: null });
         return html;
       }).catch(error => {
         const current = reducedCache.get(key);
@@ -4878,7 +5709,9 @@
       const staticHtml = reducedStaticMessage(payload);
       if (staticHtml) return staticHtml;
       const key = JSON.stringify({ language: state.language, payload });
-      return cacheGet(reducedCache, key)?.html || null;
+      const cached = cacheGet(reducedCache, key);
+      if (cached?.result) return renderReducedEquationsResult(cached.result, payload.node_display_names || {});
+      return cached?.html || null;
     }
 
     function buildReducedPayload() {
@@ -4895,7 +5728,9 @@
         external_nodes: externalVisible,
         internal_nodes: internal,
         G_full: assembled.G.map(row => row.map(sumTerms)),
-        Ihis_full: assembled.Ihis.map(sumTerms)
+        Ihis_full: assembled.Ihis.map(sumTerms),
+        G_full_tagged: assembled.G.map(row => row.map(taggedSumTerms)),
+        Ihis_full_tagged: assembled.Ihis.map(taggedSumTerms)
       };
     }
 
@@ -4910,7 +5745,7 @@
     }
 
     async function requestReduction(payload) {
-      const urls = ["/reduce-system", "http://127.0.0.1:4178/reduce-system"];
+      const urls = localApiUrls("/reduce-system");
       let lastError = null;
       for (const url of urls) {
         try {
@@ -4932,9 +5767,128 @@
       throw lastError || new Error("节点消去失败");
     }
 
+    function packagedObserverEntries(branch, groupByTerminal, internalNames) {
+      return (branch.packageOriginal?.branches || []).flatMap(inner => {
+        const displayForSide = side => groupByTerminal.get(terminalKey(inner.id, side))?.display || side;
+        const lines = localCurrentFormula(inner, groupByTerminal).split("\n").filter(Boolean);
+        if (inner.kind === "single_phase_transformer" || inner.kind === "custom_n_port") {
+          return lines.map((line, index) => {
+            const current = inner.currents?.[index] || {};
+            const eqIndex = line.indexOf("=");
+            const lhs = eqIndex >= 0 ? line.slice(0, eqIndex).trim() : line.trim();
+            const rhs = eqIndex >= 0 ? line.slice(eqIndex + 1).trim() : "0";
+            const fallbackEndpoints = observerEndpointLabelsFromLhs(lhs);
+            const fromLabel = current.fromLabel || (current.from ? displayForSide(current.from) : fallbackEndpoints.from);
+            const toLabel = current.toLabel || (current.to ? displayForSide(current.to) : fallbackEndpoints.to);
+            return {
+              lhs,
+              rhs,
+              fromLabel,
+              toLabel,
+              fromEliminated: internalNames.has(fromLabel),
+              toEliminated: internalNames.has(toLabel)
+            };
+          });
+        }
+        const line = lines[0] || "";
+        const eqIndex = line.indexOf("=");
+        const lhs = eqIndex >= 0 ? line.slice(0, eqIndex).trim() : line.trim();
+        const rhs = eqIndex >= 0 ? line.slice(eqIndex + 1).trim() : "0";
+        const fromSide = inner.direction === "AtoB" ? "A" : "B";
+        const toSide = inner.direction === "AtoB" ? "B" : "A";
+        const fromLabel = displayForSide(fromSide);
+        const toLabel = displayForSide(toSide);
+        return [{
+          lhs,
+          rhs,
+          fromLabel,
+          toLabel,
+          fromEliminated: internalNames.has(fromLabel),
+          toEliminated: internalNames.has(toLabel)
+        }];
+      });
+    }
+
+    function buildPackagedReductionPayload(branch) {
+      const pkg = branch.packageOriginal;
+      if (!pkg) return null;
+      const externalGroups = pkg.externalGroups || [];
+      const internalGroups = pkg.internalGroups || [];
+      const allGroups = [...externalGroups, ...internalGroups];
+      const groupByTerminal = new Map();
+      allGroups.forEach(group => (group.members || []).forEach(member => groupByTerminal.set(member, group)));
+      const groupIndex = new Map(allGroups.map((group, index) => [group.id, index]));
+      const size = allGroups.length;
+      const G = Array.from({ length: size }, () => Array.from({ length: size }, () => []));
+      const Ihis = Array.from({ length: size }, () => []);
+
+      (pkg.branches || []).forEach(inner => {
+        const sourceId = inner.id;
+        const sides = terminalSides(inner);
+        const localG = localGMatrix(inner);
+        const localIhis = localIhisVector(inner);
+        sides.forEach((rowSide, r) => {
+          const rowGroup = groupByTerminal.get(terminalKey(inner.id, rowSide));
+          const row = groupIndex.get(rowGroup?.id);
+          if (row === undefined) return;
+          addTerm(Ihis[row], localIhis[r], sourceId);
+          sides.forEach((colSide, c) => {
+            const colGroup = groupByTerminal.get(terminalKey(inner.id, colSide));
+            const col = groupIndex.get(colGroup?.id);
+            if (col === undefined) return;
+            addTerm(G[row][col], localG[r]?.[c] || "0", sourceId);
+          });
+        });
+      });
+
+      const internalNames = new Set(internalGroups.map(group => group.display));
+      const observers = packagedObserverEntries(branch, groupByTerminal, internalNames);
+      return {
+        externalGroups,
+        internalGroups,
+        observers,
+        payload: {
+          all_nodes: allGroups.map(group => group.id),
+          voltage_nodes: allGroups.map(group => group.display),
+          external_nodes: externalGroups.map(group => group.id),
+          internal_nodes: internalGroups.map(group => group.id),
+          G_full: G.map(row => row.map(sumTerms)),
+          Ihis_full: Ihis.map(sumTerms)
+        }
+      };
+    }
+
+    async function recomputePackagedBox(branch) {
+      const built = buildPackagedReductionPayload(branch);
+      if (!built) return;
+      const result = await requestReduction({
+        ...built.payload,
+        observers: built.observers.map(({ lhs, rhs }) => ({ lhs, rhs }))
+      });
+      const ports = branch.ports || [];
+      branch.gMatrix = matrixLiteral(result.G_red);
+      branch.ihisVector = vectorLiteral(result.Ihis_red);
+      branch.packageOriginal.K_v = result.K_v;
+      branch.packageOriginal.K_h = result.K_h;
+      branch.currents = (result.reduced_observers || []).map((item, index) => {
+        const source = built.observers[index] || {};
+        return {
+          name: observerNameFromLhs(source.lhs || item.lhs, index),
+          from: ports[0],
+          to: ports[Math.min(1, ports.length - 1)],
+          fromLabel: source.fromLabel || ports[0],
+          toLabel: source.toLabel || ports[Math.min(1, ports.length - 1)],
+          fromEliminated: Boolean(source.fromEliminated),
+          toEliminated: Boolean(source.toEliminated),
+          expression: replaceExternalVoltages(item.rhs, built.externalGroups, ports)
+        };
+      });
+      invalidateMathCaches();
+    }
+
     async function requestBlackBoxValidation(payload) {
       const body = { mode: "validate_blackbox_observers", ...payload };
-      const urls = ["/validate-blackbox-observers", "/reduce-system", "http://127.0.0.1:4178/validate-blackbox-observers"];
+      const urls = [...localApiUrls("/validate-blackbox-observers"), ...localApiUrls("/reduce-system")];
       let lastError = null;
       for (const url of urls) {
         try {
@@ -5030,17 +5984,18 @@
       const Ihis = Array.from({ length: size }, () => []);
 
       branches.forEach(branch => {
+        const sourceId = branch.id;
         const sides = terminalSides(branch);
         const localG = localGMatrix(branch);
         const localIhis = localIhisVector(branch);
         sides.forEach((rowSide, r) => {
           const rowGroup = groupByTerminal.get(terminalKey(branch.id, rowSide));
           const row = groupIndex.get(rowGroup.id);
-          addTerm(Ihis[row], localIhis[r]);
+          addTerm(Ihis[row], localIhis[r], sourceId);
           sides.forEach((colSide, c) => {
             const colGroup = groupByTerminal.get(terminalKey(branch.id, colSide));
             const col = groupIndex.get(colGroup.id);
-            addTerm(G[row][col], localG[r]?.[c] || "0");
+            addTerm(G[row][col], localG[r]?.[c] || "0", sourceId);
           });
         });
       });
@@ -5089,8 +6044,9 @@
       const toSide = branch.direction === "AtoB" ? "B" : "A";
       const fromLabel = displayForSide(fromSide);
       const toLabel = displayForSide(toSide);
-      const sign = branch.direction === "AtoB" ? branch.ihis : `-(${branch.ihis})`;
-      return `i_${branch.name}_${fromLabel}_to_${toLabel} = (${branch.g}) * (V_${fromLabel} - V_${toLabel}) + ${sign}`;
+      const ihis = branchValue(branch, "ihis");
+      const sign = branch.direction === "AtoB" ? ihis : `-(${ihis})`;
+      return `i_${branch.name}_${fromLabel}_to_${toLabel} = (${branchValue(branch, "g")}) * (V_${fromLabel} - V_${toLabel}) + ${sign}`;
     }
 
     function yBoxPortLayout(ports) {
@@ -5498,6 +6454,7 @@
     function renderReducedEquationsResult(result, displayNames = {}) {
       const externalNames = result.external_nodes.map(node => displayNames[node] || nodeDisplayName(node));
       const internalNames = result.internal_nodes.map(node => displayNames[node] || nodeDisplayName(node));
+      const highlightWarning = reducedHighlightWarning(result);
 
       return `
         <div class="formula-list">
@@ -5509,13 +6466,14 @@
           </div>
           <div class="formula-card">
             <div class="formula-name">${escapeHtml(tr("节点方程消去版本"))}</div>
+            ${highlightWarning}
             <div class="matrix-equation">
               ${renderVectorMatrix(externalNames.map(name => `I_${name}`))}
               <span class="formula-eq">=</span>
-              ${renderMatrix(result.G_red)}
+              ${renderMatrix(result.G_red, null, result.G_red_tagged)}
               ${renderVectorMatrix(externalNames.map(name => `V_${name}`))}
               <span class="formula-eq">+</span>
-              ${renderVectorMatrix(result.Ihis_red)}
+              ${renderVectorMatrix(result.Ihis_red, result.Ihis_red_tagged)}
             </div>
           </div>
           <div class="formula-card">
@@ -5523,13 +6481,26 @@
             <div class="matrix-equation">
               ${renderVectorMatrix(internalNames.map(name => `V_${name}`))}
               <span class="formula-eq">=</span>
-              ${renderMatrix(result.K_v)}
+              ${renderMatrix(result.K_v, null, result.K_v_tagged)}
               ${renderVectorMatrix(externalNames.map(name => `V_${name}`))}
               <span class="formula-eq">+</span>
-              ${renderVectorMatrix(result.K_h)}
+              ${renderVectorMatrix(result.K_h, result.K_h_tagged)}
             </div>
           </div>
           ${result.internal_nodes.length === 1 ? renderSingleInternalFormula(result, externalNames, internalNames[0]) : ""}
+        </div>
+      `;
+    }
+
+    function reducedHighlightWarning(result) {
+      const hasTaggedResult = Boolean(
+        result?.G_red_tagged || result?.Ihis_red_tagged || result?.K_v_tagged || result?.K_h_tagged
+      );
+      if (!hasTaggedResult || !activeHighlightedBranches().length) return "";
+      return `
+        <div class="formula-empty">
+          <strong>${escapeHtml(tr("高亮来源提示"))}:</strong>
+          ${escapeHtml(tr("开启公式高亮时，消去版本会优先使用带隐藏来源标签的表达式来保证同名 symbol 不串色；因此部分合并项可能比普通显示更展开。"))}
         </div>
       `;
     }
@@ -5622,18 +6593,25 @@
     function renderSingleInternalFormula(reduced, externalNames, internalName) {
       const K_v = reduced.K_v || reduced.ViA;
       const K_h = reduced.K_h || (reduced.VibNeg || []).map(exprNeg);
+      const K_v_tagged = reduced.K_v_tagged;
+      const K_h_tagged = reduced.K_h_tagged;
       const voltageSum = K_v[0]
         .map((g, index) => isZero(g) ? "" : `(${g})*V_${externalNames[index]}`)
         .filter(Boolean);
       const rhsTerms = voltageSum.concat(isZero(K_h[0]) ? [] : [K_h[0]]);
       const rhs = rhsTerms.length ? rhsTerms.join(" + ") : "0";
+      const taggedVoltageSum = K_v_tagged?.[0]
+        ? K_v_tagged[0].map((g, index) => isZero(g) ? "" : `(${g})*V_${externalNames[index]}`).filter(Boolean)
+        : [];
+      const taggedRhsTerms = taggedVoltageSum.concat(K_h_tagged?.[0] && !isZero(K_h_tagged[0]) ? [K_h_tagged[0]] : []);
+      const taggedRhs = taggedRhsTerms.length ? taggedRhsTerms.join(" + ") : null;
       return `
         <div class="formula-card">
           <div class="formula-name">${escapeHtml(tr("单内部节点展开式"))}</div>
           <div class="formula-line">
             <span class="formula-lhs">V<sub>${escapeHtml(internalName)}</sub></span>
             <span class="formula-eq">=</span>
-            <span class="formula-rhs">${formatMath(rhs)}</span>
+            <span class="formula-rhs">${formatMathWithTagged(rhs, taggedRhs)}</span>
           </div>
         </div>
       `;
@@ -5775,6 +6753,7 @@
           stampPackagedOriginal(branch, netByTerminal, nodeIndex, G, Ihis);
           return;
         }
+        const sourceId = branch.id;
         const sides = terminalSides(branch);
         const localG = localGMatrix(branch);
         const localIhis = localIhisVector(branch);
@@ -5784,13 +6763,13 @@
           const row = nodeIndex.get(rowNet);
           if (row === undefined) return;
 
-          addTerm(Ihis[row], localIhis[r]);
+          addTerm(Ihis[row], localIhis[r], sourceId);
 
           sides.forEach((colSide, c) => {
             const colNet = netByTerminal.get(terminalKey(branch.id, colSide));
             const col = nodeIndex.get(colNet);
             if (col === undefined) return;
-            addTerm(G[row][col], localG[r]?.[c] || "0");
+            addTerm(G[row][col], localG[r]?.[c] || "0", sourceId);
           });
         });
       });
@@ -5808,11 +6787,11 @@
       packed.nodeIds.forEach((rowNode, r) => {
         const row = nodeIndex.get(rowNode);
         if (row === undefined) return;
-        addTerm(Ihis[row], packed.Ihis[r] || "0");
+        addTerms(Ihis[row], packed.Ihis[r] || []);
         packed.nodeIds.forEach((colNode, c) => {
           const col = nodeIndex.get(colNode);
           if (col === undefined) return;
-          addTerm(G[row][col], packed.G[r]?.[c] || "0");
+          addTerms(G[row][col], packed.G[r]?.[c] || []);
         });
       });
     }
@@ -5900,17 +6879,18 @@
       const localG = Array.from({ length: size }, () => Array.from({ length: size }, () => []));
       const localIhis = Array.from({ length: size }, () => []);
       originalBranches.forEach(item => {
+        const sourceId = item.id;
         const sides = terminalSides(item);
         const g = localGMatrix(item);
         const ihis = localIhisVector(item);
         sides.forEach((rowSide, r) => {
           const row = groupByTerminal.get(terminalKey(item.id, rowSide));
           if (row === undefined) return;
-          addTerm(localIhis[row], ihis[r]);
+          addTerm(localIhis[row], ihis[r], sourceId);
           sides.forEach((colSide, c) => {
             const col = groupByTerminal.get(terminalKey(item.id, colSide));
             if (col === undefined) return;
-            addTerm(localG[row][col], g[r]?.[c] || "0");
+            addTerm(localG[row][col], g[r]?.[c] || "0", sourceId);
           });
         });
       });
@@ -5925,7 +6905,7 @@
         const port = group.packageKind === "internal" ? group.packageGroup?.exposePort : group.packageGroup?.port;
         return port ? netByTerminal.get(terminalKey(branch.id, port)) : null;
       });
-      return { nodeIds, G: localG.map(row => row.map(sumTerms)), Ihis: localIhis.map(sumTerms) };
+      return { nodeIds, G: localG, Ihis: localIhis };
     }
 
     function bestSavedPackageNodeState(members, nodeState) {
@@ -5941,9 +6921,9 @@
     function localGMatrix(branch) {
       if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") {
         const n = terminalSides(branch).length;
-        return parseMatrixLiteral(branch.gMatrix, n, n);
+        return parseMatrixLiteral(branchValue(branch, "gMatrix"), n, n);
       }
-      const g = wrapExpr(branch.g || "0");
+      const g = wrapExpr(branchValue(branch, "g") || "0");
       return [
         [g, negateExpr(g)],
         [negateExpr(g), g]
@@ -5952,9 +6932,9 @@
 
     function localIhisVector(branch) {
       if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") {
-        return parseVectorLiteral(branch.ihisVector, terminalSides(branch).length);
+        return parseVectorLiteral(branchValue(branch, "ihisVector"), terminalSides(branch).length);
       }
-      const j = wrapExpr(branch.ihis || "0");
+      const j = wrapExpr(branchValue(branch, "ihis") || "0");
       return [j, negateExpr(j)];
     }
 
@@ -5999,14 +6979,32 @@
       return parts;
     }
 
-    function addTerm(list, term) {
+    function addTerm(list, term, sourceIds = null) {
       const cleaned = cleanExpr(term);
       if (!cleaned || cleaned === "0") return;
-      list.push(cleaned);
+      const ids = Array.isArray(sourceIds) ? sourceIds.filter(Boolean) : (sourceIds ? [sourceIds] : []);
+      list.push(ids.length ? { expr: cleaned, sourceIds: ids } : cleaned);
+    }
+
+    function addTerms(list, terms, fallbackSourceId = null) {
+      (terms || []).forEach(term => {
+        const sourceIds = termSourceIds(term);
+        if (sourceIds.length) addTerm(list, termExpr(term), sourceIds);
+        else addTerm(list, termExpr(term), fallbackSourceId);
+      });
     }
 
     function cleanExpr(term) {
       return String(term || "").trim();
+    }
+
+    function termExpr(term) {
+      return typeof term === "object" && term !== null ? cleanExpr(term.expr) : cleanExpr(term);
+    }
+
+    function termSourceIds(term) {
+      if (typeof term !== "object" || term === null) return [];
+      return Array.isArray(term.sourceIds) ? term.sourceIds.filter(Boolean) : [];
     }
 
     function wrapExpr(term) {
@@ -6021,26 +7019,74 @@
     }
 
     function sumTerms(terms) {
+      return sumTermItems(terms).map((item, index) => formatCombinedTerm(item.term, item.coeff, index)).join("") || "0";
+    }
+
+    function taggedSumTerms(terms) {
+      const taggedItems = [];
+      (terms || []).flatMap(expandAddSubTerms).forEach(({ coeff, term, sourceIds }) => {
+        if (!term || term === "0" || coeff === 0) return;
+        const taggedTerm = sourceIds.length ? tagExprForSource(term, sourceIds[0]) : term;
+        taggedItems.push(formatCombinedTerm(taggedTerm, coeff, taggedItems.length));
+      });
+      return taggedItems.join("") || "0";
+    }
+
+    function tagExprForSource(expr, sourceId) {
+      const tag = sourceMarkerForBranch(sourceId);
+      let foundIdentifier = false;
+      const ignored = new Set(["Abs", "sin", "cos", "tan", "exp", "log", "sqrt", "asin", "acos", "atan", "sinh", "cosh", "tanh"]);
+      const tagged = String(expr || "0").replace(/\b[A-Za-z_]\w*\b/g, name => {
+        if (ignored.has(name)) return name;
+        foundIdentifier = true;
+        return `${name}${tag}`;
+      });
+      return foundIdentifier ? tagged : `(${tag})*(${tagged})`;
+    }
+
+    function sumTermItems(terms) {
       const totals = new Map();
       terms.flatMap(expandAddSubTerms).forEach(({ coeff, term }) => {
         const key = normalizeLikeTerm(term);
         if (!key || key === "0" || coeff === 0) return;
-        totals.set(key, (totals.get(key) || 0) + coeff);
-        if (totals.get(key) === 0) totals.delete(key);
+        const existing = totals.get(key) || { coeff: 0, sourceIds: new Set() };
+        existing.coeff += coeff;
+        totals.set(key, existing);
+        if (existing.coeff === 0) totals.delete(key);
       });
-      const pieces = Array.from(totals.entries()).map(([term, coeff], index) => formatCombinedTerm(term, coeff, index));
-      return pieces.length ? pieces.join("") : "0";
+      terms.flatMap(expandAddSubTerms).forEach(({ coeff, term, sourceIds }) => {
+        const key = normalizeLikeTerm(term);
+        if (!key || key === "0" || coeff === 0 || !totals.has(key)) return;
+        sourceIds.forEach(id => totals.get(key).sourceIds.add(id));
+      });
+      return Array.from(totals.entries()).map(([term, item]) => ({
+        term,
+        coeff: item.coeff,
+        sourceIds: [...item.sourceIds]
+      }));
+    }
+
+    function renderTermSum(terms) {
+      const items = sumTermItems(terms);
+      if (!items.length) return "0";
+      return items.map((item, index) => {
+        const parts = formatCombinedTermParts(item.term, item.coeff, index);
+        const branch = activeSourceHighlightBranch(item.sourceIds);
+        return `${parts.prefix}${wrapMathSourceHighlight(branch, formatMathNoHighlight(parts.body))}`;
+      }).join("");
     }
 
     function expandAddSubTerms(term) {
-      const cleaned = cleanExpr(term);
+      const cleaned = termExpr(term);
       if (!cleaned || cleaned === "0") return [];
+      const sourceIds = termSourceIds(term);
       return splitAddSub(cleaned).map(part => {
         const normalized = normalizeLikeTerm(part.term);
         const factor = parseIntegerFactor(normalized);
         return {
           coeff: (part.sign === "-" ? -1 : 1) * factor.coeff,
-          term: factor.term
+          term: factor.term,
+          sourceIds
         };
       });
     }
@@ -6069,10 +7115,15 @@
     }
 
     function formatCombinedTerm(term, coeff, index) {
+      const parts = formatCombinedTermParts(term, coeff, index);
+      return `${parts.prefix}${parts.body}`;
+    }
+
+    function formatCombinedTermParts(term, coeff, index) {
       const abs = Math.abs(coeff);
       const body = abs === 1 ? term : `${abs}*${term}`;
-      if (index === 0) return coeff < 0 ? `-${body}` : body;
-      return coeff < 0 ? ` - ${body}` : ` + ${body}`;
+      if (index === 0) return { prefix: coeff < 0 ? "-" : "", body };
+      return { prefix: coeff < 0 ? " - " : " + ", body };
     }
 
     function nodeEquationRhs(assembled, row) {
@@ -6091,6 +7142,38 @@
       if (!branch) return;
       commitHistory();
       invalidateMathCaches();
+      if (field === "switchCount") {
+        setSwitchCaseCount(branch, value);
+        render();
+        return;
+      }
+      if (field === "switchActive") {
+        setActiveSwitchCase(branch, value);
+        render();
+        return;
+      }
+      if (field === "switchCaseName") {
+        const activeCase = activeSwitchCase(branch);
+        if (activeCase) activeCase.name = value.trim() || `Case ${(branch.activeSwitchCase || 0) + 1}`;
+        render();
+        return;
+      }
+      if (field === "formulaHighlightEnabled") {
+        branch.formulaHighlightEnabled = Boolean(value);
+        if (!branch.formulaHighlightColor) branch.formulaHighlightColor = "#ef4444";
+        render();
+        return;
+      }
+      if (field === "formulaHighlightCanvas") {
+        branch.formulaHighlightCanvas = Boolean(value);
+        render();
+        return;
+      }
+      if (field === "formulaHighlightColor") {
+        branch.formulaHighlightColor = /^#[0-9A-Fa-f]{6}$/.test(String(value)) ? String(value) : "#ef4444";
+        render();
+        return;
+      }
       if (field === "width" || field === "height") {
         const min = field === "width" ? 70 : 40;
         const max = field === "width" ? 420 : 360;
@@ -6103,11 +7186,16 @@
       if (branch.kind === "single_phase_transformer") {
         if (field.startsWith("node.")) branch.nodes[field.slice(5)] = value.trim();
         else if (field === "ihisVector") {
-          const oldIhisVector = branch.ihisVector;
-          branch.ihisVector = value.trim();
-          syncTransformerCurrentHistoryTerms(branch, oldIhisVector);
+          const oldIhisVector = branchValue(branch, "ihisVector");
+          if (!setBranchSwitchedValue(branch, field, value.trim())) {
+            branch.ihisVector = value.trim();
+            syncTransformerCurrentHistoryTerms(branch, oldIhisVector);
+          }
         }
-        else if (field === "name" || field === "gMatrix") branch[field] = value.trim();
+        else if (field === "gMatrix") {
+          if (!setBranchSwitchedValue(branch, field, value.trim())) branch[field] = value.trim();
+        }
+        else if (field === "name") branch[field] = value.trim();
         else if (field.startsWith("current.")) {
           const [, index, key] = field.split(".");
           branch.currents[Number(index)][key] = value.trim();
@@ -6117,7 +7205,10 @@
       }
       if (branch.kind === "custom_n_port") {
         if (field.startsWith("node.")) branch.nodes[field.slice(5)] = value.trim();
-        else if (field === "name" || field === "gMatrix" || field === "ihisVector") branch[field] = value.trim();
+        else if (field === "gMatrix" || field === "ihisVector") {
+          if (!setBranchSwitchedValue(branch, field, value.trim())) branch[field] = value.trim();
+        }
+        else if (field === "name") branch[field] = value.trim();
         else if (field === "portLayout") branch.portLayout = parsePortLayout(value, branch);
         else if (field === "observerCount") resizeCustomObservers(branch, value);
         else if (field.startsWith("current.")) {
@@ -6130,12 +7221,36 @@
         renderAfterSidePanelEdit();
         return;
       }
+      if (field === "g" || field === "ihis") {
+        if (!setBranchSwitchedValue(branch, field, value.trim())) branch[field] = value.trim();
+        renderAfterSidePanelEdit();
+        return;
+      }
       if (field === "externalA" || field === "externalB") {
         branch[field] = value;
       } else {
         branch[field] = value.trim();
       }
       renderAfterSidePanelEdit();
+    }
+
+    async function updatePackagedInnerCase(branch, innerIndex, caseIndex) {
+      if (!branch?.packageOriginal?.branches?.[innerIndex]) return;
+      const inner = branch.packageOriginal.branches[innerIndex];
+      normalizeSwitchCases(inner);
+      if (!inner.switchCases?.length) return;
+      const nextIndex = Math.max(0, Math.min(inner.switchCases.length - 1, Number(caseIndex) || 0));
+      if ((Number(inner.activeSwitchCase) || 0) === nextIndex) return;
+      commitHistory();
+      inner.activeSwitchCase = nextIndex;
+      statusEl.textContent = `${branch.name}: ${inner.name || inner.id} switch -> ${inner.switchCases[nextIndex]?.name || `Case ${nextIndex + 1}`}`;
+      try {
+        await recomputePackagedBox(branch);
+        render();
+      } catch (error) {
+        statusEl.textContent = `打包黑盒重算失败：${error.message || String(error)}`;
+        render();
+      }
     }
 
     function defaultCustomObserver(branch, index) {
@@ -6229,6 +7344,8 @@
       if (branch.kind === "single_phase_transformer") {
         editor.innerHTML = `
           ${editableField("元件名", "name", branch.name)}
+          ${switchCaseEditor(branch)}
+          ${branchHighlightEditor(branch)}
           <div class="row">
             ${editableField("宽度", "width", branch.width || 170)}
             ${editableField("高度", "height", branch.height || 112)}
@@ -6238,8 +7355,9 @@
               ${editableField(`${side} 节点`, `node.${side}`, branch.nodes[side])}
             `).join("")}
           </div>
-          ${editableField("局部 G 矩阵", "gMatrix", branch.gMatrix, true)}
-          ${editableField("局部 Ihis 向量", "ihisVector", branch.ihisVector, true)}
+          ${branch.packageOriginal
+            ? `${readonlyMultilineField("局部 G 矩阵", branchValue(branch, "gMatrix"))}${readonlyMultilineField("局部 Ihis 向量", branchValue(branch, "ihisVector"))}`
+            : `${editableField("局部 G 矩阵", "gMatrix", branchValue(branch, "gMatrix"), true)}${editableField("局部 Ihis 向量", "ihisVector", branchValue(branch, "ihisVector"), true)}`}
           ${branch.currents.map((current, index) => `
             ${editableField(`观测电流 ${index + 1}`, `current.${index}.name`, current.name)}
             <div class="row">
@@ -6249,6 +7367,7 @@
             ${editableField("公式", `current.${index}.expression`, current.expression)}
           `).join("")}
         `;
+        bindEditorInputs();
         bindEditorEditButtons();
         return;
       }
@@ -6259,6 +7378,8 @@
         editor.innerHTML = `
           ${packagedInfo(branch)}
           ${editableField("元件名", "name", branch.name)}
+          ${branch.packageOriginal ? packagedCaseEditor(branch) : switchCaseEditor(branch)}
+          ${branchHighlightEditor(branch)}
           <div class="row">
             ${editableField("宽度", "width", branch.width || 170)}
             ${editableField("高度", "height", branch.height || 120)}
@@ -6274,8 +7395,8 @@
               : readonlyField(`${side} 节点`, terminalNetName(terminalKey(branch.id, side)))
             ).join("")}
           </div>
-          ${editableField("局部 G 矩阵", "gMatrix", branch.gMatrix, true)}
-          ${editableField("局部 Ihis 向量", "ihisVector", branch.ihisVector, true)}
+          ${editableField("局部 G 矩阵", "gMatrix", branchValue(branch, "gMatrix"), true)}
+          ${editableField("局部 Ihis 向量", "ihisVector", branchValue(branch, "ihisVector"), true)}
           ${editableField("端口显示布局", "portLayout", JSON.stringify(customPortLayout(branch), null, 2), true)}
           <div class="row">
             <button class="text-button" id="alignPortRoots" type="button">端口根部对齐</button>
@@ -6314,6 +7435,7 @@
             <div id="blackBoxValidationResult" class="formula-empty">${escapeHtml(tr("正在校验黑盒支路电流观测器..."))}</div>
           `}
         `;
+        bindEditorInputs();
         bindEditorEditButtons();
         bindAutoAlignPortsButton(branch.id);
         if (!branch.packageOriginal) renderBlackBoxValidationAsync(branch.id);
@@ -6322,6 +7444,8 @@
 
       editor.innerHTML = `
         ${editableField("支路名", "name", branch.name)}
+        ${switchCaseEditor(branch)}
+        ${branchHighlightEditor(branch)}
         <div class="row">
           ${editableField("宽度", "width", branch.width || 150)}
           ${editableField("高度", "height", branch.height || 48)}
@@ -6330,8 +7454,8 @@
           ${editableField("A 节点", "nodeA", branch.nodeA)}
           ${editableField("B 节点", "nodeB", branch.nodeB)}
         </div>
-        ${editableField("G", "g", branch.g)}
-        ${editableField("Ihis", "ihis", branch.ihis)}
+        ${editableField("G", "g", branchValue(branch, "g"))}
+        ${editableField("Ihis", "ihis", branchValue(branch, "ihis"))}
         <div class="field">
           <label for="direction">电流方向</label>
           <select id="direction" data-field="direction">
@@ -6379,6 +7503,14 @@
             input.value = input.dataset.lastCommittedValue || input.value;
             input.blur();
           }
+        });
+      });
+      editor.querySelectorAll("[data-package-case-index]").forEach(input => {
+        input.dataset.lastCommittedValue = input.value;
+        input.addEventListener("change", () => {
+          const branch = findBranch(state.selectedId);
+          updatePackagedInnerCase(branch, Number(input.dataset.packageCaseIndex), input.value);
+          input.dataset.lastCommittedValue = input.value;
         });
       });
     }
@@ -6580,8 +7712,8 @@
       const warnings = [];
       if (branch.packageOriginal) return warnings;
       const ports = terminalSides(branch);
-      const gRows = parseMatrixRows(branch.gMatrix);
-      const ihisRows = parseMatrixRows(branch.ihisVector);
+      const gRows = parseMatrixRows(branchValue(branch, "gMatrix"));
+      const ihisRows = parseMatrixRows(branchValue(branch, "ihisVector"));
       if (gRows.length !== ports.length || gRows.some(row => row.length !== ports.length)) {
         warnings.push(`局部 G 矩阵尺寸应为 ${ports.length} x ${ports.length}，并与端口顺序 ${ports.join(", ")} 对应。`);
       }
@@ -6650,8 +7782,8 @@
       const ports = terminalSides(branch);
       return {
         nodes: ports,
-        G_bb: parseMatrixRows(branch.gMatrix),
-        Ihis_bb: parseMatrixRows(branch.ihisVector).map(row => row[0] ?? "0"),
+        G_bb: parseMatrixRows(branchValue(branch, "gMatrix")),
+        Ihis_bb: parseMatrixRows(branchValue(branch, "ihisVector")).map(row => row[0] ?? "0"),
         observers: (branch.currents || []).map(current => ({
           name: current.name || "observer",
           from_node: customObserverNodeId(branch, current.from),
@@ -7219,7 +8351,9 @@
 
         const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
         const currentHighlight = branchCurrentHighlight(branch);
-        group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}`);
+        const canvasHighlight = branchCanvasHighlight(branch);
+        group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}${canvasHighlight.className}`);
+        if (canvasHighlight.style) group.setAttribute("style", canvasHighlight.style);
         group.setAttribute("transform", `rotate(${branch.rotation} ${branch.x} ${branch.y})`);
         group.dataset.branchId = branch.id;
 
@@ -7230,6 +8364,7 @@
           <rect class="branch-body" x="${bodyX}" y="${bodyY}" width="${bodyWidth}" height="${bodyHeight}" rx="7"></rect>
           <path class="direction" d="${branch.direction === "AtoB" ? `M ${branch.x - 28} ${branch.y - 34} L ${branch.x + 28} ${branch.y - 34}` : `M ${branch.x + 28} ${branch.y - 34} L ${branch.x - 28} ${branch.y - 34}`}"></path>
           <text class="branch-label" x="${branch.x}" y="${branch.y + 5}">${escapeSvg(branch.name)}</text>
+          ${switchCaseLabelSvg(branch, 20)}
           <circle class="port-drag-hit" cx="${posA.x}" cy="${posA.y}" r="24" data-port-side="A"></circle>
           <circle class="port-drag-hit" cx="${posB.x}" cy="${posB.y}" r="24" data-port-side="B"></circle>
           <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "A") ? "hot" : ""}${netHoverClass(netAId)}" cx="${posA.x}" cy="${posA.y}" r="8" data-terminal="${terminalKey(branch.id, "A")}" data-port-side="A"></circle>
@@ -7302,6 +8437,11 @@
           event.stopPropagation();
         });
 
+        group.addEventListener("dblclick", event => {
+          if (event.target.dataset.netId || event.target.dataset.terminal || event.target.dataset.portSide) return;
+          if (cycleSwitchCase(branch)) event.stopPropagation();
+        });
+
         branchLayer.appendChild(group);
       });
     }
@@ -7309,7 +8449,9 @@
     function renderTransformer(branch, selected, nets) {
       const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
       const currentHighlight = branchCurrentHighlight(branch);
+      const canvasHighlight = branchCanvasHighlight(branch);
       group.setAttribute("transform", `rotate(${branch.rotation} ${branch.x} ${branch.y})`);
+      if (canvasHighlight.style) group.setAttribute("style", canvasHighlight.style);
       group.dataset.branchId = branch.id;
       const width = branch.width || 170;
       const height = branch.height || 112;
@@ -7339,6 +8481,7 @@
           return `<path class="transformer-coil" d="M ${x} ${coilTop} C ${x + direction * coilControl} ${branch.y - coilHeight * 0.25}, ${x + direction * coilControl} ${branch.y + coilHeight * 0.25}, ${x} ${coilBottom}"></path>`;
         }).join("")}
         <text class="branch-label" x="${branch.x}" y="${branch.y + 5}">${escapeSvg(branch.name)}</text>
+        ${switchCaseLabelSvg(branch, 22)}
         ${terminals.map(([side, x, y]) => {
           const netId = nets.get(terminalKey(branch.id, side)) || "";
           const net = nodeDisplayName(netId);
@@ -7352,7 +8495,7 @@
           `;
         }).join("")}
       `;
-      group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}`);
+      group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}${canvasHighlight.className}`);
 
       bindBranchGroupInteractions(group, branch);
 
@@ -7362,7 +8505,9 @@
     function renderCustomNPort(branch, selected, nets) {
       const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
       const currentHighlight = branchCurrentHighlight(branch);
-      group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}`);
+      const canvasHighlight = branchCanvasHighlight(branch);
+      group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}${canvasHighlight.className}`);
+      if (canvasHighlight.style) group.setAttribute("style", canvasHighlight.style);
       group.setAttribute("transform", `rotate(${branch.rotation} ${branch.x} ${branch.y})`);
       group.dataset.branchId = branch.id;
 
@@ -7373,7 +8518,7 @@
         const p = terminalDrawPosition(branch, port.id);
         return [port.id, p.x, p.y, port.side];
       });
-      group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}`);
+      group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}${canvasHighlight.className}`);
 
       group.innerHTML = `
         <rect class="hitbox" x="${left - 18}" y="${top - 18}" width="${branch.width + 36}" height="${branch.height + 36}" rx="8"></rect>
@@ -7381,7 +8526,7 @@
         ${customCurrentHoverOverlay(branch, currentHighlight)}
         ${packagedInternalHoverOverlay(branch)}
         <text class="branch-label" x="${branch.x}" y="${branch.y + 5}">${escapeSvg(branch.name)}</text>
-        <text class="node-label" x="${branch.x}" y="${branch.y + 24}">${escapeSvg(terminalSides(branch).length)}-node network</text>
+        ${switchCaseLabelSvg(branch, 22) || `<text class="node-label" x="${branch.x}" y="${branch.y + 24}">${escapeSvg(terminalSides(branch).length)}-node network</text>`}
         ${terminals.map(([side, x, y, edge]) => {
           const netId = nets.get(terminalKey(branch.id, side)) || "";
           const net = nodeDisplayName(netId);
@@ -7645,6 +8790,11 @@
         }
         render();
         event.stopPropagation();
+      });
+
+      group.addEventListener("dblclick", event => {
+        if (event.target.dataset.netId || event.target.dataset.terminal || event.target.dataset.portSide || event.target.dataset.leadAnchorSide) return;
+        if (cycleSwitchCase(branch)) event.stopPropagation();
       });
     }
 

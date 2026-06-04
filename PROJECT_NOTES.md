@@ -13,6 +13,70 @@
 
 前端主要负责绘图、交互、显示和数据组织；后端 Python 负责严格的矩阵消元、符号化简和支路观测电流化简。
 
+## AI Agent 快速入口 / Quick Map
+
+后续 AI agent 接手时，优先读本文件，再按任务读取相关代码。不要一上来重构整个 `index.html`。
+
+### 本地启动
+
+推荐启动方式：
+
+```powershell
+python local_server.py
+```
+
+默认地址：
+
+```text
+http://127.0.0.1:4177/
+```
+
+`local_server.py` 会提供静态页面和后端 API。每次调用 `/reduce-system`、`/validate-blackbox-observers` 时，它会启动对应 Python 子进程，所以修改 `reduce_api.py`、`blackbox_validation_api.py`、`elimination.py` 后通常不需要重启服务；刷新页面或重新触发计算即可。
+
+### 主要代码入口
+
+- `index.html`：单文件前端，包含画布、状态管理、节点组装、i18n、公式渲染、导入导出、YBox 打包拆包。
+- `local_server.py`：推荐本地服务，负责静态文件、保存导出、列出电路、调用 Python API。
+- `reduce_api.py`：节点方程消去 API。解析前端 payload，调用 `elimination.py`，返回 `G_red`、`Ihis_red`、`K_v`、`K_h` 和 reduced observers。
+- `elimination.py`：节点消去的数学核心。当前实现是逐节点 Schur 消去，不显式构造 `inv(G_ii)`。
+- `observers.py`：支路观测电流跟随节点消去后的表达式恢复。
+- `blackbox_validation_api.py`：黑盒 observer 校验 API wrapper。
+- `nodal_tool/blackbox_validation.py`：黑盒 observer 与用户输入 `G/Ihis` 的一致性检查。
+- `server.js`：可选 Node 服务；推荐优先用 Python 服务。
+- `tests/`：回归测试。数学或 API 改动后必须跑。
+
+### 前端到后端的数据流
+
+1. 前端根据当前画布状态把元件和导线整理为全局节点网络。
+2. 前端生成：
+   - `all_nodes`
+   - `voltage_nodes`
+   - `external_nodes`
+   - `G_full`
+   - `Ihis_full`
+   - `observers`
+3. 前端 POST 到 `/reduce-system`。
+4. `local_server.py` 调用 `reduce_api.py`。
+5. `reduce_api.py` 调用 `eliminate_internal_nodes(...)`。
+6. 后端返回 reduced equations 和内部节点恢复公式。
+7. 前端负责缓存、渲染、语言切换后的展示。
+
+### 测试命令
+
+核心 Python 测试：
+
+```powershell
+python -m unittest discover tests -v
+```
+
+前端公式格式化测试：
+
+```powershell
+node tests\frontend_math_formatter_cases.mjs
+```
+
+注意：在某些 Codex / Windows 沙箱中，`node.exe` 可能因为权限被拒绝而跳过或无法启动；这不代表 Python 数学后端失败。
+
 ## 数学约定
 
 全项目统一使用：
@@ -85,6 +149,43 @@ K_v = -inv(G_ii) G_ie
 K_h = -inv(G_ii) Ihis_i
 ```
 
+### 逐节点 Schur 消去实现说明
+
+数学原理仍然是 Schur complement，但后端实现不要显式求 `inv(G_ii)`。原因是：当内部节点较多且矩阵元素是符号表达式时，`G_ii.inv()` 会生成完整符号逆矩阵，中间表达式急剧膨胀，容易导致 `/reduce-system` 超时。
+
+当前 `elimination.py` 使用逐节点消去。对某个内部节点 `k`，设其余节点为 `r`：
+
+```text
+0 = G_kk V_k + G_kr V_r + Ihis_k
+V_k = -(G_kr V_r + Ihis_k) / G_kk
+
+G_rr_new = G_rr - G_rk G_kr / G_kk
+Ihis_r_new = Ihis_r - G_rk Ihis_k / G_kk
+```
+
+连续消去所有内部节点，与一次性分块 Schur complement 等价：
+
+```text
+G_red = G_ee - G_ei inv(G_ii) G_ie
+Ihis_red = Ihis_e - G_ei inv(G_ii) Ihis_i
+```
+
+只是计算顺序不同：逐节点消去避免构造完整 `inv(G_ii)`，更适合符号矩阵。
+
+内部节点恢复公式仍然保留。实现中每消去一个节点，就记录：
+
+```text
+V_k = coeffs * V_remaining + source
+```
+
+最后反向代回，得到：
+
+```text
+V_internal = K_v V_external + K_h
+```
+
+重要：不要为了“看起来更数学”把实现改回 `G_ii.inv()`。如需优化表达式美观，应在小范围输出阶段做轻量处理，不要在核心消去循环里对整矩阵反复 `simplify/cancel`。
+
 ## 后端职责
 
 后端 Python 是数学真值来源。以下功能尽量交给后端：
@@ -102,6 +203,7 @@ K_h = -inv(G_ii) Ihis_i
 - `reduce_api.py`
 - `nodal_tool/blackbox_validation.py`
 - `tests/test_elimination_rl.py`
+- `tests/test_complex_internal_elimination.py`
 - `tests/test_blackbox_observer_validation.py`
 
 每次修改消元逻辑后，至少运行：
@@ -110,7 +212,9 @@ K_h = -inv(G_ii) Ihis_i
 python -m unittest tests.test_elimination_rl -v
 ```
 
-RL 串联测试是核心回归测试，不要删除。
+RL 串联测试是核心回归测试，不要删除。`tests/test_complex_internal_elimination.py` 覆盖了 `YBox3 + UCM_block + P/N 内部节点` 的复杂符号消去场景，防止逐节点 Schur 优化被回退后再次出现 240 秒 timeout。
+
+`reduce_api.py` 的 `_clean_expr` / `_clean_observer_expr` 当前刻意保持轻量字符串输出。不要在 API 输出阶段对大表达式做全量 `sp.simplify()`、`sp.cancel()`、`sp.expand()`，否则可能出现“消去已完成，但格式化输出卡死”的问题。
 
 ## 前端职责
 
@@ -205,6 +309,38 @@ YBox 是被选中电路的打包结果。
 - 只能替换当前选中的 YBox
 - 不能影响画布上其他无关元件
 - 要尽量恢复原始节点名、端口布局、支路观测信息
+
+### Switch cases and provenance highlighting
+
+元件支持开关工况：
+
+- 普通二节点支路的工况字段是 `g` / `ihis`。
+- 变压器和自定义 N 节点黑盒的工况字段是 `gMatrix` / `ihisVector`。
+- `branchValue(branch, field)` 会读取当前 active case；做数学组装时不要直接读 `branch.g`、`branch.ihis`、`branch.gMatrix`、`branch.ihisVector`。
+- 打包黑盒 `branch.packageOriginal` 不允许外层 switch case。它的工况由 `packageOriginal.branches` 中的内部支路决定。
+- 打包黑盒编辑器中的“内部工况”下拉框修改内部支路 `activeSwitchCase`，随后调用本地 SymPy 重新计算打包后的 `G/Ihis` 和 observers。
+
+公式高亮使用 hidden provenance tags：
+
+- 前端组装全局矩阵时，每个 stamp 项保留来源支路 id。
+- 给后端的普通字段仍是 `G_full` / `Ihis_full`，用于普通显示。
+- 同时发送 `G_full_tagged` / `Ihis_full_tagged`，其中 symbol 会带隐藏来源后缀，例如 `R1__bbsrc_B6`。
+- `reduce_api.py` 会单独对 tagged 矩阵跑一次节点消去，并返回 `G_red_tagged`、`Ihis_red_tagged`、`K_v_tagged`、`K_h_tagged`。
+- 前端显示时剥掉 `__bbsrc_*`，但根据 tag 决定哪个 symbol 上色。
+- 当 reduced view 中存在当前高亮支路来源 tag 时，使用 tagged expression 作为渲染骨架，而不是用普通 simplified expression 去猜测来源。这样同名 symbol 不会串色。
+- 代价是：开启公式高亮时，消去版本可能比普通显示更展开。界面里已有 warning 说明这一点。
+- 不要恢复“在整个 matrix cell 里找同名 symbol 作为 fallback”的方案；它会导致同一格内重名 symbol 全部被高亮。
+
+打包黑盒高亮：
+
+- 如果用户高亮打包黑盒，黑盒内部所有原始支路 id 都算作这个黑盒的来源。
+- 这由 `branchHighlightSourceIds(branch)` 负责。
+- 不要只匹配外层 YBox 的 branch id，否则打包后的内部 symbol 无法被高亮。
+
+布局注意：
+
+- 小窗口下 `@media (max-width: 920px)` 会把主区域从两列改成纵向布局，并允许页面滚动。
+- 不要让 `.app` 在窄屏继续强制 `height: 100vh; overflow: hidden;`，否则 output 的长矩阵会覆盖 panel。
 
 ## 导入导出经验
 

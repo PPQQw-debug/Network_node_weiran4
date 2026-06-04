@@ -56,6 +56,14 @@ def _clean_vector(matrix: sp.Matrix) -> list[str]:
     return [_clean_expr(matrix[r, 0]) for r in range(matrix.rows)]
 
 
+def _parse_matrix(rows: list[list[str]]) -> sp.Matrix:
+    return sp.Matrix([[_parse_expr(item) for item in row] for row in rows])
+
+
+def _parse_vector(items: list[str]) -> sp.Matrix:
+    return sp.Matrix([[_parse_expr(item)] for item in items])
+
+
 def _voltage_symbol(name: str) -> sp.Symbol:
     return sp.Symbol(f"V_{name}")
 
@@ -112,8 +120,8 @@ def main() -> None:
     external_nodes = list(payload["external_nodes"])
     voltage_nodes = list(payload.get("voltage_nodes", all_nodes))
 
-    G_full = sp.Matrix([[_parse_expr(item) for item in row] for row in payload["G_full"]])
-    Ihis_full = sp.Matrix([[_parse_expr(item)] for item in payload["Ihis_full"]])
+    G_full = _parse_matrix(payload["G_full"])
+    Ihis_full = _parse_vector(payload["Ihis_full"])
 
     result = eliminate_internal_nodes(G_full, Ihis_full, all_nodes, external_nodes)
     voltage_by_node = dict(zip(all_nodes, voltage_nodes))
@@ -134,20 +142,34 @@ def main() -> None:
             }
         )
 
-    json.dump(
-        {
-            "ok": True,
-            "external_nodes": result.external_nodes,
-            "internal_nodes": result.internal_nodes,
-            "G_red": _clean_matrix(result.G_red),
-            "Ihis_red": _clean_vector(result.Ihis_red),
-            "K_v": _clean_matrix(result.K_v),
-            "K_h": _clean_vector(result.K_h),
-            "reduced_observers": reduced_observers,
-        },
-        sys.stdout,
-        ensure_ascii=False,
-    )
+    response = {
+        "ok": True,
+        "external_nodes": result.external_nodes,
+        "internal_nodes": result.internal_nodes,
+        "G_red": _clean_matrix(result.G_red),
+        "Ihis_red": _clean_vector(result.Ihis_red),
+        "K_v": _clean_matrix(result.K_v),
+        "K_h": _clean_vector(result.K_h),
+        "reduced_observers": reduced_observers,
+    }
+
+    if payload.get("G_full_tagged") is not None and payload.get("Ihis_full_tagged") is not None:
+        tagged_result = eliminate_internal_nodes(
+            _parse_matrix(payload["G_full_tagged"]),
+            _parse_vector(payload["Ihis_full_tagged"]),
+            all_nodes,
+            external_nodes,
+        )
+        response.update(
+            {
+                "G_red_tagged": _clean_matrix(tagged_result.G_red),
+                "Ihis_red_tagged": _clean_vector(tagged_result.Ihis_red),
+                "K_v_tagged": _clean_matrix(tagged_result.K_v),
+                "K_h_tagged": _clean_vector(tagged_result.K_h),
+            }
+        )
+
+    json.dump(response, sys.stdout, ensure_ascii=False)
 
 
 if __name__ == "__main__":

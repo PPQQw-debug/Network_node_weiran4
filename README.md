@@ -14,6 +14,10 @@ Branch Builder 是一个本地运行的浏览器工具，用于绘制和分析�
 - Reduce internal nodes with Schur complement logic.
 - Display internal-node voltage recovery formulas.
 - Define and validate branch-current observers for black-box components.
+- Define per-component switch cases for `G` and `Ihis`, then double-click a component on the canvas to switch cases.
+- Highlight a selected branch in formulas, the canvas, or both. Reduced formulas use hidden provenance tags so same-name symbols from different branches do not cross-highlight.
+- Switch internal cases inside packaged Y-box components and recompute the packaged `G`, `Ihis`, and observer formulas.
+- Generate a Python Draft with full and reduced matrices, internal-node recovery expressions, and reusable symbolic setup.
 - Import and export circuit JSON files.
 - Save exported circuits into the local `exports/` folder.
 - Switch between Chinese and English UI text.
@@ -26,9 +30,29 @@ Branch Builder 是一个本地运行的浏览器工具，用于绘制和分析�
 - 使用 Schur complement 对内部节点进行消去。
 - 显示内部节点电压恢复公式。
 - 为黑盒元件定义和校验支路观测电流。
+- 为元件定义多个 `G`/`Ihis` 开关工况，并可在画布中双击元件切换。
+- 支持支路公式高亮和画布高亮；消去公式使用隐藏来源标签，避免同名 symbol 在不同支路之间串色。
+- 打包后的 YBox 可以切换内部支路工况，并重新计算打包后的 `G`、`Ihis` 和观测公式。
+- Python 草稿可输出完整矩阵、消去矩阵、内部节点恢复表达式和可复用的符号设置。
 - 导入和导出电路 JSON 文件。
 - 将导出的电路保存到本地 `exports/` 文件夹。
 - 支持中英文界面切换。
+
+## Recent Updates / 最近更新
+
+- Switch cases are stored with each component. For ordinary branches, edit case-specific `G` and `Ihis`; for matrix components, edit case-specific local `G` and `Ihis` matrices. Double-click the component to cycle cases.
+- Packaged Y-boxes do not use an outer switch case. Instead, their editor lists internal branches that have multiple cases; changing an internal case recomputes the packaged box through the local SymPy backend.
+- Formula highlighting is provenance-aware. The app sends hidden tagged expressions to the backend and strips the tags before display. When formula highlighting is enabled in reduced equations, some merged symbolic terms may appear more expanded so that the highlight remains trustworthy.
+- The reduced view shows a warning when provenance-based highlighting is active.
+- Small-window layout has been improved so the side panel and formula output no longer overlap when the browser window is narrow.
+
+中文最近更新：
+
+- 开关工况保存在每个元件上。普通支路可编辑每个工况的 `G` 和 `Ihis`；矩阵元件可编辑每个工况的局部 `G` 矩阵和 `Ihis` 向量。画布中双击元件可切换工况。
+- 打包后的 YBox 不使用外层 switch case。它会在编辑器中列出内部具有多个工况的支路；切换内部工况后，通过本地 SymPy 后端重新计算打包黑盒。
+- 公式高亮带有来源追踪。前端会把隐藏标签表达式发送给后端，显示时再去掉标签。开启消去公式高亮时，部分合并项可能比普通显示更展开，以保证高亮来源可信。
+- 消去版本在启用来源高亮时会显示提示说明。
+- 小窗口布局已优化，浏览器窗口较窄时右侧面板和公式输出不会互相覆盖。
 
 ## Requirements / 环境要求
 
