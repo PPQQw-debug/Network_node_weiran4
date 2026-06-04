@@ -1,14 +1,14 @@
 {
   "fileType": "branch-builder-circuit",
   "version": 2,
-  "savedAt": "2026-06-01T21:11:17.180Z",
+  "savedAt": "2026-06-01T21:17:39.957Z",
   "world": {
     "width": 1600,
     "height": 1000
   },
   "canvases": [
     {
-      "id": "canvas2",
+      "id": "canvas3",
       "name": "画布 2",
       "data": {
         "name": "画布 2",
@@ -1213,7 +1213,1353 @@
           {
             "key": "{\"language\":\"zh\",\"payload\":{\"all_nodes\":[\"N7\",\"N8\",\"N11\",\"N9\",\"N10\",\"N12\",\"N13\",\"N1\",\"N2\",\"N3\",\"N4\",\"N5\",\"N6\"],\"voltage_nodes\":[\"A\",\"B\",\"C\",\"G\",\"RC_a\",\"RC_b\",\"RC_c\",\"x\",\"y\",\"z\",\"P\",\"N\",\"O\"],\"node_display_names\":{\"N7\":\"A\",\"N8\":\"B\",\"N11\":\"C\",\"N9\":\"G\",\"N10\":\"RC_a\",\"N12\":\"RC_b\",\"N13\":\"RC_c\",\"N1\":\"x\",\"N2\":\"y\",\"N3\":\"z\",\"N4\":\"P\",\"N5\":\"N\",\"N6\":\"O\"},\"external_nodes\":[\"N7\",\"N8\",\"N11\",\"N9\",\"N10\",\"N12\",\"N13\",\"N4\",\"N5\",\"N6\"],\"internal_nodes\":[\"N1\",\"N2\",\"N3\"],\"G_full\":[[\"2*G11 + 2*w1\",\"-G11 - w1\",\"-G11 - w1\",\"0\",\"0\",\"0\",\"0\",\"G12\",\"0\",\"-G12\",\"0\",\"0\",\"0\"],[\"-G11 - w1\",\"2*G11 + 2*w1\",\"-G11 - w1\",\"0\",\"0\",\"0\",\"0\",\"-G12\",\"G12\",\"0\",\"0\",\"0\",\"0\"],[\"-G11 - w1\",\"-G11 - w1\",\"2*G11 + 2*w1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"-G12\",\"G12\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"3*G22 + 3*w2\",\"0\",\"0\",\"0\",\"-G22 - w2\",\"-G22 - w2\",\"-G22 - w2\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"G_rc\",\"0\",\"0\",\"-G_rc\",\"0\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"G_rc\",\"0\",\"0\",\"-G_rc\",\"0\",\"0\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"G_rc\",\"0\",\"0\",\"-G_rc\",\"0\",\"0\",\"0\"],[\"G12\",\"-G12\",\"0\",\"-G22 - w2\",\"-G_rc\",\"0\",\"0\",\"AA + G22 + G_rc + w2\",\"0\",\"0\",\"AP\",\"AN\",\"0\"],[\"0\",\"G12\",\"-G12\",\"-G22 - w2\",\"0\",\"-G_rc\",\"0\",\"0\",\"BB + G22 + G_rc + w2\",\"0\",\"BP\",\"BN\",\"0\"],[\"-G12\",\"0\",\"G12\",\"-G22 - w2\",\"0\",\"0\",\"-G_rc\",\"0\",\"0\",\"CC + G22 + G_rc + w2\",\"CP\",\"CN\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"AP\",\"BP\",\"CP\",\"PP + gC\",\"PN\",\"-gC\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"AN\",\"BN\",\"CN\",\"PN\",\"NN + gC\",\"-gC\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"-gC\",\"-gC\",\"2*gC\"]],\"Ihis_full\":[\"Ihis_A - Ihis_C\",\"-Ihis_A + Ihis_B\",\"-Ihis_B + Ihis_C\",\"-Ihis_a - Ihis_b - Ihis_c\",\"-IAhis_rc\",\"-IBhis_rc\",\"-IChis_rc\",\"Ihis_exclude_c0 + Ihis_a + IAhis_rc\",\"Ihis_exclude_c1 + Ihis_b + IBhis_rc\",\"Ihis_exclude_c2 + Ihis_c + IChis_rc\",\"Ihis_exclude_c3 + IC_his0\",\"Ihis_exclude_c4 + IC_his1\",\"-IC_his0 - IC_his1\"]}}",
             "html": "\n        <div class=\"formula-list\">\n          <div class=\"formula-card\">\n            <div class=\"formula-name\">节点划分</div>\n            <div class=\"formula-line\">\n              <span class=\"formula-rhs\">外部: A, B, C, G, RC_a, RC_b, RC_c, P, N, O; 内部: x, y, z</span>\n            </div>\n          </div>\n          <div class=\"formula-card\">\n            <div class=\"formula-name\">节点方程消去版本</div>\n            <div class=\"matrix-equation\">\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\">I<sub>A</sub></span><span class=\"matrix-cell\">I<sub>B</sub></span><span class=\"matrix-cell\">I<sub>C</sub></span><span class=\"matrix-cell\">I<sub>G</sub></span><span class=\"matrix-cell\">I<sub>RC,a</sub></span><span class=\"matrix-cell\">I<sub>RC,b</sub></span><span class=\"matrix-cell\">I<sub>RC,c</sub></span><span class=\"matrix-cell\">I<sub>P</sub></span><span class=\"matrix-cell\">I<sub>N</sub></span><span class=\"matrix-cell\">I<sub>O</sub></span></span>\n              <span class=\"formula-eq\">=</span>\n              <span class=\"matrix\" style=\"grid-template-columns: repeat(10, minmax(58px, auto));\"><span class=\"matrix-cell\">2 · G<sub>11</sub> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> 2 · w<sub>1</sub></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AA <span class=\"math-op\">-</span> CC) · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AP · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> CP · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AN · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> CN · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">2 · G<sub>11</sub> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> 2 · w<sub>1</sub></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AA <span class=\"math-op\">-</span> BB) · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AP · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> BP · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AN · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> BN · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">2 · G<sub>11</sub> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> 2 · w<sub>1</sub></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (BB <span class=\"math-op\">-</span> CC) · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">(BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (BP · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> CP · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (BN · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> CN · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AA <span class=\"math-op\">-</span> CC) · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AA <span class=\"math-op\">-</span> BB) · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (BB <span class=\"math-op\">-</span> CC) · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">(BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\">3 · G<sub>22</sub> <span class=\"math-op\">+</span> 3 · w<sub>2</sub> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)<sup>2</sup></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)<sup>2</sup></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)<sup>2</sup></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AP · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">BP · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">CP · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AN · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">BN · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">CN · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AP · G<sub>rc</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AN · G<sub>rc</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">BP · G<sub>rc</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">BN · G<sub>rc</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">CP · G<sub>rc</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">CN · G<sub>rc</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AP · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> CP · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AP · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> BP · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (BP · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> CP · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AP · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">BP · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">CP · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AP · G<sub>rc</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">BP · G<sub>rc</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">CP · G<sub>rc</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">AP<sup>2</sup></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">BP<sup>2</sup></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">CP<sup>2</sup></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> PP <span class=\"math-op\">+</span> gC</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">AN · AP</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">BN · BP</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">CN · CP</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> PN</span><span class=\"matrix-cell\">-gC</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AN · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> CN · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AN · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> BN · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (BN · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) <span class=\"math-op\">-</span> CN · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">(BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AN · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">BN · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">CN · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AN · G<sub>rc</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">BN · G<sub>rc</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">CN · G<sub>rc</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">AN · AP</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">BN · BP</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">CN · CP</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> PN</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">AN<sup>2</sup></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">BN<sup>2</sup></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">CN<sup>2</sup></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> NN <span class=\"math-op\">+</span> gC</span><span class=\"matrix-cell\">-gC</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-gC</span><span class=\"matrix-cell\">-gC</span><span class=\"matrix-cell\">2 · gC</span></span>\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\">V<sub>A</sub></span><span class=\"matrix-cell\">V<sub>B</sub></span><span class=\"matrix-cell\">V<sub>C</sub></span><span class=\"matrix-cell\">V<sub>G</sub></span><span class=\"matrix-cell\">V<sub>RC,a</sub></span><span class=\"matrix-cell\">V<sub>RC,b</sub></span><span class=\"matrix-cell\">V<sub>RC,c</sub></span><span class=\"matrix-cell\">V<sub>P</sub></span><span class=\"matrix-cell\">V<sub>N</sub></span><span class=\"matrix-cell\">V<sub>O</sub></span></span>\n              <span class=\"formula-eq\">+</span>\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> Ihis<sub>A</sub> <span class=\"math-op\">-</span> Ihis<sub>C</sub></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> Ihis<sub>A</sub> <span class=\"math-op\">+</span> Ihis<sub>B</sub></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> Ihis<sub>B</sub> <span class=\"math-op\">+</span> Ihis<sub>C</sub></span><span class=\"matrix-cell\">-Ihis<sub>a</sub> <span class=\"math-op\">-</span> Ihis<sub>b</sub> <span class=\"math-op\">-</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> <span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>) <span class=\"math-op\">-</span> IAhis<sub>rc</sub> · (AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>) <span class=\"math-op\">-</span> IBhis<sub>rc</sub> · (BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>) <span class=\"math-op\">-</span> IChis<sub>rc</sub> · (CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">AP · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">BP · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">CP · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> IC<sub>his0</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c3</sub></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">AN · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>)</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">BN · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>)</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">-</span> <span class=\"math-frac\"><span class=\"math-frac-num\">CN · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>)</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span> <span class=\"math-op\">+</span> IC<sub>his1</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c4</sub></span><span class=\"matrix-cell\">-IC<sub>his0</sub> <span class=\"math-op\">-</span> IC<sub>his1</sub></span></span>\n            </div>\n          </div>\n          <div class=\"formula-card\">\n            <div class=\"formula-name\">内部节点电压恢复公式</div>\n            <div class=\"matrix-equation\">\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\">V<sub>x</sub></span><span class=\"matrix-cell\">V<sub>y</sub></span><span class=\"matrix-cell\">V<sub>z</sub></span></span>\n              <span class=\"formula-eq\">=</span>\n              <span class=\"matrix\" style=\"grid-template-columns: repeat(10, minmax(58px, auto));\"><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">AP</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">AN</span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">BP</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">BN</span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">CP</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">CN</span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span></span>\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\">V<sub>A</sub></span><span class=\"matrix-cell\">V<sub>B</sub></span><span class=\"matrix-cell\">V<sub>C</sub></span><span class=\"matrix-cell\">V<sub>G</sub></span><span class=\"matrix-cell\">V<sub>RC,a</sub></span><span class=\"matrix-cell\">V<sub>RC,b</sub></span><span class=\"matrix-cell\">V<sub>RC,c</sub></span><span class=\"matrix-cell\">V<sub>P</sub></span><span class=\"matrix-cell\">V<sub>N</sub></span><span class=\"matrix-cell\">V<sub>O</sub></span></span>\n              <span class=\"formula-eq\">+</span>\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-IAhis<sub>rc</sub> <span class=\"math-op\">-</span> Ihis<sub>a</sub> <span class=\"math-op\">-</span> Ihis<sub>exclude,c0</sub></span><span class=\"math-frac-den\">AA <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-IBhis<sub>rc</sub> <span class=\"math-op\">-</span> Ihis<sub>b</sub> <span class=\"math-op\">-</span> Ihis<sub>exclude,c1</sub></span><span class=\"math-frac-den\">BB <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-IChis<sub>rc</sub> <span class=\"math-op\">-</span> Ihis<sub>c</sub> <span class=\"math-op\">-</span> Ihis<sub>exclude,c2</sub></span><span class=\"math-frac-den\">CC <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span></span>\n            </div>\n          </div>\n          \n        </div>\n      ",
-            "savedAt": "2026-06-01T21:11:17.180Z"
+            "savedAt": "2026-06-01T21:12:46.341Z"
+          }
+        ],
+        "history": [
+          "{\"branches\":[],\"wires\":[],\"selectedId\":null,\"selectedIds\":[],\"selectedNetIds\":[],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{},\"nodeColors\":{},\"internalNodes\":[],\"nextBranch\":1,\"nextTransformer\":1,\"nextCustom\":1,\"nextWire\":1}"
+        ],
+        "future": []
+      }
+    },
+    {
+      "id": "canvas4",
+      "name": "画布 2",
+      "data": {
+        "name": "画布 2",
+        "branches": [
+          {
+            "id": "C1",
+            "name": "UCM_deblock",
+            "kind": "custom_n_port",
+            "x": 1150.7794800217594,
+            "y": 611.0999999999999,
+            "width": 116,
+            "height": 200,
+            "rotation": 0,
+            "ports": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5"
+            ],
+            "nodes": {
+              "P1": "c5_p1",
+              "P2": "c5_p2",
+              "P3": "c5_p3",
+              "P4": "c5_p4",
+              "P5": "c5_p5"
+            },
+            "portLayout": [
+              {
+                "id": "P1",
+                "side": "left",
+                "t": 0.20849999999999994,
+                "axis": 0,
+                "order": 0
+              },
+              {
+                "id": "P2",
+                "side": "left",
+                "t": 0.522742797851563,
+                "axis": 0,
+                "order": 1
+              },
+              {
+                "id": "P3",
+                "side": "left",
+                "t": 0.8,
+                "axis": 0,
+                "order": 2
+              },
+              {
+                "id": "P4",
+                "side": "top",
+                "t": 0.9198275862068964,
+                "axis": 0,
+                "order": 0
+              },
+              {
+                "id": "P5",
+                "side": "bottom",
+                "t": 0.9198275862068964,
+                "axis": 0,
+                "order": 0
+              }
+            ],
+            "gMatrix": "[\n[Dabc, 0, 0, AP, AN],\n[0, Dabc, 0, BP, BN],\n[0, 0, Dabc, CP, CN],\n[AP, BP, CP, PP, PN],\n[AN, BN, CN, PN, NN]\n]",
+            "ihisVector": "[[Ihis_exclude_c0], [Ihis_exclude_c1], [Ihis_exclude_c2], [Ihis_exclude_c3], [Ihis_exclude_c4]]",
+            "currents": [],
+            "leadAnchors": {
+              "P1": {
+                "x": -58,
+                "y": -58.3,
+                "side": "left"
+              },
+              "P2": {
+                "x": -58,
+                "y": 4.5,
+                "side": "left"
+              },
+              "P3": {
+                "x": -58,
+                "y": 60,
+                "side": "left"
+              },
+              "P4": {
+                "x": 48.7,
+                "y": -100,
+                "side": "top"
+              },
+              "P5": {
+                "x": 48.7,
+                "y": 100,
+                "side": "bottom"
+              }
+            },
+            "terminalLayout": {
+              "P4": {
+                "x": 48.7,
+                "y": -121.9
+              },
+              "P5": {
+                "x": 48.7,
+                "y": 119.6
+              },
+              "P1": {
+                "x": -114.5,
+                "y": -58.3
+              },
+              "P2": {
+                "x": -113.9,
+                "y": 1.2
+              },
+              "P3": {
+                "x": -114.5,
+                "y": 60
+              }
+            }
+          },
+          {
+            "id": "B1",
+            "name": "R1",
+            "kind": "two_node_branch",
+            "x": 1251.5914459228516,
+            "y": 545,
+            "width": 70,
+            "height": 40,
+            "rotation": 90,
+            "nodeA": "n26a",
+            "nodeB": "n26b",
+            "g": "gC",
+            "ihis": "IC_his0",
+            "direction": "AtoB",
+            "terminalLayout": {
+              "A": {
+                "x": -55.8,
+                "y": 0
+              },
+              "B": {
+                "x": 51.8,
+                "y": 0
+              }
+            }
+          },
+          {
+            "id": "B2",
+            "name": "R2",
+            "kind": "two_node_branch",
+            "x": 1251.5914459228516,
+            "y": 678.9000000000001,
+            "width": 70,
+            "height": 40,
+            "rotation": 90,
+            "nodeA": "n12a",
+            "nodeB": "n12b",
+            "g": "gC",
+            "ihis": "-IC_his1",
+            "direction": "AtoB",
+            "terminalLayout": {
+              "A": {
+                "x": -55.8,
+                "y": 0
+              },
+              "B": {
+                "x": 51.8,
+                "y": 0
+              }
+            }
+          },
+          {
+            "id": "C2",
+            "name": "YBox5",
+            "kind": "custom_n_port",
+            "x": 885,
+            "y": 626.3711949993735,
+            "width": 136,
+            "height": 138,
+            "rotation": 0,
+            "ports": [
+              "P1",
+              "P2",
+              "P3",
+              "P4",
+              "P5",
+              "P6",
+              "P7",
+              "P8",
+              "P9",
+              "P10"
+            ],
+            "nodes": {
+              "P1": "x",
+              "P2": "y",
+              "P3": "B",
+              "P4": "G",
+              "P5": "z",
+              "P6": "A",
+              "P7": "RC_b",
+              "P8": "RC_a",
+              "P9": "RC_c",
+              "P10": "C"
+            },
+            "portLayout": [
+              {
+                "id": "P6",
+                "side": "left",
+                "t": 0.3804347826086957,
+                "axis": 0,
+                "order": 0,
+                "sortValue": 452.86185662046734
+              },
+              {
+                "id": "P3",
+                "side": "left",
+                "t": 0.5594202898550724,
+                "axis": 0,
+                "order": 1,
+                "sortValue": 477.5618566204673
+              },
+              {
+                "id": "P10",
+                "side": "left",
+                "t": 0.7804347826086956,
+                "axis": 0,
+                "order": 2,
+                "sortValue": 508.0618566204673
+              },
+              {
+                "id": "P1",
+                "side": "right",
+                "t": 0.08,
+                "axis": 0,
+                "order": 0,
+                "sortValue": 395.76185662046737
+              },
+              {
+                "id": "P2",
+                "side": "right",
+                "t": 0.39782608695652155,
+                "axis": 0,
+                "order": 1,
+                "sortValue": 455.2618566204673
+              },
+              {
+                "id": "P5",
+                "side": "right",
+                "t": 0.6797101449275363,
+                "axis": 0,
+                "order": 2,
+                "sortValue": 494.16185662046735
+              },
+              {
+                "id": "P4",
+                "side": "top",
+                "t": 0.46397058823529347,
+                "axis": 0,
+                "order": 0,
+                "sortValue": 1571.4059844970702
+              },
+              {
+                "id": "P8",
+                "side": "bottom",
+                "t": 0.25220588235294084,
+                "axis": 0,
+                "order": 0,
+                "sortValue": 1542.6059844970703
+              },
+              {
+                "id": "P7",
+                "side": "bottom",
+                "t": 0.5073529411764706,
+                "axis": 0,
+                "order": 1,
+                "sortValue": 1577.3059844970703
+              },
+              {
+                "id": "P9",
+                "side": "bottom",
+                "t": 0.6948529411764706,
+                "axis": 0,
+                "order": 2,
+                "sortValue": 1602.8059844970703
+              }
+            ],
+            "gMatrix": "[[G22 + G_rc + w2, 0, -G12, -G22 - w2, 0, G12, 0, -G_rc, 0, 0], [0, G22 + G_rc + w2, G12, -G22 - w2, 0, 0, -G_rc, 0, 0, -G12], [-G12, G12, 2*G11 + 2*w1, 0, 0, -G11 - w1, 0, 0, 0, -G11 - w1], [-G22 - w2, -G22 - w2, 0, 3*G22 + 3*w2, -G22 - w2, 0, 0, 0, 0, 0], [0, 0, 0, -G22 - w2, G22 + G_rc + w2, -G12, 0, 0, -G_rc, G12], [G12, 0, -G11 - w1, 0, -G12, 2*G11 + 2*w1, 0, 0, 0, -G11 - w1], [0, -G_rc, 0, 0, 0, 0, G_rc, 0, 0, 0], [-G_rc, 0, 0, 0, 0, 0, 0, G_rc, 0, 0], [0, 0, 0, 0, -G_rc, 0, 0, 0, G_rc, 0], [0, -G12, -G11 - w1, 0, G12, -G11 - w1, 0, 0, 0, 2*G11 + 2*w1]]",
+            "ihisVector": "[[IAhis_rc + Ihis_a], [IBhis_rc + Ihis_b], [-Ihis_A + Ihis_B], [-Ihis_a - Ihis_b - Ihis_c], [IChis_rc + Ihis_c], [Ihis_A - Ihis_C], [-IBhis_rc], [-IAhis_rc], [-IChis_rc], [-Ihis_B + Ihis_C]]",
+            "currents": [
+              {
+                "name": "Tr5_primary",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "A",
+                "toLabel": "B",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "G11*V_P6 - G11*V_P3 - G12*V_P4 + G12*V_P1 + Ihis_A"
+              },
+              {
+                "name": "Tr5_secondary",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "a",
+                "toLabel": "G",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "G12*V_P6 - G12*V_P3 - G22*V_P4 + G22*V_P1 + Ihis_a"
+              },
+              {
+                "name": "R8",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "a",
+                "toLabel": "RC_a",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "-G_rc*V_P8 + G_rc*V_P1 + IAhis_rc"
+              },
+              {
+                "name": "Tr6_primary",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "B",
+                "toLabel": "C",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "G11*V_P3 - G11*V_P10 - G12*V_P4 + G12*V_P2 + Ihis_B"
+              },
+              {
+                "name": "Tr6_secondary",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "b",
+                "toLabel": "G",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "G12*V_P3 - G12*V_P10 - G22*V_P4 + G22*V_P2 + Ihis_b"
+              },
+              {
+                "name": "R9",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "b",
+                "toLabel": "RC_b",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "-G_rc*V_P7 + G_rc*V_P2 + IBhis_rc"
+              },
+              {
+                "name": "Tr7_primary",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "C",
+                "toLabel": "A",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "-G11*V_P6 + G11*V_P10 - G12*V_P4 + G12*V_P5 + Ihis_C"
+              },
+              {
+                "name": "Tr7_secondary",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "c",
+                "toLabel": "G",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "-G12*V_P6 + G12*V_P10 - G22*V_P4 + G22*V_P5 + Ihis_c"
+              },
+              {
+                "name": "R10",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "c",
+                "toLabel": "RC_c",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "-G_rc*V_P9 + G_rc*V_P5 + IChis_rc"
+              },
+              {
+                "name": "R12",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "A",
+                "toLabel": "B",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "V_P6*w1 - V_P3*w1"
+              },
+              {
+                "name": "R13",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "B",
+                "toLabel": "C",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "V_P3*w1 - V_P10*w1"
+              },
+              {
+                "name": "R14",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "C",
+                "toLabel": "A",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "-V_P6*w1 + V_P10*w1"
+              },
+              {
+                "name": "R15",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "a",
+                "toLabel": "G",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "-V_P4*w2 + V_P1*w2"
+              },
+              {
+                "name": "R16",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "b",
+                "toLabel": "G",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "-V_P4*w2 + V_P2*w2"
+              },
+              {
+                "name": "R17",
+                "from": "P1",
+                "to": "P2",
+                "fromLabel": "c",
+                "toLabel": "G",
+                "fromEliminated": false,
+                "toEliminated": false,
+                "expression": "-V_P4*w2 + V_P5*w2"
+              }
+            ],
+            "packageOriginal": {
+              "snapshotBefore": "{\"branches\":[{\"id\":\"C1\",\"name\":\"UCM_deblock\",\"kind\":\"custom_n_port\",\"x\":1237.0150909836734,\"y\":611.0999999999999,\"width\":116,\"height\":200,\"rotation\":0,\"ports\":[\"P1\",\"P2\",\"P3\",\"P4\",\"P5\"],\"nodes\":{\"P1\":\"c5_p1\",\"P2\":\"c5_p2\",\"P3\":\"c5_p3\",\"P4\":\"c5_p4\",\"P5\":\"c5_p5\"},\"portLayout\":[{\"id\":\"P1\",\"side\":\"left\",\"t\":0.20849999999999994,\"axis\":0,\"order\":0},{\"id\":\"P2\",\"side\":\"left\",\"t\":0.522742797851563,\"axis\":0,\"order\":1},{\"id\":\"P3\",\"side\":\"left\",\"t\":0.8,\"axis\":0,\"order\":2},{\"id\":\"P4\",\"side\":\"top\",\"t\":0.9198275862068964,\"axis\":0,\"order\":0},{\"id\":\"P5\",\"side\":\"bottom\",\"t\":0.9198275862068964,\"axis\":0,\"order\":0}],\"gMatrix\":\"[\\n[Dabc, 0, 0, AP, AN],\\n[0, Dabc, 0, BP, BN],\\n[0, 0, Dabc, CP, CN],\\n[AP, BP, CP, PP, PN],\\n[AN, BN, CP, PN, NN]\\n]\",\"ihisVector\":\"[[Ihis_exclude_c0], [Ihis_exclude_c1], [Ihis_exclude_c2], [Ihis_exclude_c3], [Ihis_exclude_c4]]\",\"currents\":[],\"leadAnchors\":{\"P1\":{\"x\":-58,\"y\":-58.3,\"side\":\"left\"},\"P2\":{\"x\":-58,\"y\":4.5,\"side\":\"left\"},\"P3\":{\"x\":-58,\"y\":60,\"side\":\"left\"},\"P4\":{\"x\":48.7,\"y\":-100,\"side\":\"top\"},\"P5\":{\"x\":48.7,\"y\":100,\"side\":\"bottom\"}},\"terminalLayout\":{\"P4\":{\"x\":48.7,\"y\":-121.9},\"P5\":{\"x\":48.7,\"y\":119.6},\"P1\":{\"x\":-114.5,\"y\":-58.3},\"P2\":{\"x\":-113.9,\"y\":1.2},\"P3\":{\"x\":-114.5,\"y\":60}}},{\"id\":\"B1\",\"name\":\"R1\",\"kind\":\"two_node_branch\",\"x\":1337.8270568847656,\"y\":545,\"width\":70,\"height\":40,\"rotation\":90,\"nodeA\":\"n26a\",\"nodeB\":\"n26b\",\"g\":\"gC\",\"ihis\":\"IC_his0\",\"direction\":\"AtoB\",\"terminalLayout\":{\"A\":{\"x\":-55.8,\"y\":0},\"B\":{\"x\":51.8,\"y\":0}}},{\"id\":\"B2\",\"name\":\"R2\",\"kind\":\"two_node_branch\",\"x\":1337.8270568847656,\"y\":678.9000000000001,\"width\":70,\"height\":40,\"rotation\":90,\"nodeA\":\"n12a\",\"nodeB\":\"n12b\",\"g\":\"gC\",\"ihis\":\"IC_his1\",\"direction\":\"AtoB\",\"terminalLayout\":{\"A\":{\"x\":-55.8,\"y\":0},\"B\":{\"x\":51.8,\"y\":0}}},{\"id\":\"T5\",\"name\":\"Tr5\",\"kind\":\"single_phase_transformer\",\"x\":516.2920837402344,\"y\":213.21665954589844,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B8\",\"name\":\"R8\",\"kind\":\"two_node_branch\",\"x\":709.780029296875,\"y\":311.69203186035156,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T6\",\"name\":\"Tr6\",\"kind\":\"single_phase_transformer\",\"x\":508.9667663574219,\"y\":490.4568634033203,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-95.9,\"y\":-35.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B9\",\"name\":\"R9\",\"kind\":\"two_node_branch\",\"x\":804.5780639648438,\"y\":511.6589050292969,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T7\",\"name\":\"Tr7\",\"kind\":\"single_phase_transformer\",\"x\":504.6962585449219,\"y\":624.0193481445312,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-102,\"y\":-32.1},\"N\":{\"x\":-129.2,\"y\":32.7},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B10\",\"name\":\"R10\",\"kind\":\"two_node_branch\",\"x\":749.1157836914062,\"y\":705.7990112304688,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"},{\"id\":\"B12\",\"name\":\"R12\",\"kind\":\"two_node_branch\",\"x\":248.80332946777344,\"y\":238.56546020507812,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n12a\",\"nodeB\":\"n12b\",\"g\":\"w1\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B13\",\"name\":\"R13\",\"kind\":\"two_node_branch\",\"x\":256.1140594482422,\"y\":472.65814208984375,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n13a\",\"nodeB\":\"n13b\",\"g\":\"w1\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B14\",\"name\":\"R14\",\"kind\":\"two_node_branch\",\"x\":229.27084350585938,\"y\":663.0337829589844,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n14a\",\"nodeB\":\"n14b\",\"g\":\"w1\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B15\",\"name\":\"R15\",\"kind\":\"two_node_branch\",\"x\":922.7442626953125,\"y\":226.4981231689453,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n15a\",\"nodeB\":\"n15b\",\"g\":\"w2\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B16\",\"name\":\"R16\",\"kind\":\"two_node_branch\",\"x\":963.6234130859375,\"y\":519.8722686767578,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n16a\",\"nodeB\":\"n16b\",\"g\":\"w2\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B17\",\"name\":\"R17\",\"kind\":\"two_node_branch\",\"x\":945.9530029296875,\"y\":820.5650787353516,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n17a\",\"nodeB\":\"n17b\",\"g\":\"w2\",\"ihis\":\"0\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W1\",\"from\":\"C1.P4\",\"to\":\"B1.A\",\"mid\":null},{\"id\":\"W2\",\"from\":\"C1.P5\",\"to\":\"B2.B\",\"mid\":null},{\"id\":\"W3\",\"from\":\"B1.B\",\"to\":\"B2.A\",\"mid\":null},{\"id\":\"W11\",\"from\":\"T5.S\",\"to\":\"B8.A\",\"mid\":null},{\"id\":\"W12\",\"from\":\"T6.S\",\"to\":\"B9.A\",\"mid\":null},{\"id\":\"W13\",\"from\":\"T7.S\",\"to\":\"B10.A\",\"mid\":null},{\"id\":\"W14\",\"from\":\"T5.T\",\"to\":\"T6.T\",\"mid\":null},{\"id\":\"W15\",\"from\":\"T6.T\",\"to\":\"T7.T\",\"mid\":null},{\"id\":\"W16\",\"from\":\"T5.N\",\"to\":\"T6.P\",\"mid\":null},{\"id\":\"W17\",\"from\":\"T6.N\",\"to\":\"T7.P\",\"mid\":null},{\"id\":\"W18\",\"from\":\"T7.N\",\"to\":\"T5.P\",\"mid\":null},{\"id\":\"W19\",\"from\":\"B12.A\",\"to\":\"T5.P\",\"mid\":null},{\"id\":\"W20\",\"from\":\"B12.B\",\"to\":\"T5.N\",\"mid\":null},{\"id\":\"W21\",\"from\":\"B13.A\",\"to\":\"T6.P\",\"mid\":null},{\"id\":\"W22\",\"from\":\"B13.B\",\"to\":\"T6.N\",\"mid\":null},{\"id\":\"W23\",\"from\":\"B14.A\",\"to\":\"T7.P\",\"mid\":null},{\"id\":\"W24\",\"from\":\"B14.B\",\"to\":\"T7.N\",\"mid\":null},{\"id\":\"W25\",\"from\":\"B15.A\",\"to\":\"T5.S\",\"mid\":null},{\"id\":\"W26\",\"from\":\"B15.B\",\"to\":\"T5.T\",\"mid\":null},{\"id\":\"W27\",\"from\":\"B16.A\",\"to\":\"B9.A\",\"mid\":null},{\"id\":\"W28\",\"from\":\"B16.B\",\"to\":\"T6.T\",\"mid\":null},{\"id\":\"W29\",\"from\":\"B17.A\",\"to\":\"B10.A\",\"mid\":null},{\"id\":\"W30\",\"from\":\"B17.B\",\"to\":\"T7.T\",\"mid\":null},{\"id\":\"W37\",\"from\":\"B15.A\",\"to\":\"C1.P1\",\"mid\":null},{\"id\":\"W38\",\"from\":\"B16.A\",\"to\":\"C1.P2\",\"mid\":null},{\"id\":\"W39\",\"from\":\"B17.A\",\"to\":\"C1.P3\",\"mid\":null}],\"selectedId\":\"T5\",\"selectedIds\":[\"T5\",\"B8\",\"T6\",\"B9\",\"T7\",\"B10\",\"B12\",\"B13\",\"B14\",\"B15\",\"B16\",\"B17\"],\"selectedNetIds\":[],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[\"N1\",\"N2\",\"N6\",\"N4\",\"N5\",\"N8\",\"N9\",\"N3\",\"N7\",\"N12\",\"N10\",\"N13\",\"N11\"],\"nodeLabels\":{\"N1\":\"a\",\"N2\":\"b\",\"N3\":\"c\",\"N4\":\"P\",\"N5\":\"N\",\"N6\":\"O\",\"N7\":\"A\",\"N8\":\"B\",\"N9\":\"G\",\"N10\":\"RC_a\",\"N11\":\"C\",\"N12\":\"RC_b\",\"N13\":\"RC_c\"},\"nodeColors\":{},\"internalNodes\":[],\"nextBranch\":18,\"nextTransformer\":8,\"nextCustom\":5,\"nextWire\":40}",
+              "branches": [
+                {
+                  "id": "T5",
+                  "name": "Tr5",
+                  "kind": "single_phase_transformer",
+                  "x": 516.2920837402344,
+                  "y": 213.21665954589844,
+                  "width": 100,
+                  "height": 112,
+                  "rotation": 0,
+                  "nodes": {
+                    "P": "tr2p",
+                    "N": "tr2n",
+                    "S": "tr2s",
+                    "T": "tr2t"
+                  },
+                  "gMatrix": "[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]",
+                  "ihisVector": "[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]",
+                  "currents": [
+                    {
+                      "name": "primary",
+                      "from": "P",
+                      "to": "N",
+                      "expression": "G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A"
+                    },
+                    {
+                      "name": "secondary",
+                      "from": "S",
+                      "to": "T",
+                      "expression": "G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a"
+                    }
+                  ],
+                  "terminalLayout": {
+                    "P": {
+                      "x": -140.6,
+                      "y": -34.2
+                    },
+                    "N": {
+                      "x": -105.4,
+                      "y": 29.3
+                    },
+                    "S": {
+                      "x": 198.2,
+                      "y": -29
+                    },
+                    "T": {
+                      "x": 96.1,
+                      "y": 28.7
+                    }
+                  }
+                },
+                {
+                  "id": "B8",
+                  "name": "R8",
+                  "kind": "two_node_branch",
+                  "x": 709.780029296875,
+                  "y": 311.69203186035156,
+                  "width": 150,
+                  "height": 48,
+                  "rotation": 90,
+                  "nodeA": "n3a",
+                  "nodeB": "n3b",
+                  "g": "G_rc",
+                  "ihis": "IAhis_rc",
+                  "direction": "AtoB"
+                },
+                {
+                  "id": "T6",
+                  "name": "Tr6",
+                  "kind": "single_phase_transformer",
+                  "x": 508.9667663574219,
+                  "y": 490.4568634033203,
+                  "width": 100,
+                  "height": 112,
+                  "rotation": 0,
+                  "nodes": {
+                    "P": "tr3p",
+                    "N": "tr3n",
+                    "S": "tr3s",
+                    "T": "tr3t"
+                  },
+                  "gMatrix": "[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]",
+                  "ihisVector": "[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]",
+                  "currents": [
+                    {
+                      "name": "primary",
+                      "from": "P",
+                      "to": "N",
+                      "expression": "G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B"
+                    },
+                    {
+                      "name": "secondary",
+                      "from": "S",
+                      "to": "T",
+                      "expression": "G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b"
+                    }
+                  ],
+                  "terminalLayout": {
+                    "P": {
+                      "x": -95.9,
+                      "y": -35.2
+                    },
+                    "N": {
+                      "x": -105.4,
+                      "y": 29.3
+                    },
+                    "S": {
+                      "x": 198.2,
+                      "y": -29
+                    },
+                    "T": {
+                      "x": 96.1,
+                      "y": 28.7
+                    }
+                  }
+                },
+                {
+                  "id": "B9",
+                  "name": "R9",
+                  "kind": "two_node_branch",
+                  "x": 804.5780639648438,
+                  "y": 511.6589050292969,
+                  "width": 150,
+                  "height": 48,
+                  "rotation": 90,
+                  "nodeA": "n4a",
+                  "nodeB": "n4b",
+                  "g": "G_rc",
+                  "ihis": "IBhis_rc",
+                  "direction": "AtoB"
+                },
+                {
+                  "id": "T7",
+                  "name": "Tr7",
+                  "kind": "single_phase_transformer",
+                  "x": 504.6962585449219,
+                  "y": 624.0193481445312,
+                  "width": 100,
+                  "height": 112,
+                  "rotation": 0,
+                  "nodes": {
+                    "P": "tr4p",
+                    "N": "tr4n",
+                    "S": "tr4s",
+                    "T": "tr4t"
+                  },
+                  "gMatrix": "[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]",
+                  "ihisVector": "[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]",
+                  "currents": [
+                    {
+                      "name": "primary",
+                      "from": "P",
+                      "to": "N",
+                      "expression": "G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C"
+                    },
+                    {
+                      "name": "secondary",
+                      "from": "S",
+                      "to": "T",
+                      "expression": "G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c"
+                    }
+                  ],
+                  "terminalLayout": {
+                    "P": {
+                      "x": -102,
+                      "y": -32.1
+                    },
+                    "N": {
+                      "x": -129.2,
+                      "y": 32.7
+                    },
+                    "S": {
+                      "x": 198.2,
+                      "y": -29
+                    },
+                    "T": {
+                      "x": 96.1,
+                      "y": 28.7
+                    }
+                  }
+                },
+                {
+                  "id": "B10",
+                  "name": "R10",
+                  "kind": "two_node_branch",
+                  "x": 749.1157836914062,
+                  "y": 705.7990112304688,
+                  "width": 150,
+                  "height": 48,
+                  "rotation": 90,
+                  "nodeA": "n5a",
+                  "nodeB": "n5b",
+                  "g": "G_rc",
+                  "ihis": "IChis_rc",
+                  "direction": "AtoB"
+                },
+                {
+                  "id": "B12",
+                  "name": "R12",
+                  "kind": "two_node_branch",
+                  "x": 248.80332946777344,
+                  "y": 238.56546020507812,
+                  "width": 150,
+                  "height": 48,
+                  "rotation": 90,
+                  "nodeA": "n12a",
+                  "nodeB": "n12b",
+                  "g": "w1",
+                  "ihis": "0",
+                  "direction": "AtoB"
+                },
+                {
+                  "id": "B13",
+                  "name": "R13",
+                  "kind": "two_node_branch",
+                  "x": 256.1140594482422,
+                  "y": 472.65814208984375,
+                  "width": 150,
+                  "height": 48,
+                  "rotation": 90,
+                  "nodeA": "n13a",
+                  "nodeB": "n13b",
+                  "g": "w1",
+                  "ihis": "0",
+                  "direction": "AtoB"
+                },
+                {
+                  "id": "B14",
+                  "name": "R14",
+                  "kind": "two_node_branch",
+                  "x": 229.27084350585938,
+                  "y": 663.0337829589844,
+                  "width": 150,
+                  "height": 48,
+                  "rotation": 90,
+                  "nodeA": "n14a",
+                  "nodeB": "n14b",
+                  "g": "w1",
+                  "ihis": "0",
+                  "direction": "AtoB"
+                },
+                {
+                  "id": "B15",
+                  "name": "R15",
+                  "kind": "two_node_branch",
+                  "x": 922.7442626953125,
+                  "y": 226.4981231689453,
+                  "width": 150,
+                  "height": 48,
+                  "rotation": 90,
+                  "nodeA": "n15a",
+                  "nodeB": "n15b",
+                  "g": "w2",
+                  "ihis": "0",
+                  "direction": "AtoB"
+                },
+                {
+                  "id": "B16",
+                  "name": "R16",
+                  "kind": "two_node_branch",
+                  "x": 963.6234130859375,
+                  "y": 519.8722686767578,
+                  "width": 150,
+                  "height": 48,
+                  "rotation": 90,
+                  "nodeA": "n16a",
+                  "nodeB": "n16b",
+                  "g": "w2",
+                  "ihis": "0",
+                  "direction": "AtoB"
+                },
+                {
+                  "id": "B17",
+                  "name": "R17",
+                  "kind": "two_node_branch",
+                  "x": 945.9530029296875,
+                  "y": 820.5650787353516,
+                  "width": 150,
+                  "height": 48,
+                  "rotation": 90,
+                  "nodeA": "n17a",
+                  "nodeB": "n17b",
+                  "g": "w2",
+                  "ihis": "0",
+                  "direction": "AtoB"
+                }
+              ],
+              "wires": [
+                {
+                  "id": "W11",
+                  "from": "T5.S",
+                  "to": "B8.A",
+                  "mid": null
+                },
+                {
+                  "id": "W12",
+                  "from": "T6.S",
+                  "to": "B9.A",
+                  "mid": null
+                },
+                {
+                  "id": "W13",
+                  "from": "T7.S",
+                  "to": "B10.A",
+                  "mid": null
+                },
+                {
+                  "id": "W14",
+                  "from": "T5.T",
+                  "to": "T6.T",
+                  "mid": null
+                },
+                {
+                  "id": "W15",
+                  "from": "T6.T",
+                  "to": "T7.T",
+                  "mid": null
+                },
+                {
+                  "id": "W16",
+                  "from": "T5.N",
+                  "to": "T6.P",
+                  "mid": null
+                },
+                {
+                  "id": "W17",
+                  "from": "T6.N",
+                  "to": "T7.P",
+                  "mid": null
+                },
+                {
+                  "id": "W18",
+                  "from": "T7.N",
+                  "to": "T5.P",
+                  "mid": null
+                },
+                {
+                  "id": "W19",
+                  "from": "B12.A",
+                  "to": "T5.P",
+                  "mid": null
+                },
+                {
+                  "id": "W20",
+                  "from": "B12.B",
+                  "to": "T5.N",
+                  "mid": null
+                },
+                {
+                  "id": "W21",
+                  "from": "B13.A",
+                  "to": "T6.P",
+                  "mid": null
+                },
+                {
+                  "id": "W22",
+                  "from": "B13.B",
+                  "to": "T6.N",
+                  "mid": null
+                },
+                {
+                  "id": "W23",
+                  "from": "B14.A",
+                  "to": "T7.P",
+                  "mid": null
+                },
+                {
+                  "id": "W24",
+                  "from": "B14.B",
+                  "to": "T7.N",
+                  "mid": null
+                },
+                {
+                  "id": "W25",
+                  "from": "B15.A",
+                  "to": "T5.S",
+                  "mid": null
+                },
+                {
+                  "id": "W26",
+                  "from": "B15.B",
+                  "to": "T5.T",
+                  "mid": null
+                },
+                {
+                  "id": "W27",
+                  "from": "B16.A",
+                  "to": "B9.A",
+                  "mid": null
+                },
+                {
+                  "id": "W28",
+                  "from": "B16.B",
+                  "to": "T6.T",
+                  "mid": null
+                },
+                {
+                  "id": "W29",
+                  "from": "B17.A",
+                  "to": "B10.A",
+                  "mid": null
+                },
+                {
+                  "id": "W30",
+                  "from": "B17.B",
+                  "to": "T7.T",
+                  "mid": null
+                },
+                {
+                  "id": "W37",
+                  "from": "B15.A",
+                  "to": "C1.P1",
+                  "mid": null
+                },
+                {
+                  "id": "W38",
+                  "from": "B16.A",
+                  "to": "C1.P2",
+                  "mid": null
+                },
+                {
+                  "id": "W39",
+                  "from": "B17.A",
+                  "to": "C1.P3",
+                  "mid": null
+                }
+              ],
+              "nodeState": [
+                {
+                  "id": "N1",
+                  "display": "a",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "C1.P1",
+                    "T5.S",
+                    "B8.A",
+                    "B15.A"
+                  ]
+                },
+                {
+                  "id": "N2",
+                  "display": "b",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "C1.P2",
+                    "T6.S",
+                    "B9.A",
+                    "B16.A"
+                  ]
+                },
+                {
+                  "id": "N3",
+                  "display": "c",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "C1.P3",
+                    "T7.S",
+                    "B10.A",
+                    "B17.A"
+                  ]
+                },
+                {
+                  "id": "N4",
+                  "display": "P",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "C1.P4",
+                    "B1.A"
+                  ]
+                },
+                {
+                  "id": "N5",
+                  "display": "N",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "C1.P5",
+                    "B2.B"
+                  ]
+                },
+                {
+                  "id": "N6",
+                  "display": "O",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "B1.B",
+                    "B2.A"
+                  ]
+                },
+                {
+                  "id": "N7",
+                  "display": "A",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "T5.P",
+                    "T7.N",
+                    "B12.A",
+                    "B14.B"
+                  ]
+                },
+                {
+                  "id": "N8",
+                  "display": "B",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "T5.N",
+                    "T6.P",
+                    "B12.B",
+                    "B13.A"
+                  ]
+                },
+                {
+                  "id": "N9",
+                  "display": "G",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "T5.T",
+                    "T6.T",
+                    "T7.T",
+                    "B15.B",
+                    "B16.B",
+                    "B17.B"
+                  ]
+                },
+                {
+                  "id": "N10",
+                  "display": "RC_a",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "B8.B"
+                  ]
+                },
+                {
+                  "id": "N11",
+                  "display": "C",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "T6.N",
+                    "T7.P",
+                    "B13.B",
+                    "B14.A"
+                  ]
+                },
+                {
+                  "id": "N12",
+                  "display": "RC_b",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "B9.B"
+                  ]
+                },
+                {
+                  "id": "N13",
+                  "display": "RC_c",
+                  "color": null,
+                  "internal": false,
+                  "members": [
+                    "B10.B"
+                  ]
+                }
+              ],
+              "externalGroups": [
+                {
+                  "id": "Y3",
+                  "display": "x",
+                  "globalNet": "N1",
+                  "members": [
+                    "T5.S",
+                    "B8.A",
+                    "B15.A"
+                  ],
+                  "port": "P1",
+                  "internal": false,
+                  "boundary": true
+                },
+                {
+                  "id": "Y7",
+                  "display": "y",
+                  "globalNet": "N2",
+                  "members": [
+                    "T6.S",
+                    "B9.A",
+                    "B16.A"
+                  ],
+                  "port": "P2",
+                  "internal": false,
+                  "boundary": true
+                },
+                {
+                  "id": "Y2",
+                  "display": "B",
+                  "globalNet": "N8",
+                  "members": [
+                    "T5.N",
+                    "T6.P",
+                    "B12.B",
+                    "B13.A"
+                  ],
+                  "port": "P3",
+                  "internal": false,
+                  "boundary": false
+                },
+                {
+                  "id": "Y4",
+                  "display": "G",
+                  "globalNet": "N9",
+                  "members": [
+                    "T5.T",
+                    "T6.T",
+                    "T7.T",
+                    "B15.B",
+                    "B16.B",
+                    "B17.B"
+                  ],
+                  "port": "P4",
+                  "internal": false,
+                  "boundary": false
+                },
+                {
+                  "id": "Y9",
+                  "display": "z",
+                  "globalNet": "N3",
+                  "members": [
+                    "T7.S",
+                    "B10.A",
+                    "B17.A"
+                  ],
+                  "port": "P5",
+                  "internal": false,
+                  "boundary": true
+                },
+                {
+                  "id": "Y1",
+                  "display": "A",
+                  "globalNet": "N7",
+                  "members": [
+                    "T5.P",
+                    "T7.N",
+                    "B12.A",
+                    "B14.B"
+                  ],
+                  "port": "P6",
+                  "internal": false,
+                  "boundary": false
+                },
+                {
+                  "id": "Y8",
+                  "display": "RC_b",
+                  "globalNet": "N12",
+                  "members": [
+                    "B9.B"
+                  ],
+                  "port": "P7",
+                  "internal": false,
+                  "boundary": false
+                },
+                {
+                  "id": "Y5",
+                  "display": "RC_a",
+                  "globalNet": "N10",
+                  "members": [
+                    "B8.B"
+                  ],
+                  "port": "P8",
+                  "internal": false,
+                  "boundary": false
+                },
+                {
+                  "id": "Y10",
+                  "display": "RC_c",
+                  "globalNet": "N13",
+                  "members": [
+                    "B10.B"
+                  ],
+                  "port": "P9",
+                  "internal": false,
+                  "boundary": false
+                },
+                {
+                  "id": "Y6",
+                  "display": "C",
+                  "globalNet": "N11",
+                  "members": [
+                    "T6.N",
+                    "T7.P",
+                    "B13.B",
+                    "B14.A"
+                  ],
+                  "port": "P10",
+                  "internal": false,
+                  "boundary": false
+                }
+              ],
+              "internalGroups": [],
+              "K_v": [],
+              "K_h": []
+            },
+            "leadAnchors": {
+              "P6": {
+                "x": -68,
+                "y": -16.5,
+                "side": "left"
+              },
+              "P3": {
+                "x": -68,
+                "y": 8.2,
+                "side": "left"
+              },
+              "P10": {
+                "x": -68,
+                "y": 38.7,
+                "side": "left"
+              },
+              "P1": {
+                "x": 68,
+                "y": -58,
+                "side": "right"
+              },
+              "P2": {
+                "x": 68,
+                "y": -14.1,
+                "side": "right"
+              },
+              "P5": {
+                "x": 68,
+                "y": 24.8,
+                "side": "right"
+              },
+              "P4": {
+                "x": -4.9,
+                "y": -69,
+                "side": "top"
+              },
+              "P8": {
+                "x": -33.7,
+                "y": 69,
+                "side": "bottom"
+              },
+              "P7": {
+                "x": 1,
+                "y": 69,
+                "side": "bottom"
+              },
+              "P9": {
+                "x": 26.5,
+                "y": 69,
+                "side": "bottom"
+              }
+            },
+            "terminalLayout": {
+              "P10": {
+                "x": -120.8,
+                "y": 38.7
+              },
+              "P6": {
+                "x": -120.8,
+                "y": -16.5
+              },
+              "P3": {
+                "x": -120.8,
+                "y": 8.2
+              },
+              "P8": {
+                "x": -33.7,
+                "y": 95
+              },
+              "P7": {
+                "x": 1,
+                "y": 95
+              },
+              "P2": {
+                "x": 94,
+                "y": -14.1
+              },
+              "P4": {
+                "x": -4.9,
+                "y": -99.2
+              },
+              "P5": {
+                "x": 94,
+                "y": 24.8
+              },
+              "P1": {
+                "x": 94,
+                "y": -73.6
+              },
+              "P9": {
+                "x": 26.5,
+                "y": 95
+              }
+            }
+          }
+        ],
+        "wires": [
+          {
+            "id": "W1",
+            "from": "C1.P4",
+            "to": "B1.A",
+            "mid": null
+          },
+          {
+            "id": "W2",
+            "from": "C1.P5",
+            "to": "B2.B",
+            "mid": null
+          },
+          {
+            "id": "W3",
+            "from": "B1.B",
+            "to": "B2.A",
+            "mid": null
+          },
+          {
+            "id": "W4",
+            "from": "C2.P1",
+            "to": "C1.P1",
+            "mid": null
+          },
+          {
+            "id": "W5",
+            "from": "C2.P2",
+            "to": "C1.P2",
+            "mid": null
+          },
+          {
+            "id": "W6",
+            "from": "C2.P5",
+            "to": "C1.P3",
+            "mid": null
+          }
+        ],
+        "groups": [],
+        "nodeOrder": [
+          "N9",
+          "N7",
+          "N13",
+          "N8",
+          "N11",
+          "N10",
+          "N12",
+          "N4",
+          "N5",
+          "N6",
+          "N1",
+          "N2",
+          "N3"
+        ],
+        "nodeLabels": {
+          "N1": "x",
+          "N2": "y",
+          "N3": "z",
+          "N4": "P",
+          "N5": "N",
+          "N6": "O",
+          "N7": "B",
+          "N8": "G",
+          "N9": "A",
+          "N10": "RC_b",
+          "N11": "RC_a",
+          "N12": "RC_c",
+          "N13": "C"
+        },
+        "nodeColors": {},
+        "internalNodes": [
+          "N1",
+          "N2",
+          "N3"
+        ],
+        "selectedId": null,
+        "selectedIds": [],
+        "selectedNetIds": [],
+        "selectedWireId": null,
+        "nextBranch": 3,
+        "nextTransformer": 1,
+        "nextCustom": 6,
+        "nextWire": 7,
+        "nextGroup": 1,
+        "zoom": 2.4759631762948113,
+        "viewCenter": {
+          "x": 1052.162677813094,
+          "y": 628.6273924735151
+        },
+        "reducedEquationCache": [
+          {
+            "key": "{\"language\":\"zh\",\"payload\":{\"all_nodes\":[\"N9\",\"N7\",\"N13\",\"N8\",\"N11\",\"N10\",\"N12\",\"N4\",\"N5\",\"N6\",\"N1\",\"N2\",\"N3\"],\"voltage_nodes\":[\"A\",\"B\",\"C\",\"G\",\"RC_a\",\"RC_b\",\"RC_c\",\"P\",\"N\",\"O\",\"x\",\"y\",\"z\"],\"node_display_names\":{\"N9\":\"A\",\"N7\":\"B\",\"N13\":\"C\",\"N8\":\"G\",\"N11\":\"RC_a\",\"N10\":\"RC_b\",\"N12\":\"RC_c\",\"N4\":\"P\",\"N5\":\"N\",\"N6\":\"O\",\"N1\":\"x\",\"N2\":\"y\",\"N3\":\"z\"},\"external_nodes\":[\"N9\",\"N7\",\"N13\",\"N8\",\"N11\",\"N10\",\"N12\",\"N4\",\"N5\",\"N6\"],\"internal_nodes\":[\"N1\",\"N2\",\"N3\"],\"G_full\":[[\"2*G11 + 2*w1\",\"-G11 - w1\",\"-G11 - w1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"G12\",\"0\",\"-G12\"],[\"-G11 - w1\",\"2*G11 + 2*w1\",\"-G11 - w1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"-G12\",\"G12\",\"0\"],[\"-G11 - w1\",\"-G11 - w1\",\"2*G11 + 2*w1\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"-G12\",\"G12\"],[\"0\",\"0\",\"0\",\"3*G22 + 3*w2\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"-G22 - w2\",\"-G22 - w2\",\"-G22 - w2\"],[\"0\",\"0\",\"0\",\"0\",\"G_rc\",\"0\",\"0\",\"0\",\"0\",\"0\",\"-G_rc\",\"0\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"G_rc\",\"0\",\"0\",\"0\",\"0\",\"0\",\"-G_rc\",\"0\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"G_rc\",\"0\",\"0\",\"0\",\"0\",\"0\",\"-G_rc\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"PP + gC\",\"PN\",\"-gC\",\"AP\",\"BP\",\"CP\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"PN\",\"NN + gC\",\"-gC\",\"AN\",\"BN\",\"CN\"],[\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"0\",\"-gC\",\"-gC\",\"2*gC\",\"0\",\"0\",\"0\"],[\"G12\",\"-G12\",\"0\",\"-G22 - w2\",\"-G_rc\",\"0\",\"0\",\"AP\",\"AN\",\"0\",\"Dabc + G22 + G_rc + w2\",\"0\",\"0\"],[\"0\",\"G12\",\"-G12\",\"-G22 - w2\",\"0\",\"-G_rc\",\"0\",\"BP\",\"BN\",\"0\",\"0\",\"Dabc + G22 + G_rc + w2\",\"0\"],[\"-G12\",\"0\",\"G12\",\"-G22 - w2\",\"0\",\"0\",\"-G_rc\",\"CP\",\"CN\",\"0\",\"0\",\"0\",\"Dabc + G22 + G_rc + w2\"]],\"Ihis_full\":[\"Ihis_A - Ihis_C\",\"-Ihis_A + Ihis_B\",\"-Ihis_B + Ihis_C\",\"-Ihis_a - Ihis_b - Ihis_c\",\"-IAhis_rc\",\"-IBhis_rc\",\"-IChis_rc\",\"Ihis_exclude_c3 + IC_his0\",\"Ihis_exclude_c4 + IC_his1\",\"-IC_his0 - IC_his1\",\"Ihis_exclude_c0 + Ihis_a + IAhis_rc\",\"Ihis_exclude_c1 + Ihis_b + IBhis_rc\",\"Ihis_exclude_c2 + Ihis_c + IChis_rc\"]}}",
+            "html": "\n        <div class=\"formula-list\">\n          <div class=\"formula-card\">\n            <div class=\"formula-name\">节点划分</div>\n            <div class=\"formula-line\">\n              <span class=\"formula-rhs\">外部: A, B, C, G, RC_a, RC_b, RC_c, P, N, O; 内部: x, y, z</span>\n            </div>\n          </div>\n          <div class=\"formula-card\">\n            <div class=\"formula-name\">节点方程消去版本</div>\n            <div class=\"matrix-equation\">\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\">I<sub>A</sub></span><span class=\"matrix-cell\">I<sub>B</sub></span><span class=\"matrix-cell\">I<sub>C</sub></span><span class=\"matrix-cell\">I<sub>G</sub></span><span class=\"matrix-cell\">I<sub>RC,a</sub></span><span class=\"matrix-cell\">I<sub>RC,b</sub></span><span class=\"matrix-cell\">I<sub>RC,c</sub></span><span class=\"matrix-cell\">I<sub>P</sub></span><span class=\"matrix-cell\">I<sub>N</sub></span><span class=\"matrix-cell\">I<sub>O</sub></span></span>\n              <span class=\"formula-eq\">=</span>\n              <span class=\"matrix\" style=\"grid-template-columns: repeat(10, minmax(58px, auto));\"><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">2 · (-G<sub>12</sub><sup>2</sup> <span class=\"math-op\">+</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (-AP <span class=\"math-op\">+</span> CP)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (-AN <span class=\"math-op\">+</span> CN)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">2 · (-G<sub>12</sub><sup>2</sup> <span class=\"math-op\">+</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AP <span class=\"math-op\">-</span> BP)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AN <span class=\"math-op\">-</span> BN)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub><sup>2</sup> <span class=\"math-op\">-</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">2 · (-G<sub>12</sub><sup>2</sup> <span class=\"math-op\">+</span> (G<sub>11</sub> <span class=\"math-op\">+</span> w<sub>1</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>))</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (BP <span class=\"math-op\">-</span> CP)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (BN <span class=\"math-op\">-</span> CN)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">3 · (Dabc <span class=\"math-op\">+</span> G<sub>rc</sub>) · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (AP <span class=\"math-op\">+</span> BP <span class=\"math-op\">+</span> CP)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (AN <span class=\"math-op\">+</span> BN <span class=\"math-op\">+</span> CN)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AP · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AN · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">BP · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">BN · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">CP · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">CN · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (-AP <span class=\"math-op\">+</span> CP)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AP <span class=\"math-op\">-</span> BP)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (BP <span class=\"math-op\">-</span> CP)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (AP <span class=\"math-op\">+</span> BP <span class=\"math-op\">+</span> CP)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AP · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">BP · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">CP · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-AP<sup>2</sup> <span class=\"math-op\">-</span> BP<sup>2</sup> <span class=\"math-op\">-</span> CP<sup>2</sup> <span class=\"math-op\">+</span> (PP <span class=\"math-op\">+</span> gC) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-AN · AP <span class=\"math-op\">-</span> BN · BP <span class=\"math-op\">-</span> CN · CP <span class=\"math-op\">+</span> PN · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-gC</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (-AN <span class=\"math-op\">+</span> CN)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (AN <span class=\"math-op\">-</span> BN)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (BN <span class=\"math-op\">-</span> CN)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (AN <span class=\"math-op\">+</span> BN <span class=\"math-op\">+</span> CN)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">AN · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">BN · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">CN · G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-AN · AP <span class=\"math-op\">-</span> BN · BP <span class=\"math-op\">-</span> CN · CP <span class=\"math-op\">+</span> PN · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-AN<sup>2</sup> <span class=\"math-op\">-</span> BN<sup>2</sup> <span class=\"math-op\">-</span> CN<sup>2</sup> <span class=\"math-op\">+</span> (NN <span class=\"math-op\">+</span> gC) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-gC</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-gC</span><span class=\"matrix-cell\">-gC</span><span class=\"matrix-cell\">2 · gC</span></span>\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\">V<sub>A</sub></span><span class=\"matrix-cell\">V<sub>B</sub></span><span class=\"matrix-cell\">V<sub>C</sub></span><span class=\"matrix-cell\">V<sub>G</sub></span><span class=\"matrix-cell\">V<sub>RC,a</sub></span><span class=\"matrix-cell\">V<sub>RC,b</sub></span><span class=\"matrix-cell\">V<sub>RC,c</sub></span><span class=\"matrix-cell\">V<sub>P</sub></span><span class=\"matrix-cell\">V<sub>N</sub></span><span class=\"matrix-cell\">V<sub>O</sub></span></span>\n              <span class=\"formula-eq\">+</span>\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-G<sub>12</sub> · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>) <span class=\"math-op\">+</span> G<sub>12</sub> · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>) <span class=\"math-op\">+</span> (Ihis<sub>A</sub> <span class=\"math-op\">-</span> Ihis<sub>C</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>) <span class=\"math-op\">-</span> G<sub>12</sub> · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>) <span class=\"math-op\">-</span> (Ihis<sub>A</sub> <span class=\"math-op\">-</span> Ihis<sub>B</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub> · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>) <span class=\"math-op\">-</span> G<sub>12</sub> · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>) <span class=\"math-op\">-</span> (Ihis<sub>B</sub> <span class=\"math-op\">-</span> Ihis<sub>C</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">(G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>) <span class=\"math-op\">+</span> (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>) <span class=\"math-op\">+</span> (G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub>) · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>) <span class=\"math-op\">-</span> (Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>) <span class=\"math-op\">-</span> IAhis<sub>rc</sub> · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>) <span class=\"math-op\">-</span> IBhis<sub>rc</sub> · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub> · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>) <span class=\"math-op\">-</span> IChis<sub>rc</sub> · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-AP · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>) <span class=\"math-op\">-</span> BP · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>) <span class=\"math-op\">-</span> CP · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>) <span class=\"math-op\">+</span> (IC<sub>his0</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c3</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-AN · (IAhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>a</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c0</sub>) <span class=\"math-op\">-</span> BN · (IBhis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>b</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c1</sub>) <span class=\"math-op\">-</span> CN · (IChis<sub>rc</sub> <span class=\"math-op\">+</span> Ihis<sub>c</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c2</sub>) <span class=\"math-op\">+</span> (IC<sub>his1</sub> <span class=\"math-op\">+</span> Ihis<sub>exclude,c4</sub>) · (Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub>)</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-IC<sub>his0</sub> <span class=\"math-op\">-</span> IC<sub>his1</sub></span></span>\n            </div>\n          </div>\n          <div class=\"formula-card\">\n            <div class=\"formula-name\">内部节点电压恢复公式</div>\n            <div class=\"matrix-equation\">\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\">V<sub>x</sub></span><span class=\"matrix-cell\">V<sub>y</sub></span><span class=\"matrix-cell\">V<sub>z</sub></span></span>\n              <span class=\"formula-eq\">=</span>\n              <span class=\"matrix\" style=\"grid-template-columns: repeat(10, minmax(58px, auto));\"><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">AP</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">AN</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">BP</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">BN</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>12</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>22</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\">0</span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">G<sub>rc</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">CP</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">-<span class=\"math-frac\"><span class=\"math-frac-num\">CN</span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\">0</span></span>\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\">V<sub>A</sub></span><span class=\"matrix-cell\">V<sub>B</sub></span><span class=\"matrix-cell\">V<sub>C</sub></span><span class=\"matrix-cell\">V<sub>G</sub></span><span class=\"matrix-cell\">V<sub>RC,a</sub></span><span class=\"matrix-cell\">V<sub>RC,b</sub></span><span class=\"matrix-cell\">V<sub>RC,c</sub></span><span class=\"matrix-cell\">V<sub>P</sub></span><span class=\"matrix-cell\">V<sub>N</sub></span><span class=\"matrix-cell\">V<sub>O</sub></span></span>\n              <span class=\"formula-eq\">+</span>\n              <span class=\"matrix\" style=\"grid-template-columns: 1fr;\"><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-IAhis<sub>rc</sub> <span class=\"math-op\">-</span> Ihis<sub>a</sub> <span class=\"math-op\">-</span> Ihis<sub>exclude,c0</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-IBhis<sub>rc</sub> <span class=\"math-op\">-</span> Ihis<sub>b</sub> <span class=\"math-op\">-</span> Ihis<sub>exclude,c1</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span><span class=\"matrix-cell\"><span class=\"math-frac\"><span class=\"math-frac-num\">-IChis<sub>rc</sub> <span class=\"math-op\">-</span> Ihis<sub>c</sub> <span class=\"math-op\">-</span> Ihis<sub>exclude,c2</sub></span><span class=\"math-frac-den\">Dabc <span class=\"math-op\">+</span> G<sub>22</sub> <span class=\"math-op\">+</span> G<sub>rc</sub> <span class=\"math-op\">+</span> w<sub>2</sub></span></span></span></span>\n            </div>\n          </div>\n          \n        </div>\n      ",
+            "savedAt": "2026-06-01T21:17:39.957Z"
           }
         ],
         "history": [
@@ -1223,15 +2569,15 @@
       }
     }
   ],
-  "activeCanvasId": "canvas2",
-  "nextCanvas": 3,
+  "activeCanvasId": "canvas4",
+  "nextCanvas": 5,
   "branches": [
     {
       "id": "C1",
-      "name": "UCM_block",
+      "name": "UCM_deblock",
       "kind": "custom_n_port",
-      "x": 1235.772293132111,
-      "y": 611.1,
+      "x": 1150.7794800217594,
+      "y": 611.0999999999999,
       "width": 116,
       "height": 200,
       "rotation": 0,
@@ -1286,7 +2632,7 @@
           "order": 0
         }
       ],
-      "gMatrix": "[\n[AA, 0, 0, AP, AN],\n[0, BB, 0, BP, BN],\n[0, 0, CC, CP, CN],\n[AP, BP, CP, PP, PN],\n[AN, BN, CN, PN, NN]\n]",
+      "gMatrix": "[\n[Dabc, 0, 0, AP, AN],\n[0, Dabc, 0, BP, BN],\n[0, 0, Dabc, CP, CN],\n[AP, BP, CP, PP, PN],\n[AN, BN, CN, PN, NN]\n]",
       "ihisVector": "[[Ihis_exclude_c0], [Ihis_exclude_c1], [Ihis_exclude_c2], [Ihis_exclude_c3], [Ihis_exclude_c4]]",
       "currents": [],
       "leadAnchors": {
@@ -1343,7 +2689,7 @@
       "id": "B1",
       "name": "R1",
       "kind": "two_node_branch",
-      "x": 1337.8270568847656,
+      "x": 1251.5914459228516,
       "y": 545,
       "width": 70,
       "height": 40,
@@ -1368,7 +2714,7 @@
       "id": "B2",
       "name": "R2",
       "kind": "two_node_branch",
-      "x": 1337.8270568847656,
+      "x": 1251.5914459228516,
       "y": 678.9000000000001,
       "width": 70,
       "height": 40,
@@ -1391,10 +2737,10 @@
     },
     {
       "id": "C2",
-      "name": "YBox3",
+      "name": "YBox5",
       "kind": "custom_n_port",
       "x": 885,
-      "y": 609.1999999999999,
+      "y": 626.3711949993735,
       "width": 136,
       "height": 138,
       "rotation": 0,
@@ -1411,91 +2757,101 @@
         "P10"
       ],
       "nodes": {
-        "P1": "A",
-        "P2": "B",
-        "P3": "x",
+        "P1": "x",
+        "P2": "y",
+        "P3": "B",
         "P4": "G",
-        "P5": "RC_a",
-        "P6": "C",
-        "P7": "y",
-        "P8": "RC_b",
-        "P9": "z",
-        "P10": "RC_c"
+        "P5": "z",
+        "P6": "A",
+        "P7": "RC_b",
+        "P8": "RC_a",
+        "P9": "RC_c",
+        "P10": "C"
       },
       "portLayout": [
         {
-          "id": "P1",
+          "id": "P6",
           "side": "left",
-          "t": 0.16014492753623205,
+          "t": 0.3804347826086957,
           "axis": 0,
-          "order": 0
-        },
-        {
-          "id": "P2",
-          "side": "left",
-          "t": 0.5014492753623192,
-          "axis": 0,
-          "order": 1
+          "order": 0,
+          "sortValue": 452.86185662046734
         },
         {
           "id": "P3",
-          "side": "top",
-          "t": 0.92,
+          "side": "left",
+          "t": 0.5594202898550724,
           "axis": 0,
-          "order": 1
+          "order": 1,
+          "sortValue": 477.5618566204673
+        },
+        {
+          "id": "P10",
+          "side": "left",
+          "t": 0.7804347826086956,
+          "axis": 0,
+          "order": 2,
+          "sortValue": 508.0618566204673
+        },
+        {
+          "id": "P1",
+          "side": "right",
+          "t": 0.08,
+          "axis": 0,
+          "order": 0,
+          "sortValue": 395.76185662046737
+        },
+        {
+          "id": "P2",
+          "side": "right",
+          "t": 0.39782608695652155,
+          "axis": 0,
+          "order": 1,
+          "sortValue": 455.2618566204673
+        },
+        {
+          "id": "P5",
+          "side": "right",
+          "t": 0.6797101449275363,
+          "axis": 0,
+          "order": 2,
+          "sortValue": 494.16185662046735
         },
         {
           "id": "P4",
           "side": "top",
-          "t": 0.6294117647058826,
+          "t": 0.46397058823529347,
           "axis": 0,
-          "order": 0
-        },
-        {
-          "id": "P5",
-          "side": "bottom",
-          "t": 0.20735294117647052,
-          "axis": 0,
-          "order": 0
-        },
-        {
-          "id": "P6",
-          "side": "left",
-          "t": 0.8231884057971016,
-          "axis": 0,
-          "order": 2
-        },
-        {
-          "id": "P7",
-          "side": "right",
-          "t": 0.5224637681159422,
-          "axis": 0,
-          "order": 0
+          "order": 0,
+          "sortValue": 1571.4059844970702
         },
         {
           "id": "P8",
           "side": "bottom",
-          "t": 0.9198529411764708,
+          "t": 0.25220588235294084,
           "axis": 0,
-          "order": 2
+          "order": 0,
+          "sortValue": 1542.6059844970703
+        },
+        {
+          "id": "P7",
+          "side": "bottom",
+          "t": 0.5073529411764706,
+          "axis": 0,
+          "order": 1,
+          "sortValue": 1577.3059844970703
         },
         {
           "id": "P9",
           "side": "bottom",
-          "t": 0.92,
+          "t": 0.6948529411764706,
           "axis": 0,
-          "order": 3
-        },
-        {
-          "id": "P10",
-          "side": "bottom",
-          "t": 0.6095588235294116,
-          "axis": 0,
-          "order": 1
+          "order": 2,
+          "sortValue": 1602.8059844970703
         }
       ],
-      "gMatrix": "[[2*(G11 + w1), -G11 - w1, G12, 0, 0, -G11 - w1, 0, 0, -G12, 0], [-G11 - w1, 2*(G11 + w1), -G12, 0, 0, -G11 - w1, G12, 0, 0, 0], [G12, -G12, G22 + G_rc + w2, -G22 - w2, -G_rc, 0, 0, 0, 0, 0], [0, 0, -G22 - w2, 3*(G22 + w2), 0, 0, -G22 - w2, 0, -G22 - w2, 0], [0, 0, -G_rc, 0, G_rc, 0, 0, 0, 0, 0], [-G11 - w1, -G11 - w1, 0, 0, 0, 2*(G11 + w1), -G12, 0, G12, 0], [0, G12, 0, -G22 - w2, 0, -G12, G22 + G_rc + w2, -G_rc, 0, 0], [0, 0, 0, 0, 0, 0, -G_rc, G_rc, 0, 0], [-G12, 0, 0, -G22 - w2, 0, G12, 0, 0, G22 + G_rc + w2, -G_rc], [0, 0, 0, 0, 0, 0, 0, 0, -G_rc, G_rc]]",
-      "ihisVector": "[[Ihis_A - Ihis_C], [-Ihis_A + Ihis_B], [IAhis_rc + Ihis_a], [-Ihis_a - Ihis_b - Ihis_c], [-IAhis_rc], [-Ihis_B + Ihis_C], [IBhis_rc + Ihis_b], [-IBhis_rc], [IChis_rc + Ihis_c], [-IChis_rc]]",
+      "gMatrix": "[[G22 + G_rc + w2, 0, -G12, -G22 - w2, 0, G12, 0, -G_rc, 0, 0], [0, G22 + G_rc + w2, G12, -G22 - w2, 0, 0, -G_rc, 0, 0, -G12], [-G12, G12, 2*G11 + 2*w1, 0, 0, -G11 - w1, 0, 0, 0, -G11 - w1], [-G22 - w2, -G22 - w2, 0, 3*G22 + 3*w2, -G22 - w2, 0, 0, 0, 0, 0], [0, 0, 0, -G22 - w2, G22 + G_rc + w2, -G12, 0, 0, -G_rc, G12], [G12, 0, -G11 - w1, 0, -G12, 2*G11 + 2*w1, 0, 0, 0, -G11 - w1], [0, -G_rc, 0, 0, 0, 0, G_rc, 0, 0, 0], [-G_rc, 0, 0, 0, 0, 0, 0, G_rc, 0, 0], [0, 0, 0, 0, -G_rc, 0, 0, 0, G_rc, 0], [0, -G12, -G11 - w1, 0, G12, -G11 - w1, 0, 0, 0, 2*G11 + 2*w1]]",
+      "ihisVector": "[[IAhis_rc + Ihis_a], [IBhis_rc + Ihis_b], [-Ihis_A + Ihis_B], [-Ihis_a - Ihis_b - Ihis_c], [IChis_rc + Ihis_c], [Ihis_A - Ihis_C], [-IBhis_rc], [-IAhis_rc], [-IChis_rc], [-Ihis_B + Ihis_C]]",
       "currents": [
         {
           "name": "Tr5_primary",
@@ -1505,7 +2861,7 @@
           "toLabel": "B",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "G11*V_P1 - G11*V_P2 - G12*V_P4 + G12*V_P3 + Ihis_A"
+          "expression": "G11*V_P6 - G11*V_P3 - G12*V_P4 + G12*V_P1 + Ihis_A"
         },
         {
           "name": "Tr5_secondary",
@@ -1515,7 +2871,7 @@
           "toLabel": "G",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "G12*V_P1 - G12*V_P2 - G22*V_P4 + G22*V_P3 + Ihis_a"
+          "expression": "G12*V_P6 - G12*V_P3 - G22*V_P4 + G22*V_P1 + Ihis_a"
         },
         {
           "name": "R8",
@@ -1525,7 +2881,7 @@
           "toLabel": "RC_a",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "-G_rc*V_P5 + G_rc*V_P3 + IAhis_rc"
+          "expression": "-G_rc*V_P8 + G_rc*V_P1 + IAhis_rc"
         },
         {
           "name": "Tr6_primary",
@@ -1535,7 +2891,7 @@
           "toLabel": "C",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "G11*V_P2 - G11*V_P6 - G12*V_P4 + G12*V_P7 + Ihis_B"
+          "expression": "G11*V_P3 - G11*V_P10 - G12*V_P4 + G12*V_P2 + Ihis_B"
         },
         {
           "name": "Tr6_secondary",
@@ -1545,7 +2901,7 @@
           "toLabel": "G",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "G12*V_P2 - G12*V_P6 - G22*V_P4 + G22*V_P7 + Ihis_b"
+          "expression": "G12*V_P3 - G12*V_P10 - G22*V_P4 + G22*V_P2 + Ihis_b"
         },
         {
           "name": "R9",
@@ -1555,7 +2911,7 @@
           "toLabel": "RC_b",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "-G_rc*V_P8 + G_rc*V_P7 + IBhis_rc"
+          "expression": "-G_rc*V_P7 + G_rc*V_P2 + IBhis_rc"
         },
         {
           "name": "Tr7_primary",
@@ -1565,7 +2921,7 @@
           "toLabel": "A",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "-G11*V_P1 + G11*V_P6 - G12*V_P4 + G12*V_P9 + Ihis_C"
+          "expression": "-G11*V_P6 + G11*V_P10 - G12*V_P4 + G12*V_P5 + Ihis_C"
         },
         {
           "name": "Tr7_secondary",
@@ -1575,7 +2931,7 @@
           "toLabel": "G",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "-G12*V_P1 + G12*V_P6 - G22*V_P4 + G22*V_P9 + Ihis_c"
+          "expression": "-G12*V_P6 + G12*V_P10 - G22*V_P4 + G22*V_P5 + Ihis_c"
         },
         {
           "name": "R10",
@@ -1585,7 +2941,7 @@
           "toLabel": "RC_c",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "-G_rc*V_P10 + G_rc*V_P9 + IChis_rc"
+          "expression": "-G_rc*V_P9 + G_rc*V_P5 + IChis_rc"
         },
         {
           "name": "R12",
@@ -1595,7 +2951,7 @@
           "toLabel": "B",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "V_P1*w1 - V_P2*w1"
+          "expression": "V_P6*w1 - V_P3*w1"
         },
         {
           "name": "R13",
@@ -1605,7 +2961,7 @@
           "toLabel": "C",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "V_P2*w1 - V_P6*w1"
+          "expression": "V_P3*w1 - V_P10*w1"
         },
         {
           "name": "R14",
@@ -1615,7 +2971,7 @@
           "toLabel": "A",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "-V_P1*w1 + V_P6*w1"
+          "expression": "-V_P6*w1 + V_P10*w1"
         },
         {
           "name": "R15",
@@ -1625,7 +2981,7 @@
           "toLabel": "G",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "-V_P4*w2 + V_P3*w2"
+          "expression": "-V_P4*w2 + V_P1*w2"
         },
         {
           "name": "R16",
@@ -1635,7 +2991,7 @@
           "toLabel": "G",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "-V_P4*w2 + V_P7*w2"
+          "expression": "-V_P4*w2 + V_P2*w2"
         },
         {
           "name": "R17",
@@ -1645,11 +3001,11 @@
           "toLabel": "G",
           "fromEliminated": false,
           "toEliminated": false,
-          "expression": "-V_P4*w2 + V_P9*w2"
+          "expression": "-V_P4*w2 + V_P5*w2"
         }
       ],
       "packageOriginal": {
-        "snapshotBefore": "{\"branches\":[{\"id\":\"T5\",\"name\":\"Tr5\",\"kind\":\"single_phase_transformer\",\"x\":516.2920837402344,\"y\":213.21665954589844,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B8\",\"name\":\"R8\",\"kind\":\"two_node_branch\",\"x\":709.780029296875,\"y\":311.69203186035156,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T6\",\"name\":\"Tr6\",\"kind\":\"single_phase_transformer\",\"x\":508.9667663574219,\"y\":490.4568634033203,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-95.9,\"y\":-35.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B9\",\"name\":\"R9\",\"kind\":\"two_node_branch\",\"x\":804.5780639648438,\"y\":511.6589050292969,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T7\",\"name\":\"Tr7\",\"kind\":\"single_phase_transformer\",\"x\":504.6962585449219,\"y\":624.0193481445312,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-102,\"y\":-32.1},\"N\":{\"x\":-129.2,\"y\":32.7},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B10\",\"name\":\"R10\",\"kind\":\"two_node_branch\",\"x\":749.1157836914062,\"y\":705.7990112304688,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"},{\"id\":\"B12\",\"name\":\"R12\",\"kind\":\"two_node_branch\",\"x\":248.80332946777344,\"y\":238.56546020507812,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n12a\",\"nodeB\":\"n12b\",\"g\":\"w1\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B13\",\"name\":\"R13\",\"kind\":\"two_node_branch\",\"x\":256.1140594482422,\"y\":472.65814208984375,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n13a\",\"nodeB\":\"n13b\",\"g\":\"w1\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B14\",\"name\":\"R14\",\"kind\":\"two_node_branch\",\"x\":229.27084350585938,\"y\":663.0337829589844,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n14a\",\"nodeB\":\"n14b\",\"g\":\"w1\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B15\",\"name\":\"R15\",\"kind\":\"two_node_branch\",\"x\":922.7442626953125,\"y\":226.4981231689453,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n15a\",\"nodeB\":\"n15b\",\"g\":\"w2\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B16\",\"name\":\"R16\",\"kind\":\"two_node_branch\",\"x\":963.6234130859375,\"y\":519.8722686767578,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n16a\",\"nodeB\":\"n16b\",\"g\":\"w2\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B17\",\"name\":\"R17\",\"kind\":\"two_node_branch\",\"x\":945.9530029296875,\"y\":820.5650787353516,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n17a\",\"nodeB\":\"n17b\",\"g\":\"w2\",\"ihis\":\"0\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W11\",\"from\":\"T5.S\",\"to\":\"B8.A\",\"mid\":null},{\"id\":\"W12\",\"from\":\"T6.S\",\"to\":\"B9.A\",\"mid\":null},{\"id\":\"W13\",\"from\":\"T7.S\",\"to\":\"B10.A\",\"mid\":null},{\"id\":\"W14\",\"from\":\"T5.T\",\"to\":\"T6.T\",\"mid\":null},{\"id\":\"W15\",\"from\":\"T6.T\",\"to\":\"T7.T\",\"mid\":null},{\"id\":\"W16\",\"from\":\"T5.N\",\"to\":\"T6.P\",\"mid\":null},{\"id\":\"W17\",\"from\":\"T6.N\",\"to\":\"T7.P\",\"mid\":null},{\"id\":\"W18\",\"from\":\"T7.N\",\"to\":\"T5.P\",\"mid\":null},{\"id\":\"W19\",\"from\":\"B12.A\",\"to\":\"T5.P\",\"mid\":null},{\"id\":\"W20\",\"from\":\"B12.B\",\"to\":\"T5.N\",\"mid\":null},{\"id\":\"W21\",\"from\":\"B13.A\",\"to\":\"T6.P\",\"mid\":null},{\"id\":\"W22\",\"from\":\"B13.B\",\"to\":\"T6.N\",\"mid\":null},{\"id\":\"W23\",\"from\":\"B14.A\",\"to\":\"T7.P\",\"mid\":null},{\"id\":\"W24\",\"from\":\"B14.B\",\"to\":\"T7.N\",\"mid\":null},{\"id\":\"W25\",\"from\":\"B15.A\",\"to\":\"T5.S\",\"mid\":null},{\"id\":\"W26\",\"from\":\"B15.B\",\"to\":\"T5.T\",\"mid\":null},{\"id\":\"W27\",\"from\":\"B16.A\",\"to\":\"B9.A\",\"mid\":null},{\"id\":\"W28\",\"from\":\"B16.B\",\"to\":\"T6.T\",\"mid\":null},{\"id\":\"W29\",\"from\":\"B17.A\",\"to\":\"B10.A\",\"mid\":null},{\"id\":\"W30\",\"from\":\"B17.B\",\"to\":\"T7.T\",\"mid\":null}],\"selectedId\":\"T5\",\"selectedIds\":[\"T5\",\"B8\",\"T6\",\"B9\",\"T7\",\"B10\",\"B12\",\"B13\",\"B14\",\"B15\",\"B16\",\"B17\"],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[],\"nodeLabels\":{\"N1\":\"A\",\"N2\":\"B\",\"N3\":\"a\",\"N4\":\"G\",\"N5\":\"RC_a\",\"N6\":\"C\",\"N7\":\"b\",\"N8\":\"RC_b\",\"N9\":\"c\",\"N10\":\"RC_c\"},\"nodeColors\":{},\"internalNodes\":[],\"nextBranch\":10,\"nextTransformer\":1,\"nextCustom\":3,\"nextWire\":12}",
+        "snapshotBefore": "{\"branches\":[{\"id\":\"C1\",\"name\":\"UCM_deblock\",\"kind\":\"custom_n_port\",\"x\":1237.0150909836734,\"y\":611.0999999999999,\"width\":116,\"height\":200,\"rotation\":0,\"ports\":[\"P1\",\"P2\",\"P3\",\"P4\",\"P5\"],\"nodes\":{\"P1\":\"c5_p1\",\"P2\":\"c5_p2\",\"P3\":\"c5_p3\",\"P4\":\"c5_p4\",\"P5\":\"c5_p5\"},\"portLayout\":[{\"id\":\"P1\",\"side\":\"left\",\"t\":0.20849999999999994,\"axis\":0,\"order\":0},{\"id\":\"P2\",\"side\":\"left\",\"t\":0.522742797851563,\"axis\":0,\"order\":1},{\"id\":\"P3\",\"side\":\"left\",\"t\":0.8,\"axis\":0,\"order\":2},{\"id\":\"P4\",\"side\":\"top\",\"t\":0.9198275862068964,\"axis\":0,\"order\":0},{\"id\":\"P5\",\"side\":\"bottom\",\"t\":0.9198275862068964,\"axis\":0,\"order\":0}],\"gMatrix\":\"[\\n[Dabc, 0, 0, AP, AN],\\n[0, Dabc, 0, BP, BN],\\n[0, 0, Dabc, CP, CN],\\n[AP, BP, CP, PP, PN],\\n[AN, BN, CP, PN, NN]\\n]\",\"ihisVector\":\"[[Ihis_exclude_c0], [Ihis_exclude_c1], [Ihis_exclude_c2], [Ihis_exclude_c3], [Ihis_exclude_c4]]\",\"currents\":[],\"leadAnchors\":{\"P1\":{\"x\":-58,\"y\":-58.3,\"side\":\"left\"},\"P2\":{\"x\":-58,\"y\":4.5,\"side\":\"left\"},\"P3\":{\"x\":-58,\"y\":60,\"side\":\"left\"},\"P4\":{\"x\":48.7,\"y\":-100,\"side\":\"top\"},\"P5\":{\"x\":48.7,\"y\":100,\"side\":\"bottom\"}},\"terminalLayout\":{\"P4\":{\"x\":48.7,\"y\":-121.9},\"P5\":{\"x\":48.7,\"y\":119.6},\"P1\":{\"x\":-114.5,\"y\":-58.3},\"P2\":{\"x\":-113.9,\"y\":1.2},\"P3\":{\"x\":-114.5,\"y\":60}}},{\"id\":\"B1\",\"name\":\"R1\",\"kind\":\"two_node_branch\",\"x\":1337.8270568847656,\"y\":545,\"width\":70,\"height\":40,\"rotation\":90,\"nodeA\":\"n26a\",\"nodeB\":\"n26b\",\"g\":\"gC\",\"ihis\":\"IC_his0\",\"direction\":\"AtoB\",\"terminalLayout\":{\"A\":{\"x\":-55.8,\"y\":0},\"B\":{\"x\":51.8,\"y\":0}}},{\"id\":\"B2\",\"name\":\"R2\",\"kind\":\"two_node_branch\",\"x\":1337.8270568847656,\"y\":678.9000000000001,\"width\":70,\"height\":40,\"rotation\":90,\"nodeA\":\"n12a\",\"nodeB\":\"n12b\",\"g\":\"gC\",\"ihis\":\"IC_his1\",\"direction\":\"AtoB\",\"terminalLayout\":{\"A\":{\"x\":-55.8,\"y\":0},\"B\":{\"x\":51.8,\"y\":0}}},{\"id\":\"T5\",\"name\":\"Tr5\",\"kind\":\"single_phase_transformer\",\"x\":516.2920837402344,\"y\":213.21665954589844,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr2p\",\"N\":\"tr2n\",\"S\":\"tr2s\",\"T\":\"tr2t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_A], [-Ihis_A], [Ihis_a], [-Ihis_a]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_A\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_a\"}],\"terminalLayout\":{\"P\":{\"x\":-140.6,\"y\":-34.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B8\",\"name\":\"R8\",\"kind\":\"two_node_branch\",\"x\":709.780029296875,\"y\":311.69203186035156,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n3a\",\"nodeB\":\"n3b\",\"g\":\"G_rc\",\"ihis\":\"IAhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T6\",\"name\":\"Tr6\",\"kind\":\"single_phase_transformer\",\"x\":508.9667663574219,\"y\":490.4568634033203,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr3p\",\"N\":\"tr3n\",\"S\":\"tr3s\",\"T\":\"tr3t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_B], [-Ihis_B], [Ihis_b], [-Ihis_b]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_B\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_b\"}],\"terminalLayout\":{\"P\":{\"x\":-95.9,\"y\":-35.2},\"N\":{\"x\":-105.4,\"y\":29.3},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B9\",\"name\":\"R9\",\"kind\":\"two_node_branch\",\"x\":804.5780639648438,\"y\":511.6589050292969,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n4a\",\"nodeB\":\"n4b\",\"g\":\"G_rc\",\"ihis\":\"IBhis_rc\",\"direction\":\"AtoB\"},{\"id\":\"T7\",\"name\":\"Tr7\",\"kind\":\"single_phase_transformer\",\"x\":504.6962585449219,\"y\":624.0193481445312,\"width\":100,\"height\":112,\"rotation\":0,\"nodes\":{\"P\":\"tr4p\",\"N\":\"tr4n\",\"S\":\"tr4s\",\"T\":\"tr4t\"},\"gMatrix\":\"[[G11, -G11, G12, -G12], [-G11, G11, -G12, G12], [G12, -G12, G22, -G22], [-G12, G12, -G22, G22]]\",\"ihisVector\":\"[[Ihis_C], [-Ihis_C], [Ihis_c], [-Ihis_c]]\",\"currents\":[{\"name\":\"primary\",\"from\":\"P\",\"to\":\"N\",\"expression\":\"G11*(V_P - V_N) + G12*(V_S - V_T) + Ihis_C\"},{\"name\":\"secondary\",\"from\":\"S\",\"to\":\"T\",\"expression\":\"G12*(V_P - V_N) + G22*(V_S - V_T) + Ihis_c\"}],\"terminalLayout\":{\"P\":{\"x\":-102,\"y\":-32.1},\"N\":{\"x\":-129.2,\"y\":32.7},\"S\":{\"x\":198.2,\"y\":-29},\"T\":{\"x\":96.1,\"y\":28.7}}},{\"id\":\"B10\",\"name\":\"R10\",\"kind\":\"two_node_branch\",\"x\":749.1157836914062,\"y\":705.7990112304688,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n5a\",\"nodeB\":\"n5b\",\"g\":\"G_rc\",\"ihis\":\"IChis_rc\",\"direction\":\"AtoB\"},{\"id\":\"B12\",\"name\":\"R12\",\"kind\":\"two_node_branch\",\"x\":248.80332946777344,\"y\":238.56546020507812,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n12a\",\"nodeB\":\"n12b\",\"g\":\"w1\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B13\",\"name\":\"R13\",\"kind\":\"two_node_branch\",\"x\":256.1140594482422,\"y\":472.65814208984375,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n13a\",\"nodeB\":\"n13b\",\"g\":\"w1\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B14\",\"name\":\"R14\",\"kind\":\"two_node_branch\",\"x\":229.27084350585938,\"y\":663.0337829589844,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n14a\",\"nodeB\":\"n14b\",\"g\":\"w1\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B15\",\"name\":\"R15\",\"kind\":\"two_node_branch\",\"x\":922.7442626953125,\"y\":226.4981231689453,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n15a\",\"nodeB\":\"n15b\",\"g\":\"w2\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B16\",\"name\":\"R16\",\"kind\":\"two_node_branch\",\"x\":963.6234130859375,\"y\":519.8722686767578,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n16a\",\"nodeB\":\"n16b\",\"g\":\"w2\",\"ihis\":\"0\",\"direction\":\"AtoB\"},{\"id\":\"B17\",\"name\":\"R17\",\"kind\":\"two_node_branch\",\"x\":945.9530029296875,\"y\":820.5650787353516,\"width\":150,\"height\":48,\"rotation\":90,\"nodeA\":\"n17a\",\"nodeB\":\"n17b\",\"g\":\"w2\",\"ihis\":\"0\",\"direction\":\"AtoB\"}],\"wires\":[{\"id\":\"W1\",\"from\":\"C1.P4\",\"to\":\"B1.A\",\"mid\":null},{\"id\":\"W2\",\"from\":\"C1.P5\",\"to\":\"B2.B\",\"mid\":null},{\"id\":\"W3\",\"from\":\"B1.B\",\"to\":\"B2.A\",\"mid\":null},{\"id\":\"W11\",\"from\":\"T5.S\",\"to\":\"B8.A\",\"mid\":null},{\"id\":\"W12\",\"from\":\"T6.S\",\"to\":\"B9.A\",\"mid\":null},{\"id\":\"W13\",\"from\":\"T7.S\",\"to\":\"B10.A\",\"mid\":null},{\"id\":\"W14\",\"from\":\"T5.T\",\"to\":\"T6.T\",\"mid\":null},{\"id\":\"W15\",\"from\":\"T6.T\",\"to\":\"T7.T\",\"mid\":null},{\"id\":\"W16\",\"from\":\"T5.N\",\"to\":\"T6.P\",\"mid\":null},{\"id\":\"W17\",\"from\":\"T6.N\",\"to\":\"T7.P\",\"mid\":null},{\"id\":\"W18\",\"from\":\"T7.N\",\"to\":\"T5.P\",\"mid\":null},{\"id\":\"W19\",\"from\":\"B12.A\",\"to\":\"T5.P\",\"mid\":null},{\"id\":\"W20\",\"from\":\"B12.B\",\"to\":\"T5.N\",\"mid\":null},{\"id\":\"W21\",\"from\":\"B13.A\",\"to\":\"T6.P\",\"mid\":null},{\"id\":\"W22\",\"from\":\"B13.B\",\"to\":\"T6.N\",\"mid\":null},{\"id\":\"W23\",\"from\":\"B14.A\",\"to\":\"T7.P\",\"mid\":null},{\"id\":\"W24\",\"from\":\"B14.B\",\"to\":\"T7.N\",\"mid\":null},{\"id\":\"W25\",\"from\":\"B15.A\",\"to\":\"T5.S\",\"mid\":null},{\"id\":\"W26\",\"from\":\"B15.B\",\"to\":\"T5.T\",\"mid\":null},{\"id\":\"W27\",\"from\":\"B16.A\",\"to\":\"B9.A\",\"mid\":null},{\"id\":\"W28\",\"from\":\"B16.B\",\"to\":\"T6.T\",\"mid\":null},{\"id\":\"W29\",\"from\":\"B17.A\",\"to\":\"B10.A\",\"mid\":null},{\"id\":\"W30\",\"from\":\"B17.B\",\"to\":\"T7.T\",\"mid\":null},{\"id\":\"W37\",\"from\":\"B15.A\",\"to\":\"C1.P1\",\"mid\":null},{\"id\":\"W38\",\"from\":\"B16.A\",\"to\":\"C1.P2\",\"mid\":null},{\"id\":\"W39\",\"from\":\"B17.A\",\"to\":\"C1.P3\",\"mid\":null}],\"selectedId\":\"T5\",\"selectedIds\":[\"T5\",\"B8\",\"T6\",\"B9\",\"T7\",\"B10\",\"B12\",\"B13\",\"B14\",\"B15\",\"B16\",\"B17\"],\"selectedNetIds\":[],\"selectedWireId\":null,\"groups\":[],\"portDrag\":null,\"nextGroup\":1,\"nodeOrder\":[\"N1\",\"N2\",\"N6\",\"N4\",\"N5\",\"N8\",\"N9\",\"N3\",\"N7\",\"N12\",\"N10\",\"N13\",\"N11\"],\"nodeLabels\":{\"N1\":\"a\",\"N2\":\"b\",\"N3\":\"c\",\"N4\":\"P\",\"N5\":\"N\",\"N6\":\"O\",\"N7\":\"A\",\"N8\":\"B\",\"N9\":\"G\",\"N10\":\"RC_a\",\"N11\":\"C\",\"N12\":\"RC_b\",\"N13\":\"RC_c\"},\"nodeColors\":{},\"internalNodes\":[],\"nextBranch\":18,\"nextTransformer\":8,\"nextCustom\":5,\"nextWire\":40}",
         "branches": [
           {
             "id": "T5",
@@ -2057,11 +3413,95 @@
             "from": "B17.B",
             "to": "T7.T",
             "mid": null
+          },
+          {
+            "id": "W37",
+            "from": "B15.A",
+            "to": "C1.P1",
+            "mid": null
+          },
+          {
+            "id": "W38",
+            "from": "B16.A",
+            "to": "C1.P2",
+            "mid": null
+          },
+          {
+            "id": "W39",
+            "from": "B17.A",
+            "to": "C1.P3",
+            "mid": null
           }
         ],
         "nodeState": [
           {
             "id": "N1",
+            "display": "a",
+            "color": null,
+            "internal": false,
+            "members": [
+              "C1.P1",
+              "T5.S",
+              "B8.A",
+              "B15.A"
+            ]
+          },
+          {
+            "id": "N2",
+            "display": "b",
+            "color": null,
+            "internal": false,
+            "members": [
+              "C1.P2",
+              "T6.S",
+              "B9.A",
+              "B16.A"
+            ]
+          },
+          {
+            "id": "N3",
+            "display": "c",
+            "color": null,
+            "internal": false,
+            "members": [
+              "C1.P3",
+              "T7.S",
+              "B10.A",
+              "B17.A"
+            ]
+          },
+          {
+            "id": "N4",
+            "display": "P",
+            "color": null,
+            "internal": false,
+            "members": [
+              "C1.P4",
+              "B1.A"
+            ]
+          },
+          {
+            "id": "N5",
+            "display": "N",
+            "color": null,
+            "internal": false,
+            "members": [
+              "C1.P5",
+              "B2.B"
+            ]
+          },
+          {
+            "id": "N6",
+            "display": "O",
+            "color": null,
+            "internal": false,
+            "members": [
+              "B1.B",
+              "B2.A"
+            ]
+          },
+          {
+            "id": "N7",
             "display": "A",
             "color": null,
             "internal": false,
@@ -2073,7 +3513,7 @@
             ]
           },
           {
-            "id": "N2",
+            "id": "N8",
             "display": "B",
             "color": null,
             "internal": false,
@@ -2085,18 +3525,7 @@
             ]
           },
           {
-            "id": "N3",
-            "display": "a",
-            "color": null,
-            "internal": false,
-            "members": [
-              "T5.S",
-              "B8.A",
-              "B15.A"
-            ]
-          },
-          {
-            "id": "N4",
+            "id": "N9",
             "display": "G",
             "color": null,
             "internal": false,
@@ -2110,7 +3539,7 @@
             ]
           },
           {
-            "id": "N5",
+            "id": "N10",
             "display": "RC_a",
             "color": null,
             "internal": false,
@@ -2119,7 +3548,7 @@
             ]
           },
           {
-            "id": "N6",
+            "id": "N11",
             "display": "C",
             "color": null,
             "internal": false,
@@ -2131,18 +3560,7 @@
             ]
           },
           {
-            "id": "N7",
-            "display": "b",
-            "color": null,
-            "internal": false,
-            "members": [
-              "T6.S",
-              "B9.A",
-              "B16.A"
-            ]
-          },
-          {
-            "id": "N8",
+            "id": "N12",
             "display": "RC_b",
             "color": null,
             "internal": false,
@@ -2151,18 +3569,7 @@
             ]
           },
           {
-            "id": "N9",
-            "display": "c",
-            "color": null,
-            "internal": false,
-            "members": [
-              "T7.S",
-              "B10.A",
-              "B17.A"
-            ]
-          },
-          {
-            "id": "N10",
+            "id": "N13",
             "display": "RC_c",
             "color": null,
             "internal": false,
@@ -2173,64 +3580,134 @@
         ],
         "externalGroups": [
           {
-            "id": "Y1",
-            "display": "A",
-            "globalNet": "N1",
-            "port": "P1"
-          },
-          {
-            "id": "Y2",
-            "display": "B",
-            "globalNet": "N2",
-            "port": "P2"
-          },
-          {
             "id": "Y3",
             "display": "x",
-            "globalNet": "N3",
-            "port": "P3"
-          },
-          {
-            "id": "Y4",
-            "display": "G",
-            "globalNet": "N4",
-            "port": "P4"
-          },
-          {
-            "id": "Y5",
-            "display": "RC_a",
-            "globalNet": "N5",
-            "port": "P5"
-          },
-          {
-            "id": "Y6",
-            "display": "C",
-            "globalNet": "N6",
-            "port": "P6"
+            "globalNet": "N1",
+            "members": [
+              "T5.S",
+              "B8.A",
+              "B15.A"
+            ],
+            "port": "P1",
+            "internal": false,
+            "boundary": true
           },
           {
             "id": "Y7",
             "display": "y",
-            "globalNet": "N7",
-            "port": "P7"
+            "globalNet": "N2",
+            "members": [
+              "T6.S",
+              "B9.A",
+              "B16.A"
+            ],
+            "port": "P2",
+            "internal": false,
+            "boundary": true
           },
           {
-            "id": "Y8",
-            "display": "RC_b",
+            "id": "Y2",
+            "display": "B",
             "globalNet": "N8",
-            "port": "P8"
+            "members": [
+              "T5.N",
+              "T6.P",
+              "B12.B",
+              "B13.A"
+            ],
+            "port": "P3",
+            "internal": false,
+            "boundary": false
+          },
+          {
+            "id": "Y4",
+            "display": "G",
+            "globalNet": "N9",
+            "members": [
+              "T5.T",
+              "T6.T",
+              "T7.T",
+              "B15.B",
+              "B16.B",
+              "B17.B"
+            ],
+            "port": "P4",
+            "internal": false,
+            "boundary": false
           },
           {
             "id": "Y9",
             "display": "z",
-            "globalNet": "N9",
-            "port": "P9"
+            "globalNet": "N3",
+            "members": [
+              "T7.S",
+              "B10.A",
+              "B17.A"
+            ],
+            "port": "P5",
+            "internal": false,
+            "boundary": true
+          },
+          {
+            "id": "Y1",
+            "display": "A",
+            "globalNet": "N7",
+            "members": [
+              "T5.P",
+              "T7.N",
+              "B12.A",
+              "B14.B"
+            ],
+            "port": "P6",
+            "internal": false,
+            "boundary": false
+          },
+          {
+            "id": "Y8",
+            "display": "RC_b",
+            "globalNet": "N12",
+            "members": [
+              "B9.B"
+            ],
+            "port": "P7",
+            "internal": false,
+            "boundary": false
+          },
+          {
+            "id": "Y5",
+            "display": "RC_a",
+            "globalNet": "N10",
+            "members": [
+              "B8.B"
+            ],
+            "port": "P8",
+            "internal": false,
+            "boundary": false
           },
           {
             "id": "Y10",
             "display": "RC_c",
-            "globalNet": "N10",
-            "port": "P10"
+            "globalNet": "N13",
+            "members": [
+              "B10.B"
+            ],
+            "port": "P9",
+            "internal": false,
+            "boundary": false
+          },
+          {
+            "id": "Y6",
+            "display": "C",
+            "globalNet": "N11",
+            "members": [
+              "T6.N",
+              "T7.P",
+              "B13.B",
+              "B14.A"
+            ],
+            "port": "P10",
+            "internal": false,
+            "boundary": false
           }
         ],
         "internalGroups": [],
@@ -2238,97 +3715,97 @@
         "K_h": []
       },
       "leadAnchors": {
-        "P1": {
-          "x": -68,
-          "y": -46.9,
-          "side": "left"
-        },
-        "P2": {
-          "x": -68,
-          "y": 0.2,
-          "side": "left"
-        },
         "P6": {
           "x": -68,
-          "y": 44.6,
+          "y": -16.5,
           "side": "left"
         },
         "P3": {
+          "x": -68,
+          "y": 8.2,
+          "side": "left"
+        },
+        "P10": {
+          "x": -68,
+          "y": 38.7,
+          "side": "left"
+        },
+        "P1": {
           "x": 68,
-          "y": -26.6,
+          "y": -58,
           "side": "right"
         },
-        "P7": {
+        "P2": {
           "x": 68,
-          "y": 3.1,
+          "y": -14.1,
           "side": "right"
         },
-        "P9": {
+        "P5": {
           "x": 68,
-          "y": 23,
+          "y": 24.8,
           "side": "right"
         },
         "P4": {
-          "x": 17.6,
+          "x": -4.9,
           "y": -69,
           "side": "top"
         },
-        "P5": {
-          "x": -39.8,
-          "y": 69,
-          "side": "bottom"
-        },
-        "P10": {
-          "x": 14.9,
-          "y": 69,
-          "side": "bottom"
-        },
         "P8": {
-          "x": 57.1,
+          "x": -33.7,
+          "y": 69,
+          "side": "bottom"
+        },
+        "P7": {
+          "x": 1,
+          "y": 69,
+          "side": "bottom"
+        },
+        "P9": {
+          "x": 26.5,
           "y": 69,
           "side": "bottom"
         }
       },
       "terminalLayout": {
-        "P1": {
-          "x": -113,
-          "y": -46.9
-        },
-        "P2": {
-          "x": -113,
-          "y": 0.2
-        },
-        "P3": {
-          "x": 149.6,
-          "y": -56.4
+        "P10": {
+          "x": -120.8,
+          "y": 38.7
         },
         "P6": {
-          "x": -113,
-          "y": 44.6
+          "x": -120.8,
+          "y": -16.5
+        },
+        "P3": {
+          "x": -120.8,
+          "y": 8.2
         },
         "P8": {
-          "x": 57.1,
-          "y": 135
+          "x": -33.7,
+          "y": 95
         },
         "P7": {
-          "x": 183.3,
-          "y": 3.1
+          "x": 1,
+          "y": 95
         },
-        "P5": {
-          "x": -39.8,
-          "y": 135
-        },
-        "P10": {
-          "x": 14.9,
-          "y": 135
-        },
-        "P9": {
-          "x": 150.3,
-          "y": 61.9
+        "P2": {
+          "x": 94,
+          "y": -14.1
         },
         "P4": {
-          "x": 17.6,
-          "y": -138.2
+          "x": -4.9,
+          "y": -99.2
+        },
+        "P5": {
+          "x": 94,
+          "y": 24.8
+        },
+        "P1": {
+          "x": 94,
+          "y": -73.6
+        },
+        "P9": {
+          "x": 26.5,
+          "y": 95
         }
       }
     }
@@ -2354,38 +3831,38 @@
     },
     {
       "id": "W4",
-      "from": "C2.P3",
+      "from": "C2.P1",
       "to": "C1.P1",
       "mid": null
     },
     {
       "id": "W5",
-      "from": "C2.P7",
+      "from": "C2.P2",
       "to": "C1.P2",
       "mid": null
     },
     {
       "id": "W6",
-      "from": "C2.P9",
+      "from": "C2.P5",
       "to": "C1.P3",
       "mid": null
     }
   ],
   "groups": [],
   "nodeOrder": [
+    "N9",
     "N7",
+    "N13",
     "N8",
     "N11",
-    "N9",
     "N10",
     "N12",
-    "N13",
-    "N1",
-    "N2",
-    "N3",
     "N4",
     "N5",
-    "N6"
+    "N6",
+    "N1",
+    "N2",
+    "N3"
   ],
   "nodeLabels": {
     "N1": "x",
@@ -2394,13 +3871,13 @@
     "N4": "P",
     "N5": "N",
     "N6": "O",
-    "N7": "A",
-    "N8": "B",
-    "N9": "G",
-    "N10": "RC_a",
-    "N11": "C",
-    "N12": "RC_b",
-    "N13": "RC_c"
+    "N7": "B",
+    "N8": "G",
+    "N9": "A",
+    "N10": "RC_b",
+    "N11": "RC_a",
+    "N12": "RC_c",
+    "N13": "C"
   },
   "internalNodes": [
     "N1",
@@ -2410,7 +3887,7 @@
   "language": "zh",
   "nextBranch": 3,
   "nextTransformer": 1,
-  "nextCustom": 4,
+  "nextCustom": 6,
   "nextWire": 7,
   "nextGroup": 1
 }
