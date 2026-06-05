@@ -1111,6 +1111,49 @@
       margin: 6px 0 12px;
     }
 
+    .stamp-preview {
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #334155;
+      border-radius: 6px;
+      padding: 8px 9px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .mode-options {
+      display: grid;
+      gap: 8px;
+    }
+
+    .mode-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: #fff;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .mode-option {
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .mode-option.active {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.14);
+      color: #1d4ed8;
+    }
+
     .validation-neutral {
       border: 1px solid #f59e0b;
       background: #fffbeb;
@@ -1626,6 +1669,9 @@
         </button>
         <button class="tool" id="addBranchTool" title="添加二端口支路" aria-label="添加二端口支路">
           <svg width="22" height="18" viewBox="0 0 28 20" aria-hidden="true"><path d="M1 10h6m14 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="7" y="5" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </button>
+        <button class="tool" id="addCurrentSourceTool" title="添加电流源" aria-label="添加电流源">
+          <svg width="22" height="20" viewBox="0 0 28 22" aria-hidden="true"><path d="M1 11h7m12 0h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 11h6m-3-3 3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <button class="tool" id="addTransformerTool" title="添加单相变压器" aria-label="添加单相变压器">
           <svg width="24" height="20" viewBox="0 0 30 22" aria-hidden="true"><path d="M1 5h7m14 0h7M1 17h7m14 0h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 4c-4 2-4 12 0 14M13 4c-4 2-4 12 0 14M17 4c4 2 4 12 0 14M20 4c4 2 4 12 0 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -2172,6 +2218,8 @@
       "显示局部端口标签": "Show Local Port Labels",
       "选择 / 拖动": "Select / Drag",
       "添加二端口支路": "Add 2-Port",
+      "添加电流源": "Add Current Source",
+      "点击画布添加电流源": "Click canvas to add a current source",
       "添加单相变压器": "Add Transformer",
       "添加自定义 N 节点支路": "Add Custom N-Port",
       "连接节点": "Wire Nodes",
@@ -2207,8 +2255,10 @@
       "高亮来源提示": "Highlight Provenance Note",
       "开启公式高亮时，消去版本会优先使用带隐藏来源标签的表达式来保证同名 symbol 不串色；因此部分合并项可能比普通显示更展开。": "When formula highlight is enabled, the reduced view prefers expressions with hidden provenance tags so same-name symbols do not cross-highlight; some merged terms may therefore appear more expanded than the normal display.",
       "基本信息": "Name & Geometry",
+      "名称配置": "Name Configuration",
       "工况": "Multi-Case Options",
       "数学模型": "Admittance Model",
+      "占位模型": "Placeholder Model",
       "观测电流": "Current Observers",
       "打包信息": "Package Metadata",
       "端点标识": "Port IDs",
@@ -2261,6 +2311,30 @@
       "电流方向": "Current Direction",
       "A 到 B": "A to B",
       "B 到 A": "B to A",
+      "电流源": "Current Source",
+      "源类型": "Source Type",
+      "独立电流源": "Independent Current Source",
+      "节点电压相关": "Voltage Controlled",
+      "节点电压相关电流源": "Node-Voltage-Controlled Current Source",
+      "在这里选择电流源类型。": "Choose the current source type here.",
+      "电流表达式": "Current Expression",
+      "输出电流 / Ihis": "Output Current / Ihis",
+      "控制项": "Control Terms",
+      "控制项数量": "Control Term Count",
+      "控制节点": "Control Node",
+      "系数": "Coefficient",
+      "Stamp 预览": "Stamp Preview",
+      "节点电压相关模式使用多行控制项；每一行表示 系数 * V_控制节点。": "Voltage-controlled mode uses multiple control terms; each row means coefficient * V_control_node.",
+      "跨导/系数": "Transconductance / Gain",
+      "控制正节点": "Control + Node",
+      "控制负节点": "Control - Node",
+      "描述": "Description",
+      "控制项需要使用 节点:系数 格式。": "Control terms must use node: coefficient format.",
+      "控制项 JSON 解析失败。": "Control-terms JSON parse failed.",
+      "受控电流源控制节点不存在": "Controlled source control node is not present",
+      "电流源数学暂未接入节点方程。": "Current-source math is not connected to node equations yet.",
+      "该电流源按当前电流方向输出。输出电流为控制项中各节点电压线性组合加 Ihis。例如 N1:K, N2:-K 表示 K*(V_N1 - V_N2)。": "The current source outputs in the current direction shown by the component. Its output current is a linear combination of node voltages plus Ihis. For example, N1:K, N2:-K means K*(V_N1 - V_N2).",
+      "该电流源按当前电流方向输出。节点电压相关模式表示 gain * (V_控制正节点 - V_控制负节点) + Ihis。": "The current source outputs in the current direction shown by the component. Node-voltage-controlled mode means gain * (V_control+ - V_control-) + Ihis.",
       "节点顺序": "Node Order",
       "暂无节点。": "No nodes.",
       "外部": "External",
@@ -2386,6 +2460,7 @@
     const toolButtons = {
       select: document.getElementById("selectTool"),
       branch: document.getElementById("addBranchTool"),
+      currentSource: document.getElementById("addCurrentSourceTool"),
       transformer: document.getElementById("addTransformerTool"),
       custom: document.getElementById("addCustomTool"),
       wire: document.getElementById("wireTool"),
@@ -2410,6 +2485,42 @@
         g: "1/R",
         ihis: "0",
         direction: "AtoB"
+      };
+      state.branches.push(branch);
+      clampComponent(branch);
+      selectBranch(branch.id);
+      render();
+    }
+
+    function createCurrentSource(x, y) {
+      commitHistory();
+      syncNextCounters();
+      const n = state.nextBranch++;
+      const branch = {
+        id: `B${n}`,
+        name: `I${n}`,
+        kind: "current_source",
+        x,
+        y,
+        width: 150,
+        height: 56,
+        rotation: 0,
+        nodeA: `n${n}a`,
+        nodeB: `n${n}b`,
+        direction: "AtoB",
+        sourceMode: "independent",
+        currentExpression: `I${n}`,
+        sourceIhis: "0",
+        controlTerms: "",
+        controlRows: [
+          { node: "", coefficient: "gm" },
+          { node: "", coefficient: "-(gm)" }
+        ],
+        gain: "gm",
+        controlPositive: "",
+        controlNegative: "",
+        description: "",
+        mathEnabled: true
       };
       state.branches.push(branch);
       clampComponent(branch);
@@ -2679,13 +2790,15 @@
         ? "连接节点：依次点击两个端子"
         : tool === "branch"
           ? "点击画布添加二端口支路"
-          : tool === "transformer"
-            ? "点击画布添加单相变压器"
-            : tool === "custom"
-              ? "点击画布添加自定义 N 节点支路"
-              : tool === "pan"
-                ? "拖动画布平移"
-                : "选择 / 拖动";
+          : tool === "currentSource"
+            ? "点击画布添加电流源"
+            : tool === "transformer"
+              ? "点击画布添加单相变压器"
+              : tool === "custom"
+                ? "点击画布添加自定义 N 节点支路"
+                : tool === "pan"
+                  ? "拖动画布平移"
+                  : "选择 / 拖动";
       render();
     }
 
@@ -2959,7 +3072,7 @@
     }
 
     function autoSnapTerminalToOwnBody(branch, side) {
-      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer") return;
+      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer" && branch.kind !== "current_source") return;
       const point = terminalPosition(branch, side);
       const anchorDraw = componentLeadAnchor(branch, side, terminalDrawPosition(branch, side));
       const anchor = anchorDraw ? rotatedDrawPoint(branch, anchorDraw) : null;
@@ -2969,12 +3082,12 @@
     }
 
     function autoSnapBranchLeadsToOwnBody(branch) {
-      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer") return;
+      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer" && branch.kind !== "current_source") return;
       terminalSides(branch).forEach(side => autoSnapTerminalToOwnBody(branch, side));
     }
 
     function componentLeadAnchor(branch, side, point = terminalDrawPosition(branch, side)) {
-      if (branch.kind === "two_node_branch") {
+      if (branch.kind === "two_node_branch" || branch.kind === "current_source") {
         const bodyWidth = Math.max(50, Math.min(120, (branch.width || 150) * 0.5));
         const x = side === "A" ? branch.x - bodyWidth / 2 : branch.x + bodyWidth / 2;
         return { x, y: branch.y };
@@ -3426,6 +3539,10 @@
 
     function getBranchFieldValue(branch, field) {
       if (field === "switchCaseName") return activeSwitchCase(branch)?.name || "";
+      if (field.startsWith("controlRow.")) {
+        const [, index, key] = field.split(".");
+        return currentSourceControlRows(branch)[Number(index)]?.[key] || "";
+      }
       if (field.startsWith("node.")) return branch.nodes[field.slice(5)] || "";
       if (field.startsWith("current.")) {
         const [, index, key] = field.split(".");
@@ -3816,6 +3933,11 @@
     }
 
     function normalizeSwitchCases(branch) {
+      if (branch?.kind === "current_source") {
+        delete branch.switchCases;
+        branch.activeSwitchCase = 0;
+        return;
+      }
       if (branch?.packageOriginal) {
         delete branch.switchCases;
         branch.activeSwitchCase = 0;
@@ -3870,6 +3992,172 @@
     function switchCaseLabelSvg(branch, yOffset = 22) {
       const label = switchCaseLabel(branch);
       return label ? `<text class="switch-label" x="${branch.x}" y="${branch.y + yOffset}">${escapeSvg(label)}</text>` : "";
+    }
+
+    function currentSourceModeLabel(branch) {
+      return branch.sourceMode === "node_voltage" ? tr("节点电压相关") : tr("独立电流源");
+    }
+
+    function currentSourceIhis(branch) {
+      return branch.sourceMode === "node_voltage"
+        ? (branch.sourceIhis || "0")
+        : (branch.currentExpression || branch.sourceIhis || branch.name || "0");
+    }
+
+    function currentSourceControlText(branch) {
+      const rows = Array.isArray(branch.controlRows) ? branch.controlRows : [];
+      const rowText = rows
+        .map(row => ({
+          node: String(row?.node || "").trim(),
+          coefficient: String(row?.coefficient || "").trim()
+        }))
+        .filter(row => row.node && row.coefficient && row.coefficient !== "0")
+        .map(row => `${row.node}: ${row.coefficient}`)
+        .join("\n");
+      if (rowText) return rowText;
+      if (branch.controlPositive || branch.controlNegative) {
+        return [
+          branch.controlPositive ? `${branch.controlPositive}: ${branch.gain || "gm"}` : "",
+          branch.controlNegative ? `${branch.controlNegative}: -(${branch.gain || "gm"})` : ""
+        ].filter(Boolean).join("\n");
+      }
+      const text = String(branch.controlTerms || "").trim();
+      if (text) return text;
+      return "";
+    }
+
+    function currentSourceControlRows(branch) {
+      const rows = Array.isArray(branch.controlRows) ? branch.controlRows : [];
+      if (rows.length) {
+        return rows.map(row => ({
+          node: String(row?.node || "").trim(),
+          coefficient: String(row?.coefficient || "").trim() || "0"
+        }));
+      }
+      if (branch.controlPositive || branch.controlNegative) {
+        return [
+          { node: branch.controlPositive || "", coefficient: branch.gain || "gm" },
+          { node: branch.controlNegative || "", coefficient: `-(${branch.gain || "gm"})` }
+        ];
+      }
+      return parseCurrentSourceControlTerms({ ...branch, controlRows: [] })
+        .filter(item => !item.error)
+        .map(item => ({ node: item.node, coefficient: item.coefficient }));
+    }
+
+    function setCurrentSourceControlRowCount(branch, value) {
+      const count = Math.max(0, Math.min(12, Math.floor(Number(value))));
+      if (!Number.isFinite(count)) return;
+      const next = currentSourceControlRows(branch).slice(0, count);
+      while (next.length < count) next.push({ node: "", coefficient: next.length === 0 ? "gm" : "0" });
+      branch.controlRows = next;
+      branch.controlTerms = "";
+      branch.controlPositive = "";
+      branch.controlNegative = "";
+    }
+
+    function parseCurrentSourceControlTerms(branch) {
+      if (branch.sourceMode !== "node_voltage") return [];
+      const text = currentSourceControlText(branch);
+      const trimmed = text.trim();
+      if (!trimmed) return [];
+      try {
+        if (trimmed.startsWith("{")) {
+          const parsed = JSON.parse(trimmed);
+          return Object.entries(parsed)
+            .map(([node, coefficient]) => ({ node: String(node).trim(), coefficient: String(coefficient).trim() || "0" }))
+            .filter(item => item.node);
+        }
+      } catch {
+        return [{ error: tr("控制项 JSON 解析失败。") }];
+      }
+      const matches = [...trimmed.matchAll(/([A-Za-z_]\w*)\s*:/g)];
+      const rawItems = matches.length
+        ? matches.map((match, index) => {
+          const end = index + 1 < matches.length ? matches[index + 1].index : trimmed.length;
+          return `${match[1]}:${trimmed.slice(match.index + match[0].length, end)}`;
+        })
+        : trimmed.split(/[\n,;]+/);
+      return rawItems
+        .map(item => item.trim().replace(/[,;]+$/g, ""))
+        .filter(Boolean)
+        .map(item => {
+          const index = item.indexOf(":");
+          if (index < 0) return { error: `${tr("控制项需要使用 节点:系数 格式。")} ${item}` };
+          return {
+            node: item.slice(0, index).trim(),
+            coefficient: item.slice(index + 1).trim() || "0"
+          };
+        })
+        .filter(item => item.error || item.node);
+    }
+
+    function formatControlTermExpression(term, index) {
+      if (!term?.node || !term.coefficient || term.coefficient === "0") return "";
+      const body = `(${term.coefficient}) * V_${term.node}`;
+      return index === 0 ? body : ` + ${body}`;
+    }
+
+    function currentSourceExpression(branch, nodeLabelMap = null) {
+      const ihis = currentSourceIhis(branch);
+      if (branch.sourceMode !== "node_voltage") return ihis || "0";
+      const terms = parseCurrentSourceControlTerms(branch).filter(item => !item.error);
+      const body = terms.map(term => ({
+        ...term,
+        node: nodeLabelMap?.get(term.node) || term.node
+      })).map(formatControlTermExpression).filter(Boolean).join("");
+      if (body && ihis && ihis !== "0") return `${body} + ${ihis}`;
+      return body || ihis || "0";
+    }
+
+    function currentSourceStampPreview(branch) {
+      const fromSide = branch.direction === "AtoB" ? "A" : "B";
+      const toSide = branch.direction === "AtoB" ? "B" : "A";
+      const fromNode = terminalNetName(terminalKey(branch.id, fromSide));
+      const toNode = terminalNetName(terminalKey(branch.id, toSide));
+      const lines = [];
+      if (branch.sourceMode === "node_voltage") {
+        parseCurrentSourceControlTerms(branch)
+          .filter(term => !term.error && term.node && term.coefficient && term.coefficient !== "0")
+          .forEach(term => {
+            lines.push(`G[${fromNode}, ${term.node}] += ${term.coefficient}`);
+            lines.push(`G[${toNode}, ${term.node}] -= ${term.coefficient}`);
+          });
+      }
+      const ihis = currentSourceIhis(branch) || "0";
+      lines.push(`Ihis[${fromNode}] += ${ihis}`);
+      lines.push(`Ihis[${toNode}] -= ${ihis}`);
+      return lines.join("\n");
+    }
+
+    function validateCurrentSourceAgainstGroups(branch, groups) {
+      if (branch.kind !== "current_source") return [];
+      const warnings = [];
+      const names = new Set();
+      groups.forEach(group => {
+        names.add(group.id);
+        const display = group.display || nodeDisplayName(group.id);
+        if (display) names.add(display);
+      });
+      const terms = parseCurrentSourceControlTerms(branch);
+      terms.forEach(term => {
+        if (term.error) {
+          warnings.push(term.error);
+        } else if (term.node && !names.has(term.node)) {
+          warnings.push(`${tr("受控电流源控制节点不存在")}: ${term.node}`);
+        }
+      });
+      return warnings;
+    }
+
+    function cycleCurrentSourceMode(branch) {
+      commitHistory();
+      branch.sourceMode = branch.sourceMode === "node_voltage" ? "independent" : "node_voltage";
+      invalidateMathCaches();
+      selectBranch(branch.id);
+      statusEl.textContent = `${branch.name}: ${currentSourceModeLabel(branch)}`;
+      render();
+      return true;
     }
 
     function setSwitchCaseCount(branch, value) {
@@ -4027,7 +4315,12 @@
 
     function branchHighlightMarkers(branch) {
       const texts = [];
-      if (branchUsesMatrix(branch)) {
+      if (branch.kind === "current_source") {
+        parseCurrentSourceControlTerms(branch).forEach(term => {
+          if (!term.error) texts.push(term.coefficient);
+        });
+        texts.push(currentSourceIhis(branch));
+      } else if (branchUsesMatrix(branch)) {
         parseMatrixRows(branchValue(branch, "gMatrix")).flat().forEach(item => texts.push(item));
         parseMatrixRows(branchValue(branch, "ihisVector")).flat().forEach(item => texts.push(item));
       } else {
@@ -4113,6 +4406,16 @@
 
     function currentFormula(branch, groupByTerminal = null) {
       const netName = side => terminalNetNameFromMap(terminalKey(branch.id, side), groupByTerminal);
+      if (branch.kind === "current_source") {
+        const leftKey = terminalKey(branch.id, "A");
+        const rightKey = terminalKey(branch.id, "B");
+        const fromKey = branch.direction === "AtoB" ? leftKey : rightKey;
+        const toKey = branch.direction === "AtoB" ? rightKey : leftKey;
+        const fromLabel = terminalNetNameFromMap(fromKey, groupByTerminal);
+        const toLabel = terminalNetNameFromMap(toKey, groupByTerminal);
+        const expression = currentSourceExpression(branch);
+        return `i_${branch.name}_${fromLabel}_to_${toLabel} = ${expression}`;
+      }
       if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") {
         const replacements = {};
         terminalSides(branch).forEach(side => {
@@ -4181,6 +4484,9 @@
           part: branch.currents?.[index]?.name || ""
         }));
       }
+      if (branch.kind === "current_source") {
+        return lines.map(line => ({ line, branchId: branch.id, part: "source" }));
+      }
       return lines.map(line => ({ line, branchId: branch.id, part: "whole" }));
     }
 
@@ -4201,8 +4507,21 @@
           ])),
           switchCase: switchCaseLabel(branch) || null,
           switchCases: branch.switchCases || null,
-          G: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "gMatrix") : branchValue(branch, "g"),
-          Ihis: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "ihisVector") : branchValue(branch, "ihis"),
+          G: branch.kind === "current_source" ? "0" : ((branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "gMatrix") : branchValue(branch, "g")),
+          Ihis: branch.kind === "current_source" ? "0" : ((branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "ihisVector") : branchValue(branch, "ihis")),
+          source: branch.kind === "current_source" ? {
+            mode: branch.sourceMode || "independent",
+            currentExpression: branch.currentExpression || "",
+            controlTerms: currentSourceControlText(branch),
+            controlRows: currentSourceControlRows(branch),
+            Ihis: currentSourceIhis(branch),
+            sourceIhis: branch.sourceIhis || "",
+            gain: branch.gain || "",
+            controlPositive: branch.controlPositive || "",
+            controlNegative: branch.controlNegative || "",
+            description: branch.description || "",
+            mathEnabled: Boolean(branch.mathEnabled)
+          } : null,
           current: {
             from: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.from) : (branch.direction === "AtoB" ? "A" : "B"),
             to: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.to) : (branch.direction === "AtoB" ? "B" : "A"),
@@ -4414,6 +4733,24 @@
           branch.gMatrix = branch.gMatrix || branch.G || `[${branch.ports.map(() => `[${branch.ports.map(() => "0").join(", ")}]`).join(", ")}]`;
           branch.ihisVector = branch.ihisVector || branch.Ihis || `[${branch.ports.map(() => "[0]").join(", ")}]`;
           branch.currents = branch.currents || [];
+        } else if (branch.kind === "current_source") {
+          const n = state.nextBranch++;
+          branch.id = `B${n}`;
+          branch.name = branch.name || `I${n}`;
+          branch.width = branch.width || 150;
+          branch.height = branch.height || 56;
+          branch.nodeA = branch.terminals?.A?.node || branch.nodeA || `n${n}a`;
+          branch.nodeB = branch.terminals?.B?.node || branch.nodeB || `n${n}b`;
+          branch.direction = branch.direction || "AtoB";
+          branch.sourceMode = branch.source?.mode || branch.sourceMode || "independent";
+          branch.currentExpression = branch.source?.currentExpression || branch.currentExpression || `I${n}`;
+          branch.sourceIhis = branch.source?.sourceIhis || branch.source?.Ihis || branch.sourceIhis || "0";
+          branch.controlTerms = branch.source?.controlTerms || branch.controlTerms || "";
+          branch.controlRows = Array.isArray(branch.source?.controlRows)
+            ? branch.source.controlRows
+            : (Array.isArray(branch.controlRows) ? branch.controlRows : currentSourceControlRows(branch));
+          branch.description = branch.source?.description || branch.description || "";
+          branch.mathEnabled = true;
         } else {
           const n = state.nextBranch++;
           branch.id = `B${n}`;
@@ -4659,12 +4996,14 @@
     function nextNameForKind(kind) {
       if (kind === "single_phase_transformer") return `Tr${state.nextTransformer - 1}`;
       if (kind === "custom_n_port") return `Custom${state.nextCustom - 1}`;
+      if (kind === "current_source") return `I${state.nextBranch - 1}`;
       return `R${state.nextBranch - 1}`;
     }
 
     function branchNamePrefix(kind) {
       if (kind === "single_phase_transformer") return "Tr";
       if (kind === "custom_n_port") return "Custom";
+      if (kind === "current_source") return "I";
       return "R";
     }
 
@@ -4759,7 +5098,7 @@
         branch.name = nextNameForKind(branch.kind);
         branch.x = Math.max(80, Math.min(WORLD.width - 80, Number(branch.x || 220) + offset));
         branch.y = Math.max(80, Math.min(WORLD.height - 80, Number(branch.y || 220) + offset));
-        if (branch.kind === "two_node_branch") {
+        if (branch.kind === "two_node_branch" || branch.kind === "current_source") {
           const n = Number(branch.id.slice(1));
           branch.nodeA = `n${n}a`;
           branch.nodeB = `n${n}b`;
@@ -5093,6 +5432,12 @@
         addText(branchValue(branch, "ihis"));
         addText(branchValue(branch, "gMatrix"));
         addText(branchValue(branch, "ihisVector"));
+        if (branch.kind === "current_source") {
+          parseCurrentSourceControlTerms(branch).forEach(term => {
+            if (!term.error) addText(term.coefficient);
+          });
+          addText(currentSourceIhis(branch));
+        }
         (branch.switchCases || []).forEach(item => {
           switchedValueFields(branch).forEach(field => addText(item[field]));
         });
@@ -5157,6 +5502,10 @@
           lines.push(`G_${branch.name} = sp.Matrix(${branchValue(branch, "gMatrix")})`);
           lines.push(`Ihis_${branch.name} = sp.Matrix(${branchValue(branch, "ihisVector")})`);
           lines.push(`${branch.name} = SubNetwork(name="${branch.name}", local_nodes=${pythonStringList(terminalSides(branch))}, G_local=G_${branch.name}, Ihis_local=Ihis_${branch.name})`);
+        } else if (branch.kind === "current_source") {
+          lines.push(`# ${branch.name} is a linear current source stamped directly into global G/Ihis.`);
+          lines.push(`# Output direction: ${branch.direction === "AtoB" ? "A -> B" : "B -> A"}`);
+          lines.push(`# ${currentFormula(branch)}`);
         } else {
           if (switchCaseLabel(branch)) lines.push(`# Active switch case: ${switchCaseLabel(branch)}`);
           const g = branchValue(branch, "g");
@@ -5168,7 +5517,9 @@
         lines.push("");
       });
       lines.push("asm = NetworkAssembler()");
-      state.branches.forEach(branch => lines.push(`asm.add_subnetwork(${branch.name})`));
+      state.branches.forEach(branch => {
+        if (branch.kind !== "current_source") lines.push(`asm.add_subnetwork(${branch.name})`);
+      });
       state.wires.forEach(wire => {
         const a = parseTerminal(wire.from);
         const b = parseTerminal(wire.to);
@@ -5364,7 +5715,7 @@
       const displayNames = payload.node_display_names || {};
       const internal = payload.internal_nodes || [];
       const external = payload.external_nodes || [];
-      const formulas = currentFormulaEntriesForCanvas().filter(entry => entry.line);
+      const formulas = currentFormulaEntriesForCanvas().filter(entry => entry.line && !entry.placeholder);
       if (!internal.length || !external.length || !formulas.length) return null;
       return {
         internal,
@@ -6007,6 +6358,9 @@
 
       const displayNodes = assembled.nodes.map(node => displayNameForAssembledNode(assembled, node));
       const nodeList = displayNodes.join(", ");
+      const warnings = assembled.warnings?.length
+        ? `<div class="validation-warning">${assembled.warnings.map(escapeHtml).join("<br>")}</div>`
+        : "";
       return `
         <div class="formula-list">
           <div class="formula-card">
@@ -6015,6 +6369,7 @@
           </div>
           <div class="formula-card">
             <div class="formula-name">${escapeHtml(tr("全局节点方程"))}</div>
+            ${warnings}
             <div class="matrix-equation">
               ${renderVectorMatrix(displayNodes.map(node => `I_${node}`))}
               <span class="formula-eq">=</span>
@@ -6163,6 +6518,7 @@
         node_display_names: Object.fromEntries(assembled.nodes.map(node => [node, displayNameForAssembledNode(assembled, node)])),
         external_nodes: externalVisible,
         internal_nodes: internal,
+        warnings: assembled.warnings || [],
         G_full: assembled.G.map(row => row.map(sumTerms)),
         Ihis_full: assembled.Ihis.map(sumTerms),
         G_full_tagged: assembled.G.map(row => row.map(taggedSumTerms)),
@@ -6173,6 +6529,9 @@
     function reducedStaticMessage(payload) {
       if (!payload.internal_nodes.length) {
         return `<div class="formula-empty">${escapeHtml(tr("请在右侧网络节点列表中勾选至少一个“内部”节点。"))}</div>`;
+      }
+      if (payload.warnings?.length) {
+        return `<div class="formula-empty">${payload.warnings.map(escapeHtml).join("<br>")}</div>`;
       }
       if (!payload.external_nodes.length) {
         return `<div class="formula-empty">${escapeHtml(tr("至少需要保留一个外部节点。"))}</div>`;
@@ -6254,11 +6613,17 @@
       const groupByTerminal = new Map();
       allGroups.forEach(group => (group.members || []).forEach(member => groupByTerminal.set(member, group)));
       const groupIndex = new Map(allGroups.map((group, index) => [group.id, index]));
+      const groupLookup = nodeLookupFromGroups(allGroups);
       const size = allGroups.length;
       const G = Array.from({ length: size }, () => Array.from({ length: size }, () => []));
       const Ihis = Array.from({ length: size }, () => []);
+      const warnings = [];
 
       (pkg.branches || []).forEach(inner => {
+        if (inner.kind === "current_source") {
+          stampCurrentSourceBranch(inner, side => groupByTerminal.get(terminalKey(inner.id, side))?.id, groupLookup, groupIndex, G, Ihis, warnings);
+          return;
+        }
         const sourceId = inner.id;
         const sides = terminalSides(inner);
         const localG = localGMatrix(inner);
@@ -6283,6 +6648,7 @@
         externalGroups,
         internalGroups,
         observers,
+        warnings,
         payload: {
           all_nodes: allGroups.map(group => group.id),
           voltage_nodes: allGroups.map(group => group.display),
@@ -6297,6 +6663,7 @@
     async function recomputePackagedBox(branch) {
       const built = buildPackagedReductionPayload(branch);
       if (!built) return;
+      if (built.warnings?.length) throw new Error(built.warnings.join("; "));
       const result = await requestReduction({
         ...built.payload,
         observers: built.observers.map(({ lhs, rhs }) => ({ lhs, rhs }))
@@ -6415,11 +6782,17 @@
       const internalGroups = groups.filter(group => group.internal && !group.boundary);
       const allGroups = groups;
       const groupIndex = new Map(allGroups.map((group, index) => [group.id, index]));
+      const groupLookup = nodeLookupFromGroups(allGroups);
       const size = allGroups.length;
       const G = Array.from({ length: size }, () => Array.from({ length: size }, () => []));
       const Ihis = Array.from({ length: size }, () => []);
+      const warnings = [];
 
       branches.forEach(branch => {
+        if (branch.kind === "current_source") {
+          stampCurrentSourceBranch(branch, side => groupByTerminal.get(terminalKey(branch.id, side))?.id, groupLookup, groupIndex, G, Ihis, warnings);
+          return;
+        }
         const sourceId = branch.id;
         const sides = terminalSides(branch);
         const localG = localGMatrix(branch);
@@ -6443,6 +6816,7 @@
         allGroups,
         groupByTerminal,
         selectedIds,
+        warnings,
         payload: {
           all_nodes: allGroups.map(group => group.id),
           voltage_nodes: allGroups.map(group => group.display),
@@ -6474,6 +6848,18 @@
           const toLabel = current.toLabel || displayForSide(toSide);
           return `i_${branch.name}_${current.name}_${fromLabel}_to_${toLabel} = ${expression}`;
         }).join("\n");
+      }
+      if (branch.kind === "current_source") {
+        const fromSide = branch.direction === "AtoB" ? "A" : "B";
+        const toSide = branch.direction === "AtoB" ? "B" : "A";
+        const fromLabel = displayForSide(fromSide);
+        const toLabel = displayForSide(toSide);
+        const displayByNode = new Map();
+        groupByTerminal.forEach(group => {
+          if (group?.display) displayByNode.set(group.display, group.display);
+          if (group?.id) displayByNode.set(group.id, group.display || group.id);
+        });
+        return `i_${branch.name}_${fromLabel}_to_${toLabel} = ${currentSourceExpression(branch, displayByNode)}`;
       }
 
       const fromSide = branch.direction === "AtoB" ? "A" : "B";
@@ -6574,6 +6960,10 @@
       const subsystem = buildSelectedSubsystem(branches);
       if (!subsystem.externalGroups.length) {
         alert("选中的部分没有外部边界节点，不能打包成可连接的 Y 节点黑盒。");
+        return;
+      }
+      if (subsystem.warnings?.length) {
+        alert(subsystem.warnings.join("\n"));
         return;
       }
 
@@ -6953,6 +7343,9 @@
       if (!external.length) {
         return `<div class="formula-empty">${escapeHtml(tr("至少需要保留一个外部节点。"))}</div>`;
       }
+      if (assembled.warnings?.length) {
+        return `<div class="formula-empty">${assembled.warnings.map(escapeHtml).join("<br>")}</div>`;
+      }
 
       const block = partitionSystem(assembled, external, internal);
       const reduced = reducePartition(block);
@@ -7183,8 +7576,14 @@
       const size = nodes.length;
       const G = Array.from({ length: size }, () => Array.from({ length: size }, () => []));
       const Ihis = Array.from({ length: size }, () => []);
+      const warnings = [];
 
+      const nodeLookup = nodeLookupFromGroups(groups);
       state.branches.forEach(branch => {
+        if (branch.kind === "current_source") {
+          stampCurrentSourceBranch(branch, side => netByTerminal.get(terminalKey(branch.id, side)), nodeLookup, nodeIndex, G, Ihis, warnings);
+          return;
+        }
         if (expandPackaged && branch.kind === "custom_n_port" && branch.packageOriginal) {
           stampPackagedOriginal(branch, netByTerminal, nodeIndex, G, Ihis);
           return;
@@ -7210,7 +7609,45 @@
         });
       });
 
-      return { nodes, G, Ihis, displayByNode, forcedInternalNodes };
+      return { nodes, G, Ihis, displayByNode, forcedInternalNodes, warnings };
+    }
+
+    function nodeLookupFromGroups(groups) {
+      const lookup = new Map();
+      groups.forEach(group => {
+        if (!lookup.has(group.id)) lookup.set(group.id, group.id);
+        const display = group.display || nodeDisplayName(group.id);
+        if (display && !lookup.has(display)) lookup.set(display, group.id);
+      });
+      return lookup;
+    }
+
+    function stampCurrentSourceBranch(branch, netForSide, nodeLookup, nodeIndex, G, Ihis, warnings = null) {
+      const fromSide = branch.direction === "AtoB" ? "A" : "B";
+      const toSide = branch.direction === "AtoB" ? "B" : "A";
+      const fromNode = netForSide(fromSide);
+      const toNode = netForSide(toSide);
+      const fromRow = nodeIndex.get(fromNode);
+      const toRow = nodeIndex.get(toNode);
+      if (fromRow === undefined || toRow === undefined) return;
+
+      parseCurrentSourceControlTerms(branch).forEach(term => {
+        if (term.error) {
+          warnings?.push(`${branch.name}: ${term.error}`);
+          return;
+        }
+        const controlNode = nodeLookup.get(term.node);
+        const col = nodeIndex.get(controlNode);
+        if (col === undefined) {
+          warnings?.push(`${branch.name}: ${tr("受控电流源控制节点不存在")}: ${term.node}`);
+          return;
+        }
+        addTerm(G[fromRow][col], term.coefficient, branch.id);
+        addTerm(G[toRow][col], negateExpr(term.coefficient), branch.id);
+      });
+      const ihis = currentSourceIhis(branch);
+      addTerm(Ihis[fromRow], ihis, branch.id);
+      addTerm(Ihis[toRow], negateExpr(ihis), branch.id);
     }
 
     function displayNameForAssembledNode(assembled, node) {
@@ -7311,10 +7748,19 @@
       });
       const groupByTerminal = new Map();
       ordered.forEach((group, index) => group.members.forEach(member => groupByTerminal.set(member, index)));
+      const orderedNodeIndex = new Map(ordered.map((group, index) => [group.id, index]));
+      const orderedNodeLookup = nodeLookupFromGroups(ordered);
       const size = ordered.length;
       const localG = Array.from({ length: size }, () => Array.from({ length: size }, () => []));
       const localIhis = Array.from({ length: size }, () => []);
       originalBranches.forEach(item => {
+        if (item.kind === "current_source") {
+          stampCurrentSourceBranch(item, side => {
+            const index = groupByTerminal.get(terminalKey(item.id, side));
+            return index === undefined ? null : ordered[index]?.id;
+          }, orderedNodeLookup, orderedNodeIndex, localG, localIhis);
+          return;
+        }
         const sourceId = item.id;
         const sides = terminalSides(item);
         const g = localGMatrix(item);
@@ -7359,6 +7805,9 @@
         const n = terminalSides(branch).length;
         return parseMatrixLiteral(branchValue(branch, "gMatrix"), n, n);
       }
+      if (branch.kind === "current_source") {
+        return [["0", "0"], ["0", "0"]];
+      }
       const g = wrapExpr(branchValue(branch, "g") || "0");
       return [
         [g, negateExpr(g)],
@@ -7369,6 +7818,9 @@
     function localIhisVector(branch) {
       if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") {
         return parseVectorLiteral(branchValue(branch, "ihisVector"), terminalSides(branch).length);
+      }
+      if (branch.kind === "current_source") {
+        return ["0", "0"];
       }
       const j = wrapExpr(branchValue(branch, "ihis") || "0");
       return [j, negateExpr(j)];
@@ -7619,6 +8071,36 @@
         renderAfterSidePanelEdit();
         return;
       }
+      if (branch.kind === "current_source") {
+        if (field === "sourceMode") {
+          branch.sourceMode = value === "node_voltage" ? "node_voltage" : "independent";
+          if (branch.sourceMode === "node_voltage" && currentSourceControlRows(branch).length === 0) {
+            setCurrentSourceControlRowCount(branch, 2);
+          }
+        } else if (field === "controlRowCount") {
+          setCurrentSourceControlRowCount(branch, value);
+        } else if (field.startsWith("controlRow.")) {
+          const [, indexText, key] = field.split(".");
+          const index = Number(indexText);
+          if (Number.isFinite(index) && ["node", "coefficient"].includes(key)) {
+            const rows = currentSourceControlRows(branch);
+            while (rows.length <= index) rows.push({ node: "", coefficient: rows.length === 0 ? "gm" : "0" });
+            rows[index][key] = value.trim();
+            branch.controlRows = rows;
+            branch.controlTerms = "";
+            branch.controlPositive = "";
+            branch.controlNegative = "";
+          }
+        } else if (field === "name") {
+          branch[field] = value.trim();
+        } else if (field === "currentExpression" || field === "sourceIhis" || field === "controlTerms" || field === "gain" || field === "controlPositive" || field === "controlNegative" || field === "description" || field === "nodeA" || field === "nodeB") {
+          branch[field] = value.trim();
+        } else if (field === "direction") {
+          branch.direction = value === "BtoA" ? "BtoA" : "AtoB";
+        }
+        render();
+        return;
+      }
       if (branch.kind === "single_phase_transformer") {
         if (field.startsWith("node.")) branch.nodes[field.slice(5)] = value.trim();
         else if (field === "ihisVector") {
@@ -7740,7 +8222,7 @@
       renderBranches();
       renderNetList();
       renderOutput();
-      document.getElementById("flipTool").disabled = !state.selectedId || findBranch(state.selectedId)?.kind !== "two_node_branch";
+      document.getElementById("flipTool").disabled = !state.selectedId || !["two_node_branch", "current_source"].includes(findBranch(state.selectedId)?.kind);
       document.getElementById("rotateTool").disabled = !state.selectedId;
       document.getElementById("deleteTool").disabled = state.selectedIds.length === 0 && !state.selectedWireId;
       document.getElementById("copyTool").disabled = selectedBranchSet().size === 0;
@@ -7774,6 +8256,86 @@
       const branch = findBranch(state.selectedId);
       if (!branch) {
         editor.innerHTML = `<div class="empty">选择一个元件后可编辑节点名、导纳、历史电流和观测方向。</div>`;
+        return;
+      }
+
+      if (branch.kind === "current_source") {
+        const basics = `
+          ${editableField("元件名", "name", branch.name)}
+          <div class="row">
+            ${editableField("宽度", "width", branch.width || 150)}
+            ${editableField("高度", "height", branch.height || 56)}
+          </div>
+        `;
+        const sourceConfig = `
+          <div class="field">
+            <label>${escapeHtml(tr("源类型"))}</label>
+            <div class="mode-options">
+              <button class="mode-option ${branch.sourceMode !== "node_voltage" ? "active" : ""}" type="button" data-source-mode-option="independent" onclick="updateBranchField('sourceMode', 'independent')">
+                <span>${escapeHtml(tr("独立电流源"))}</span>
+              </button>
+              <button class="mode-option ${branch.sourceMode === "node_voltage" ? "active" : ""}" type="button" data-source-mode-option="node_voltage" onclick="updateBranchField('sourceMode', 'node_voltage')">
+                <span>${escapeHtml(tr("节点电压相关电流源"))}</span>
+              </button>
+            </div>
+          </div>
+          <div class="modal-help">${escapeHtml(tr("在这里选择电流源类型。"))}</div>
+        `;
+        const warnings = validateCurrentSourceAgainstGroups(branch, orderedNetGroups());
+        const controlRows = currentSourceControlRows(branch);
+        const controlRowsEditor = `
+          <div class="field">
+            <label>${escapeHtml(tr("控制项数量"))}</label>
+            <input data-field="controlRowCount" type="number" min="0" max="12" value="${controlRows.length}">
+          </div>
+          ${controlRows.map((row, index) => `
+            <div class="row">
+              ${editableField(`${tr("控制节点")} ${index + 1}`, `controlRow.${index}.node`, row.node || "")}
+              ${editableField(`${tr("系数")} ${index + 1}`, `controlRow.${index}.coefficient`, row.coefficient || "")}
+            </div>
+          `).join("")}
+        `;
+        const mathModel = branch.sourceMode === "node_voltage"
+          ? `
+            ${controlRowsEditor}
+            ${editableField("输出电流 / Ihis", "sourceIhis", branch.sourceIhis || "0")}
+            ${warnings.length ? `<div class="validation-warning">${warnings.map(escapeHtml).join("<br>")}</div>` : ""}
+            <div class="field">
+              <label>${escapeHtml(tr("Stamp 预览"))}</label>
+              <div class="stamp-preview">${escapeHtml(currentSourceStampPreview(branch))}</div>
+            </div>
+            <div class="modal-help">${escapeHtml(tr("节点电压相关模式使用多行控制项；每一行表示 系数 * V_控制节点。"))}</div>
+          `
+          : `
+            ${editableField("输出电流 / Ihis", "currentExpression", branch.currentExpression || branch.name || "I")}
+            <div class="field">
+              <label>${escapeHtml(tr("Stamp 预览"))}</label>
+              <div class="stamp-preview">${escapeHtml(currentSourceStampPreview(branch))}</div>
+            </div>
+          `;
+        const terminals = `
+          <div class="row">
+            ${editableField("A 节点", "nodeA", branch.nodeA)}
+            ${editableField("B 节点", "nodeB", branch.nodeB)}
+          </div>
+          <div class="field">
+            <label for="direction">${escapeHtml(tr("电流方向"))}</label>
+            <select id="direction" data-field="direction">
+              <option value="AtoB" ${branch.direction === "AtoB" ? "selected" : ""}>${escapeHtml(tr("A 到 B"))}</option>
+              <option value="BtoA" ${branch.direction === "BtoA" ? "selected" : ""}>${escapeHtml(tr("B 到 A"))}</option>
+            </select>
+          </div>
+        `;
+        editor.innerHTML = editorGroupList([
+          editorGroup("basics", "名称配置", basics, false),
+          editorGroup("source", "源类型", sourceConfig, true),
+          editorGroup("math", "数学模型", mathModel, true),
+          editorGroup("highlight", "高亮", branchHighlightEditor(branch, false), false),
+          editorGroup("terminals", "端点标识", terminals, false)
+        ]);
+        bindEditorInputs();
+        bindEditorEditButtons();
+        bindEditorGroups();
         return;
       }
 
@@ -7956,15 +8518,83 @@
       });
     }
 
+    function bindSourceModeButtons() {
+      editor.querySelectorAll("[data-source-mode-option]").forEach(button => {
+        const activate = event => {
+          event.preventDefault();
+          event.stopPropagation();
+          updateBranchField("sourceMode", button.dataset.sourceModeOption);
+        };
+        button.addEventListener("pointerdown", event => {
+          button.dataset.pointerHandled = "1";
+          activate(event);
+        });
+        button.addEventListener("click", event => {
+          if (button.dataset.pointerHandled) {
+            delete button.dataset.pointerHandled;
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+          activate(event);
+        });
+      });
+    }
+
     function bindEditorInputs() {
       editor.querySelectorAll("[data-field]").forEach(input => {
         const field = input.dataset.field;
-        input.dataset.lastCommittedValue = input.type === "checkbox" ? String(input.checked) : input.value;
-        const event = "change";
-        input.addEventListener(event, () => {
+        const committedKey = () => {
+          if (input.type === "checkbox") return String(input.checked);
+          if (input.type === "radio") return `${input.checked}:${input.value}`;
+          return input.value;
+        };
+        input.dataset.lastCommittedValue = committedKey();
+        const commitInput = () => {
+          if (input.type === "radio" && !input.checked) return;
+          const nextValue = committedKey();
+          if (input.dataset.lastCommittedValue === nextValue) return;
           updateBranchField(field, input.type === "checkbox" ? input.checked : input.value);
-          input.dataset.lastCommittedValue = input.type === "checkbox" ? String(input.checked) : input.value;
-        });
+          input.dataset.lastCommittedValue = nextValue;
+        };
+        input.addEventListener("change", commitInput);
+        if (input.tagName === "SELECT") {
+          let selectMonitor = null;
+          const stopSelectMonitor = () => {
+            commitInput();
+            if (selectMonitor) {
+              clearInterval(selectMonitor);
+              selectMonitor = null;
+            }
+          };
+          const startSelectMonitor = () => {
+            if (selectMonitor) return;
+            selectMonitor = setInterval(() => {
+              if (!input.isConnected) {
+                clearInterval(selectMonitor);
+                selectMonitor = null;
+                return;
+              }
+              commitInput();
+            }, 120);
+          };
+          input.addEventListener("input", commitInput);
+          input.addEventListener("focus", startSelectMonitor);
+          input.addEventListener("pointerdown", startSelectMonitor);
+          input.addEventListener("blur", stopSelectMonitor);
+          input.addEventListener("keyup", commitInput);
+          input.addEventListener("pointerup", () => setTimeout(commitInput, 0));
+          startSelectMonitor();
+        }
+        if (input.type === "radio") {
+          const radioMonitor = setInterval(() => {
+            if (!input.isConnected) {
+              clearInterval(radioMonitor);
+              return;
+            }
+            commitInput();
+          }, 120);
+        }
         input.addEventListener("keydown", keyEvent => {
           if (keyEvent.key === "Enter" && input.tagName !== "TEXTAREA") {
             keyEvent.preventDefault();
@@ -8809,6 +9439,10 @@
           renderCustomNPort(branch, selected, nets);
           return;
         }
+        if (branch.kind === "current_source") {
+          renderCurrentSource(branch, selected, nets);
+          return;
+        }
         const bodyWidth = Math.max(50, Math.min(120, (branch.width || 150) * 0.5));
         const bodyHeight = branch.height || 48;
         const bodyX = branch.x - bodyWidth / 2;
@@ -8917,6 +9551,56 @@
 
         branchLayer.appendChild(group);
       });
+    }
+
+    function renderCurrentSource(branch, selected, nets) {
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      const currentHighlight = branchCurrentHighlight(branch);
+      const canvasHighlight = branchCanvasHighlight(branch);
+      group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}${canvasHighlight.className}`);
+      if (canvasHighlight.style) group.setAttribute("style", canvasHighlight.style);
+      group.setAttribute("transform", `rotate(${branch.rotation} ${branch.x} ${branch.y})`);
+      group.dataset.branchId = branch.id;
+
+      const bodyRadius = Math.max(22, Math.min(34, (branch.height || 56) * 0.42));
+      const bodyLeft = branch.x - bodyRadius;
+      const bodyRight = branch.x + bodyRadius;
+      const hitWidth = Math.max(120, branch.width || 150);
+      const hitHeight = Math.max(70, branch.height || 56);
+      const posA = terminalDrawPosition(branch, "A");
+      const posB = terminalDrawPosition(branch, "B");
+      const netAId = nets.get(terminalKey(branch.id, "A")) || "";
+      const netBId = nets.get(terminalKey(branch.id, "B")) || "";
+      const netA = nodeDisplayName(netAId);
+      const netB = nodeDisplayName(netBId);
+      const colorA = netColor(netAId);
+      const colorB = netColor(netBId);
+      const arrow = branch.direction === "AtoB"
+        ? `M ${branch.x - 14} ${branch.y} L ${branch.x + 14} ${branch.y}`
+        : `M ${branch.x + 14} ${branch.y} L ${branch.x - 14} ${branch.y}`;
+
+      group.innerHTML = `
+        <rect class="hitbox" x="${branch.x - hitWidth / 2 - 24}" y="${branch.y - hitHeight / 2 - 18}" width="${hitWidth + 48}" height="${hitHeight + 36}" rx="8"></rect>
+        <line class="lead" x1="${posA.x}" y1="${posA.y}" x2="${bodyLeft}" y2="${branch.y}"></line>
+        <line class="lead" x1="${bodyRight}" y1="${branch.y}" x2="${posB.x}" y2="${posB.y}"></line>
+        <circle class="branch-body" cx="${branch.x}" cy="${branch.y}" r="${bodyRadius}"></circle>
+        <path class="direction" d="${arrow}"></path>
+        <text class="branch-label" x="${branch.x}" y="${branch.y - bodyRadius - 10}">${escapeSvg(branch.name)}</text>
+        <text class="node-label" x="${branch.x}" y="${branch.y + bodyRadius + 18}">${escapeSvg(currentSourceModeLabel(branch))}</text>
+        <circle class="port-drag-hit" cx="${posA.x}" cy="${posA.y}" r="24" data-port-side="A"></circle>
+        <circle class="port-drag-hit" cx="${posB.x}" cy="${posB.y}" r="24" data-port-side="B"></circle>
+        <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "A") ? "hot" : ""}${netHoverClass(netAId)}" cx="${posA.x}" cy="${posA.y}" r="8" data-terminal="${terminalKey(branch.id, "A")}" data-port-side="A"></circle>
+        <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "B") ? "hot" : ""}${netHoverClass(netBId)}" cx="${posB.x}" cy="${posB.y}" r="8" data-terminal="${terminalKey(branch.id, "B")}" data-port-side="B"></circle>
+        <rect class="net-badge-bg${netHoverClass(netAId)}" data-net-id="${netAId}" data-port-side="A" x="${posA.x - 17}" y="${posA.y - 42}" width="34" height="18" rx="5" fill="${colorA}"></rect>
+        <rect class="net-badge-bg${netHoverClass(netBId)}" data-net-id="${netBId}" data-port-side="B" x="${posB.x - 17}" y="${posB.y - 42}" width="34" height="18" rx="5" fill="${colorB}"></rect>
+        <text class="net-badge" data-net-id="${netAId}" data-port-side="A" x="${posA.x}" y="${posA.y - 33}">${escapeSvg(netA)}</text>
+        <text class="net-badge" data-net-id="${netBId}" data-port-side="B" x="${posB.x}" y="${posB.y - 33}">${escapeSvg(netB)}</text>
+        ${state.showLocalLabels ? `<text class="node-label" data-port-side="A" x="${posA.x}" y="${posA.y + 24}">${escapeSvg(branch.nodeA)}</text>` : ""}
+        ${state.showLocalLabels ? `<text class="node-label" data-port-side="B" x="${posB.x}" y="${posB.y + 24}">${escapeSvg(branch.nodeB)}</text>` : ""}
+      `;
+
+      bindBranchGroupInteractions(group, branch);
+      branchLayer.appendChild(group);
     }
 
     function renderTransformer(branch, selected, nets) {
@@ -9370,7 +10054,7 @@
       renderEditor();
       renderNetList();
       renderOutput();
-      document.getElementById("flipTool").disabled = !state.selectedId || findBranch(state.selectedId)?.kind !== "two_node_branch";
+      document.getElementById("flipTool").disabled = !state.selectedId || !["two_node_branch", "current_source"].includes(findBranch(state.selectedId)?.kind);
       document.getElementById("rotateTool").disabled = !state.selectedId;
       document.getElementById("deleteTool").disabled = state.selectedIds.length === 0 && !state.selectedWireId;
       document.getElementById("copyTool").disabled = selectedBranchSet().size === 0;
@@ -9675,6 +10359,11 @@
         setTool("select");
         return;
       }
+      if (state.tool === "currentSource") {
+        createCurrentSource(point.x, point.y);
+        setTool("select");
+        return;
+      }
       if (state.tool === "transformer") {
         createTransformer(point.x, point.y);
         setTool("select");
@@ -9916,6 +10605,7 @@
       if (file) importCircuitFile(file);
     });
     document.getElementById("addBranchTool").addEventListener("click", () => setTool("branch"));
+    document.getElementById("addCurrentSourceTool").addEventListener("click", () => setTool("currentSource"));
     document.getElementById("addTransformerTool").addEventListener("click", () => setTool("transformer"));
     document.getElementById("addCustomTool").addEventListener("click", () => {
       setTool("select");
