@@ -6,6 +6,7 @@ from typing import Sequence
 import sympy as sp
 
 from elimination import EliminationResult
+from nodal_tool.ground import restrict_observer_to_remaining_nodes
 
 
 @dataclass(frozen=True)
@@ -26,6 +27,7 @@ def reduce_observer(
     d: sp.Expr,
     all_nodes: Sequence[str],
     elimination: EliminationResult,
+    ground_voltage_map: dict[str, sp.Expr] | None = None,
 ) -> ReducedObserver:
     """Reduce i_obs = C_full V_full + d after internal-node elimination."""
 
@@ -33,6 +35,8 @@ def reduce_observer(
     C_full = sp.Matrix(C_full)
     if C_full.shape != (1, len(all_nodes)):
         raise ValueError(f"C_full must be a 1x{len(all_nodes)} row vector, got {C_full.shape}")
+    if ground_voltage_map:
+        C_full, d, all_nodes = restrict_observer_to_remaining_nodes(C_full, d, all_nodes, ground_voltage_map)
 
     order = elimination.external_nodes + elimination.internal_nodes
     permutation = [all_nodes.index(node) for node in order]

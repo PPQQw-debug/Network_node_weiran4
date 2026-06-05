@@ -6,17 +6,17 @@
   <title>Two-Port Branch Builder</title>
   <style>
     :root {
-      --bg: #eefaf0;
-      --panel: #ffffff;
+      --bg: #fbfaf6;
+      --panel: #fffdf8;
       --ink: #172026;
-      --muted: #65717a;
-      --line: #cfd7dd;
+      --muted: #68645d;
+      --line: #ddd7cc;
       --grid: #cfe8d5;
       --blue: #2563eb;
       --green: #15803d;
       --red: #b42318;
       --gold: #a16207;
-      --shadow: 0 12px 26px rgba(23, 32, 38, 0.08);
+      --shadow: 0 12px 26px rgba(72, 53, 28, 0.08);
     }
 
     * {
@@ -51,7 +51,7 @@
       min-height: 52px;
       padding: 8px 14px;
       border-bottom: 1px solid var(--line);
-      background: #f7fcf8;
+      background: #fbfaf4;
     }
 
     .brand {
@@ -74,9 +74,9 @@
       align-items: center;
       gap: 4px;
       padding: 3px 5px;
-      border: 1px solid #e3e9ee;
+      border: 1px solid #e2dacd;
       border-radius: 8px;
-      background: #f4fbf5;
+      background: #fffdf8;
     }
 
     .toolbar-label {
@@ -94,7 +94,7 @@
       display: grid;
       place-items: center;
       border: 1px solid var(--line);
-      background: #fff;
+      background: #fffefa;
       color: var(--ink);
       border-radius: 7px;
       cursor: pointer;
@@ -139,13 +139,13 @@
       gap: 6px;
       padding: 7px 10px;
       border-bottom: 1px solid var(--line);
-      background: #f4fbf5;
+      background: #fbfaf4;
       overflow-x: auto;
     }
 
     .canvas-tab {
       border: 1px solid var(--line);
-      background: #fff;
+      background: #fffefa;
       color: var(--ink);
       border-radius: 6px;
       padding: 5px 10px;
@@ -292,6 +292,18 @@
       stroke-width: 3;
     }
 
+    .ground-symbol {
+      fill: none;
+      stroke: #485761;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+    }
+
+    .branch.selected .ground-symbol {
+      stroke: var(--blue);
+      stroke-width: 3;
+    }
+
     .branch.current-hover .branch-body {
       stroke: #f59e0b;
       stroke-width: 4;
@@ -313,7 +325,8 @@
 
     .branch.formula-highlight .lead,
     .branch.formula-highlight .terminal,
-    .branch.formula-highlight .transformer-coil {
+    .branch.formula-highlight .transformer-coil,
+    .branch.formula-highlight .ground-symbol {
       stroke: var(--branch-highlight-color, #ef4444);
       stroke-width: 4;
     }
@@ -668,7 +681,7 @@
     .editor-group {
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: #fbfdff;
+      background: #fffefa;
       overflow: hidden;
     }
 
@@ -716,7 +729,7 @@
       border: 1px solid var(--line);
       border-radius: 6px;
       padding: 8px 9px;
-      background: #fff;
+      background: #fffefa;
       color: var(--ink);
       min-width: 0;
     }
@@ -1657,7 +1670,7 @@
         <button class="tool" id="panTool" title="拖动画布平移" aria-label="拖动画布平移">
           <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 12V7.5a1.5 1.5 0 0 1 3 0V12 6.5a1.5 1.5 0 0 1 3 0V12 8.5a1.5 1.5 0 0 1 3 0V13 10.5a1.5 1.5 0 0 1 3 0V15c0 4-2.5 6-6.5 6H12c-2.2 0-3.8-.8-5.1-2.5L4 14.5a1.6 1.6 0 0 1 2.5-2L9 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <button class="tool" id="localLabelTool" title="隐藏局部端口标签" aria-label="隐藏局部端口标签">
+        <button class="tool" id="localLabelTool" title="显示局部端口标签" aria-label="显示局部端口标签">
           <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 12h8M4 18h6M17 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         </div>
@@ -1672,6 +1685,9 @@
         </button>
         <button class="tool" id="addCurrentSourceTool" title="添加电流源" aria-label="添加电流源">
           <svg width="22" height="20" viewBox="0 0 28 22" aria-hidden="true"><path d="M1 11h7m12 0h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 11h6m-3-3 3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="tool" id="addGroundTool" title="添加 Ground" aria-label="添加 Ground">
+          <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v7M7 11h10M8.5 15h7M10 19h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
         <button class="tool" id="addTransformerTool" title="添加单相变压器" aria-label="添加单相变压器">
           <svg width="24" height="20" viewBox="0 0 30 22" aria-hidden="true"><path d="M1 5h7m14 0h7M1 17h7m14 0h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M10 4c-4 2-4 12 0 14M13 4c-4 2-4 12 0 14M17 4c4 2 4 12 0 14M20 4c4 2 4 12 0 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -1878,7 +1894,7 @@
       leadAnchorDrag: null,
       hoverCurrent: null,
       hoverNetId: null,
-      showLocalLabels: true,
+      showLocalLabels: false,
       showReducedBranchCurrents: false,
       panDrag: null,
       marquee: null,
@@ -2220,6 +2236,12 @@
       "添加二端口支路": "Add 2-Port",
       "添加电流源": "Add Current Source",
       "点击画布添加电流源": "Click canvas to add a current source",
+      "添加 Ground": "Add Ground",
+      "点击画布添加 Ground": "Click canvas to add ground",
+      "Ground / V=0": "Ground / V=0",
+      "Ground 节点": "Ground Nodes",
+      "Ground node is a fixed-voltage node and cannot be external.": "Ground node is a fixed-voltage node and cannot be external.",
+      "Ground node is a fixed-voltage node and cannot be internal.": "Ground node is a fixed-voltage node and cannot be internal.",
       "添加单相变压器": "Add Transformer",
       "添加自定义 N 节点支路": "Add Custom N-Port",
       "连接节点": "Wire Nodes",
@@ -2461,6 +2483,7 @@
       select: document.getElementById("selectTool"),
       branch: document.getElementById("addBranchTool"),
       currentSource: document.getElementById("addCurrentSourceTool"),
+      ground: document.getElementById("addGroundTool"),
       transformer: document.getElementById("addTransformerTool"),
       custom: document.getElementById("addCustomTool"),
       wire: document.getElementById("wireTool"),
@@ -2521,6 +2544,27 @@
         controlNegative: "",
         description: "",
         mathEnabled: true
+      };
+      state.branches.push(branch);
+      clampComponent(branch);
+      selectBranch(branch.id);
+      render();
+    }
+
+    function createGround(x, y) {
+      commitHistory();
+      syncNextCounters();
+      const n = state.nextBranch++;
+      const branch = {
+        id: `B${n}`,
+        name: `GND${n}`,
+        kind: "ground",
+        x,
+        y,
+        width: 56,
+        height: 56,
+        rotation: 0,
+        nodeG: `gnd${n}`
       };
       state.branches.push(branch);
       clampComponent(branch);
@@ -2792,13 +2836,15 @@
           ? "点击画布添加二端口支路"
           : tool === "currentSource"
             ? "点击画布添加电流源"
-            : tool === "transformer"
-              ? "点击画布添加单相变压器"
-              : tool === "custom"
-                ? "点击画布添加自定义 N 节点支路"
-                : tool === "pan"
-                  ? "拖动画布平移"
-                  : "选择 / 拖动";
+            : tool === "ground"
+              ? "点击画布添加 Ground"
+              : tool === "transformer"
+                ? "点击画布添加单相变压器"
+                : tool === "custom"
+                  ? "点击画布添加自定义 N 节点支路"
+                  : tool === "pan"
+                    ? "拖动画布平移"
+                    : "选择 / 拖动";
       render();
     }
 
@@ -2852,9 +2898,16 @@
     }
 
     function terminalSides(branch) {
+      if (branch.kind === "ground") return ["G"];
       if (branch.kind === "single_phase_transformer") return ["P", "N", "S", "T"];
       if (branch.kind === "custom_n_port") return branch.ports || Object.keys(branch.nodes || {});
       return ["A", "B"];
+    }
+
+    function branchNodeForSide(branch, side) {
+      if (branch.kind === "ground") return branch.nodeG;
+      if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") return branch.nodes?.[side];
+      return side === "A" ? branch.nodeA : branch.nodeB;
     }
 
     function visibleTerminalSides(branch) {
@@ -2893,6 +2946,7 @@
         const [x, y] = points[side];
         return { x, y };
       }
+      if (branch.kind === "ground") return { x: 0, y: -24 };
       return { x: side === "A" ? -branch.width / 2 : branch.width / 2, y: 0 };
     }
 
@@ -4406,6 +4460,9 @@
 
     function currentFormula(branch, groupByTerminal = null) {
       const netName = side => terminalNetNameFromMap(terminalKey(branch.id, side), groupByTerminal);
+      if (branch.kind === "ground") {
+        return `V_${netName("G")} = 0`;
+      }
       if (branch.kind === "current_source") {
         const leftKey = terminalKey(branch.id, "A");
         const rightKey = terminalKey(branch.id, "B");
@@ -4456,6 +4513,9 @@
 
     function currentFormulaEntries(branch, groupByTerminal = null) {
       const lines = currentFormula(branch, groupByTerminal).split("\n").filter(Boolean);
+      if (branch.kind === "ground") {
+        return lines.map(line => ({ line, branchId: branch.id, part: "ground" }));
+      }
       if (branch.packageOriginal) {
         return lines.map((line, index) => ({
           line,
@@ -4501,7 +4561,7 @@
           terminals: Object.fromEntries(terminalSides(branch).map(side => [
             side,
             {
-              node: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.nodes[side] : (side === "A" ? branch.nodeA : branch.nodeB),
+              node: branchNodeForSide(branch, side),
               net: terminalNetName(terminalKey(branch.id, side))
             }
           ])),
@@ -4751,6 +4811,13 @@
             : (Array.isArray(branch.controlRows) ? branch.controlRows : currentSourceControlRows(branch));
           branch.description = branch.source?.description || branch.description || "";
           branch.mathEnabled = true;
+        } else if (branch.kind === "ground") {
+          const n = state.nextBranch++;
+          branch.id = `B${n}`;
+          branch.name = branch.name || `GND${n}`;
+          branch.width = branch.width || 56;
+          branch.height = branch.height || 56;
+          branch.nodeG = branch.terminals?.G?.node || branch.nodeG || `gnd${n}`;
         } else {
           const n = state.nextBranch++;
           branch.id = `B${n}`;
@@ -4997,6 +5064,7 @@
       if (kind === "single_phase_transformer") return `Tr${state.nextTransformer - 1}`;
       if (kind === "custom_n_port") return `Custom${state.nextCustom - 1}`;
       if (kind === "current_source") return `I${state.nextBranch - 1}`;
+      if (kind === "ground") return `GND${state.nextBranch - 1}`;
       return `R${state.nextBranch - 1}`;
     }
 
@@ -5004,6 +5072,7 @@
       if (kind === "single_phase_transformer") return "Tr";
       if (kind === "custom_n_port") return "Custom";
       if (kind === "current_source") return "I";
+      if (kind === "ground") return "GND";
       return "R";
     }
 
@@ -5102,6 +5171,9 @@
           const n = Number(branch.id.slice(1));
           branch.nodeA = `n${n}a`;
           branch.nodeB = `n${n}b`;
+        } else if (branch.kind === "ground") {
+          const n = Number(branch.id.slice(1));
+          branch.nodeG = `gnd${n}`;
         } else if (branch.kind === "single_phase_transformer") {
           const n = Number(branch.id.slice(1));
           branch.nodes = { P: `tr${n}p`, N: `tr${n}n`, S: `tr${n}s`, T: `tr${n}t` };
@@ -5506,6 +5578,9 @@
           lines.push(`# ${branch.name} is a linear current source stamped directly into global G/Ihis.`);
           lines.push(`# Output direction: ${branch.direction === "AtoB" ? "A -> B" : "B -> A"}`);
           lines.push(`# ${currentFormula(branch)}`);
+        } else if (branch.kind === "ground") {
+          lines.push(`# ${branch.name} is a ground constraint: ${currentFormula(branch)}`);
+          lines.push(`# Ground is applied after full stamping by removing its row/column because V_ground = 0.`);
         } else {
           if (switchCaseLabel(branch)) lines.push(`# Active switch case: ${switchCaseLabel(branch)}`);
           const g = branchValue(branch, "g");
@@ -5518,7 +5593,7 @@
       });
       lines.push("asm = NetworkAssembler()");
       state.branches.forEach(branch => {
-        if (branch.kind !== "current_source") lines.push(`asm.add_subnetwork(${branch.name})`);
+        if (branch.kind !== "current_source" && branch.kind !== "ground") lines.push(`asm.add_subnetwork(${branch.name})`);
       });
       state.wires.forEach(wire => {
         const a = parseTerminal(wire.from);
@@ -5715,7 +5790,7 @@
       const displayNames = payload.node_display_names || {};
       const internal = payload.internal_nodes || [];
       const external = payload.external_nodes || [];
-      const formulas = currentFormulaEntriesForCanvas().filter(entry => entry.line && !entry.placeholder);
+      const formulas = currentFormulaEntriesForCanvas().filter(entry => entry.line && !entry.placeholder && entry.part !== "ground");
       if (!internal.length || !external.length || !formulas.length) return null;
       return {
         internal,
@@ -6351,13 +6426,14 @@
     }
 
     function renderNodeEquations() {
-      const assembled = assembleGlobalSystem({ expandPackaged: true });
+      const assembled = constrainedAssembledSystem(assembleGlobalSystem({ expandPackaged: true }));
       if (!assembled.nodes.length) {
         return `<div class="formula-empty">${escapeHtml(tr("尚未创建节点。"))}</div>`;
       }
 
       const displayNodes = assembled.nodes.map(node => displayNameForAssembledNode(assembled, node));
       const nodeList = displayNodes.join(", ");
+      const groundList = (assembled.groundNodes || []).map(node => displayNameForAssembledNode(assembled.originalAssembled || assembled, node)).join(", ");
       const warnings = assembled.warnings?.length
         ? `<div class="validation-warning">${assembled.warnings.map(escapeHtml).join("<br>")}</div>`
         : "";
@@ -6366,6 +6442,7 @@
           <div class="formula-card">
             <div class="formula-name">${escapeHtml(tr("节点顺序"))}</div>
             <div class="formula-line"><span class="formula-rhs">${escapeHtml(nodeList)}</span></div>
+            ${groundList ? `<div class="formula-line"><span class="formula-rhs">${escapeHtml(tr("Ground 节点"))}: ${escapeHtml(groundList)} = 0</span></div>` : ""}
           </div>
           <div class="formula-card">
             <div class="formula-name">${escapeHtml(tr("全局节点方程"))}</div>
@@ -6507,9 +6584,10 @@
 
     function buildReducedPayload() {
       const assembled = assembleGlobalSystem({ expandPackaged: true });
+      const groundSet = new Set(assembled.groundNodes || []);
       const forcedInternal = new Set(assembled.forcedInternalNodes || []);
-      const internal = assembled.nodes.filter(node => state.internalNodes.includes(node) || forcedInternal.has(node));
-      const external = assembled.nodes.filter(node => !state.internalNodes.includes(node));
+      const internal = assembled.nodes.filter(node => !groundSet.has(node) && (state.internalNodes.includes(node) || forcedInternal.has(node)));
+      const external = assembled.nodes.filter(node => !groundSet.has(node) && !state.internalNodes.includes(node));
       const externalVisible = external.filter(node => !forcedInternal.has(node));
 
       return {
@@ -6518,6 +6596,7 @@
         node_display_names: Object.fromEntries(assembled.nodes.map(node => [node, displayNameForAssembledNode(assembled, node)])),
         external_nodes: externalVisible,
         internal_nodes: internal,
+        ground_nodes: [...groundSet],
         warnings: assembled.warnings || [],
         G_full: assembled.G.map(row => row.map(sumTerms)),
         Ihis_full: assembled.Ihis.map(sumTerms),
@@ -6564,6 +6643,7 @@
 
     function packagedObserverEntries(branch, groupByTerminal, internalNames) {
       return (branch.packageOriginal?.branches || []).flatMap(inner => {
+        if (inner.kind === "ground") return [];
         const displayForSide = side => groupByTerminal.get(terminalKey(inner.id, side))?.display || side;
         const lines = localCurrentFormula(inner, groupByTerminal).split("\n").filter(Boolean);
         if (inner.kind === "single_phase_transformer" || inner.kind === "custom_n_port") {
@@ -6607,9 +6687,10 @@
     function buildPackagedReductionPayload(branch) {
       const pkg = branch.packageOriginal;
       if (!pkg) return null;
-      const externalGroups = pkg.externalGroups || [];
-      const internalGroups = pkg.internalGroups || [];
-      const allGroups = [...externalGroups, ...internalGroups];
+      const allGroups = [...(pkg.externalGroups || []), ...(pkg.internalGroups || [])];
+      const groundGroupIds = new Set(groundNodesForBranchesInGroups(pkg.branches || [], allGroups));
+      const externalGroups = (pkg.externalGroups || []).filter(group => !groundGroupIds.has(group.id));
+      const internalGroups = (pkg.internalGroups || []).filter(group => !groundGroupIds.has(group.id));
       const groupByTerminal = new Map();
       allGroups.forEach(group => (group.members || []).forEach(member => groupByTerminal.set(member, group)));
       const groupIndex = new Map(allGroups.map((group, index) => [group.id, index]));
@@ -6620,6 +6701,7 @@
       const warnings = [];
 
       (pkg.branches || []).forEach(inner => {
+        if (inner.kind === "ground") return;
         if (inner.kind === "current_source") {
           stampCurrentSourceBranch(inner, side => groupByTerminal.get(terminalKey(inner.id, side))?.id, groupLookup, groupIndex, G, Ihis, warnings);
           return;
@@ -6654,6 +6736,7 @@
           voltage_nodes: allGroups.map(group => group.display),
           external_nodes: externalGroups.map(group => group.id),
           internal_nodes: internalGroups.map(group => group.id),
+          ground_nodes: [...groundGroupIds],
           G_full: G.map(row => row.map(sumTerms)),
           Ihis_full: Ihis.map(sumTerms)
         }
@@ -6778,9 +6861,10 @@
       groups.sort((a, b) => (globalOrder.get(a.globalNet) ?? 9999) - (globalOrder.get(b.globalNet) ?? 9999));
       const groupByTerminal = new Map();
       groups.forEach(group => group.members.forEach(key => groupByTerminal.set(key, group)));
-      const externalGroups = groups.filter(group => !group.internal || group.boundary);
-      const internalGroups = groups.filter(group => group.internal && !group.boundary);
       const allGroups = groups;
+      const groundGroupIds = new Set(groundNodesForBranchesInGroups(branches, allGroups));
+      const externalGroups = groups.filter(group => !groundGroupIds.has(group.id) && (!group.internal || group.boundary));
+      const internalGroups = groups.filter(group => !groundGroupIds.has(group.id) && group.internal && !group.boundary);
       const groupIndex = new Map(allGroups.map((group, index) => [group.id, index]));
       const groupLookup = nodeLookupFromGroups(allGroups);
       const size = allGroups.length;
@@ -6789,6 +6873,7 @@
       const warnings = [];
 
       branches.forEach(branch => {
+        if (branch.kind === "ground") return;
         if (branch.kind === "current_source") {
           stampCurrentSourceBranch(branch, side => groupByTerminal.get(terminalKey(branch.id, side))?.id, groupLookup, groupIndex, G, Ihis, warnings);
           return;
@@ -6822,6 +6907,7 @@
           voltage_nodes: allGroups.map(group => group.display),
           external_nodes: externalGroups.map(group => group.id),
           internal_nodes: internalGroups.map(group => group.id),
+          ground_nodes: [...groundGroupIds],
           G_full: G.map(row => row.map(sumTerms)),
           Ihis_full: Ihis.map(sumTerms)
         }
@@ -6969,6 +7055,7 @@
 
       const internalNames = new Set(subsystem.internalGroups.map(group => group.display));
       const observerEntries = branches.flatMap(branch => {
+        if (branch.kind === "ground") return [];
         const displayForSide = side => subsystem.groupByTerminal.get(terminalKey(branch.id, side))?.display || side;
         const lines = localCurrentFormula(branch, subsystem.groupByTerminal).split("\n").filter(Boolean);
         if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") {
@@ -7280,6 +7367,7 @@
     function renderReducedEquationsResult(result, displayNames = {}) {
       const externalNames = result.external_nodes.map(node => displayNames[node] || nodeDisplayName(node));
       const internalNames = result.internal_nodes.map(node => displayNames[node] || nodeDisplayName(node));
+      const groundNames = (result.ground_nodes || []).map(node => displayNames[node] || nodeDisplayName(node));
       const highlightWarning = reducedHighlightWarning(result);
 
       return `
@@ -7287,7 +7375,7 @@
           <div class="formula-card">
             <div class="formula-name">${escapeHtml(tr("节点划分"))}</div>
             <div class="formula-line">
-              <span class="formula-rhs">${escapeHtml(tr("外部"))}: ${escapeHtml(externalNames.join(", "))}; ${escapeHtml(tr("内部"))}: ${escapeHtml(internalNames.join(", "))}</span>
+              <span class="formula-rhs">${escapeHtml(tr("外部"))}: ${escapeHtml(externalNames.join(", "))}; ${escapeHtml(tr("内部"))}: ${escapeHtml(internalNames.join(", "))}${groundNames.length ? `; ${escapeHtml(tr("Ground 节点"))}: ${escapeHtml(groundNames.join(", "))}` : ""}</span>
             </div>
           </div>
           <div class="formula-card">
@@ -7332,10 +7420,11 @@
     }
 
     function renderReducedEquations() {
-      const assembled = assembleGlobalSystem({ expandPackaged: true });
+      const assembled = constrainedAssembledSystem(assembleGlobalSystem({ expandPackaged: true }));
       const forcedInternal = new Set(assembled.forcedInternalNodes || []);
       const internal = assembled.nodes.filter(node => state.internalNodes.includes(node) || forcedInternal.has(node));
       const external = assembled.nodes.filter(node => !state.internalNodes.includes(node) && !forcedInternal.has(node));
+      const groundNames = (assembled.groundNodes || []).map(node => displayNameForAssembledNode(assembled.originalAssembled || assembled, node));
 
       if (!internal.length) {
         return `<div class="formula-empty">${escapeHtml(tr("请在右侧网络节点列表中勾选至少一个“内部”节点。"))}</div>`;
@@ -7357,7 +7446,7 @@
           <div class="formula-card">
             <div class="formula-name">${escapeHtml(tr("节点划分"))}</div>
             <div class="formula-line">
-              <span class="formula-rhs">${escapeHtml(tr("外部"))}: ${escapeHtml(externalNames.join(", "))}; ${escapeHtml(tr("内部"))}: ${escapeHtml(internalNames.join(", "))}</span>
+              <span class="formula-rhs">${escapeHtml(tr("外部"))}: ${escapeHtml(externalNames.join(", "))}; ${escapeHtml(tr("内部"))}: ${escapeHtml(internalNames.join(", "))}${groundNames.length ? `; ${escapeHtml(tr("Ground 节点"))}: ${escapeHtml(groundNames.join(", "))}` : ""}</span>
             </div>
           </div>
           <div class="formula-card">
@@ -7580,6 +7669,7 @@
 
       const nodeLookup = nodeLookupFromGroups(groups);
       state.branches.forEach(branch => {
+        if (branch.kind === "ground") return;
         if (branch.kind === "current_source") {
           stampCurrentSourceBranch(branch, side => netByTerminal.get(terminalKey(branch.id, side)), nodeLookup, nodeIndex, G, Ihis, warnings);
           return;
@@ -7609,7 +7699,50 @@
         });
       });
 
-      return { nodes, G, Ihis, displayByNode, forcedInternalNodes, warnings };
+      return { nodes, G, Ihis, displayByNode, forcedInternalNodes, groundNodes: groundNodesFromGroups(groups), warnings };
+    }
+
+    function groundNodesFromGroups(groups) {
+      const groundTerminals = new Set(
+        state.branches
+          .filter(branch => branch.kind === "ground")
+          .map(branch => terminalKey(branch.id, "G"))
+      );
+      return groups
+        .filter(group => !group.virtualInternal && (group.members || []).some(member => groundTerminals.has(member)))
+        .map(group => group.id);
+    }
+
+    function groundNodesForBranchesInGroups(branches, groups) {
+      const groundTerminals = new Set(
+        (branches || [])
+          .filter(branch => branch.kind === "ground")
+          .map(branch => terminalKey(branch.id, "G"))
+      );
+      return (groups || [])
+        .filter(group => (group.members || []).some(member => groundTerminals.has(member)))
+        .map(group => group.id);
+    }
+
+    function constrainedAssembledSystem(assembled) {
+      const groundSet = new Set(assembled.groundNodes || []);
+      if (!groundSet.size) return assembled;
+      const keep = assembled.nodes
+        .map((node, index) => ({ node, index }))
+        .filter(item => !groundSet.has(item.node));
+      const keptIndices = keep.map(item => item.index);
+      const displayByNode = new Map();
+      assembled.displayByNode?.forEach((value, key) => displayByNode.set(key, value));
+      return {
+        ...assembled,
+        originalAssembled: assembled,
+        nodes: keep.map(item => item.node),
+        G: keptIndices.map(row => keptIndices.map(col => assembled.G[row][col])),
+        Ihis: keptIndices.map(row => assembled.Ihis[row]),
+        displayByNode,
+        forcedInternalNodes: (assembled.forcedInternalNodes || []).filter(node => !groundSet.has(node)),
+        warnings: assembled.warnings || []
+      };
     }
 
     function nodeLookupFromGroups(groups) {
@@ -7801,6 +7934,7 @@
     }
 
     function localGMatrix(branch) {
+      if (branch.kind === "ground") return [["0"]];
       if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") {
         const n = terminalSides(branch).length;
         return parseMatrixLiteral(branchValue(branch, "gMatrix"), n, n);
@@ -7816,6 +7950,7 @@
     }
 
     function localIhisVector(branch) {
+      if (branch.kind === "ground") return ["0"];
       if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") {
         return parseVectorLiteral(branchValue(branch, "ihisVector"), terminalSides(branch).length);
       }
@@ -8068,6 +8203,11 @@
         const next = Math.max(min, Math.min(max, Number(value)));
         if (Number.isFinite(next)) branch[field] = next;
         clampComponent(branch);
+        renderAfterSidePanelEdit();
+        return;
+      }
+      if (branch.kind === "ground") {
+        if (field === "name" || field === "nodeG") branch[field] = value.trim();
         renderAfterSidePanelEdit();
         return;
       }
@@ -8331,6 +8471,33 @@
           editorGroup("source", "源类型", sourceConfig, true),
           editorGroup("math", "数学模型", mathModel, true),
           editorGroup("highlight", "高亮", branchHighlightEditor(branch, false), false),
+          editorGroup("terminals", "端点标识", terminals, false)
+        ]);
+        bindEditorInputs();
+        bindEditorEditButtons();
+        bindEditorGroups();
+        return;
+      }
+
+      if (branch.kind === "ground") {
+        const basics = `
+          ${editableField("元件名", "name", branch.name)}
+          <div class="row">
+            ${editableField("宽度", "width", branch.width || 56)}
+            ${editableField("高度", "height", branch.height || 56)}
+          </div>
+        `;
+        const mathModel = `
+          <div class="field">
+            <label>${escapeHtml(tr("Ground 节点"))}</label>
+            <input readonly value="${escapeHtml(tr("Ground / V=0"))}">
+          </div>
+          <div class="stamp-preview">${escapeHtml("V_ground = 0; remove ground row/column before node reduction.")}</div>
+        `;
+        const terminals = `${editableField("Ground 节点", "nodeG", branch.nodeG)}`;
+        editor.innerHTML = editorGroupList([
+          editorGroup("basics", "名称配置", basics, false),
+          editorGroup("math", "数学模型", mathModel, true),
           editorGroup("terminals", "端点标识", terminals, false)
         ]);
         bindEditorInputs();
@@ -9044,7 +9211,9 @@
       }
       const rowName = group => group.virtualInternal ? group.display : nodeDisplayName(group.id);
       const rowColor = group => group.virtualInternal ? group.color : netColor(group.id);
-      const rowInternal = group => group.virtualInternal || state.internalNodes.includes(group.id);
+      const groundSet = new Set(groundNodesFromGroups(groups));
+      const rowGround = group => !group.virtualInternal && groundSet.has(group.id);
+      const rowInternal = group => !rowGround(group) && (group.virtualInternal || state.internalNodes.includes(group.id));
       const rowExposure = group => group.virtualInternal
         ? (group.customHidden
           ? { custom: true, branchId: group.branchId, port: group.port, exposed: false }
@@ -9072,8 +9241,8 @@
                 <button class="node-color-button" ${group.virtualInternal ? "disabled" : `data-node-color-menu="${group.id}"`} type="button" draggable="false" style="background:${rowColor(group)}" title="选择节点颜色" aria-label="选择节点颜色"></button>
                 <span class="node-order-name">${escapeHtml(rowName(group))}</span>
                 <span class="node-order-id">${escapeHtml(group.virtualInternal ? group.branchName : group.id)}</span>
-                <button class="node-internal-button ${rowInternal(group) ? "active" : ""}" ${group.virtualInternal ? (group.customHidden ? `data-custom-node-external="${group.branchId}:${group.port}"` : `data-packaged-node-external="${group.branchId}:${group.packageKind || "internal"}:${group.internalIndex}"`) : `data-internal-node="${group.id}"`} type="button" draggable="false" title="${group.virtualInternal ? escapeHtml(tr("隐藏节点会强制作为内部节点参与消元。")) : "切换外部/内部节点"}">
-                  ${tr(rowInternal(group) ? "内部" : "外部")}
+                <button class="node-internal-button ${rowInternal(group) ? "active" : ""} ${rowGround(group) ? "active" : ""}" ${rowGround(group) ? "disabled" : (group.virtualInternal ? (group.customHidden ? `data-custom-node-external="${group.branchId}:${group.port}"` : `data-packaged-node-external="${group.branchId}:${group.packageKind || "internal"}:${group.internalIndex}"`) : `data-internal-node="${group.id}"`)} type="button" draggable="false" title="${rowGround(group) ? escapeHtml(tr("Ground / V=0")) : (group.virtualInternal ? escapeHtml(tr("隐藏节点会强制作为内部节点参与消元。")) : "切换外部/内部节点")}">
+                  ${tr(rowGround(group) ? "Ground / V=0" : (rowInternal(group) ? "内部" : "外部"))}
                 </button>
                 ${rowExposure(group) ? (rowExposure(group).custom
                   ? `<button class="node-internal-button" data-custom-node-expose="${rowExposure(group).branchId}:${rowExposure(group).port}:${rowExposure(group).exposed ? "hide" : "show"}" type="button" draggable="false">${escapeHtml(tr(rowExposure(group).exposed ? "隐藏" : "暴露"))}</button>`
@@ -9443,6 +9612,10 @@
           renderCurrentSource(branch, selected, nets);
           return;
         }
+        if (branch.kind === "ground") {
+          renderGround(branch, selected, nets);
+          return;
+        }
         const bodyWidth = Math.max(50, Math.min(120, (branch.width || 150) * 0.5));
         const bodyHeight = branch.height || 48;
         const bodyX = branch.x - bodyWidth / 2;
@@ -9599,6 +9772,36 @@
         ${state.showLocalLabels ? `<text class="node-label" data-port-side="B" x="${posB.x}" y="${posB.y + 24}">${escapeSvg(branch.nodeB)}</text>` : ""}
       `;
 
+      bindBranchGroupInteractions(group, branch);
+      branchLayer.appendChild(group);
+    }
+
+    function renderGround(branch, selected, nets) {
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      const canvasHighlight = branchCanvasHighlight(branch);
+      group.setAttribute("class", `branch${selected ? " selected" : ""}${canvasHighlight.className}`);
+      if (canvasHighlight.style) group.setAttribute("style", canvasHighlight.style);
+      group.setAttribute("transform", `rotate(${branch.rotation} ${branch.x} ${branch.y})`);
+      group.dataset.branchId = branch.id;
+
+      const posG = terminalDrawPosition(branch, "G");
+      const netId = nets.get(terminalKey(branch.id, "G")) || "";
+      const net = nodeDisplayName(netId);
+      const color = netColor(netId);
+      const stemTop = posG.y + 8;
+      const stemBottom = branch.y - 10;
+      group.innerHTML = `
+        <rect class="hitbox" x="${branch.x - 34}" y="${posG.y - 24}" width="68" height="${Math.max(62, (branch.height || 56) + 10)}" rx="8"></rect>
+        <line class="lead" x1="${posG.x}" y1="${stemTop}" x2="${branch.x}" y2="${stemBottom}"></line>
+        <rect class="branch-body" x="${branch.x - 25}" y="${branch.y - 13}" width="50" height="42" rx="7"></rect>
+        <path class="ground-symbol" d="M ${branch.x} ${branch.y - 8} V ${branch.y - 2} M ${branch.x - 18} ${branch.y + 2} H ${branch.x + 18} M ${branch.x - 12} ${branch.y + 11} H ${branch.x + 12} M ${branch.x - 7} ${branch.y + 20} H ${branch.x + 7}"></path>
+        <text class="branch-label" x="${branch.x}" y="${branch.y + 36}">${escapeSvg(branch.name)}</text>
+        <circle class="port-drag-hit" cx="${posG.x}" cy="${posG.y}" r="24" data-port-side="G"></circle>
+        <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "G") ? "hot" : ""}${netHoverClass(netId)}" cx="${posG.x}" cy="${posG.y}" r="8" data-terminal="${terminalKey(branch.id, "G")}" data-port-side="G"></circle>
+        <rect class="net-badge-bg${netHoverClass(netId)}" data-net-id="${netId}" data-port-side="G" x="${posG.x - 17}" y="${posG.y - 42}" width="34" height="18" rx="5" fill="${color}"></rect>
+        <text class="net-badge" data-net-id="${netId}" data-port-side="G" x="${posG.x}" y="${posG.y - 33}">${escapeSvg(net)}</text>
+        ${state.showLocalLabels ? `<text class="node-label" data-port-side="G" x="${posG.x}" y="${posG.y + 24}">${escapeSvg(branch.nodeG)}</text>` : ""}
+      `;
       bindBranchGroupInteractions(group, branch);
       branchLayer.appendChild(group);
     }
@@ -10364,6 +10567,11 @@
         setTool("select");
         return;
       }
+      if (state.tool === "ground") {
+        createGround(point.x, point.y);
+        setTool("select");
+        return;
+      }
       if (state.tool === "transformer") {
         createTransformer(point.x, point.y);
         setTool("select");
@@ -10606,6 +10814,7 @@
     });
     document.getElementById("addBranchTool").addEventListener("click", () => setTool("branch"));
     document.getElementById("addCurrentSourceTool").addEventListener("click", () => setTool("currentSource"));
+    document.getElementById("addGroundTool").addEventListener("click", () => setTool("ground"));
     document.getElementById("addTransformerTool").addEventListener("click", () => setTool("transformer"));
     document.getElementById("addCustomTool").addEventListener("click", () => {
       setTool("select");

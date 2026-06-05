@@ -8,6 +8,7 @@ import sympy as sp
 
 from elimination import eliminate_internal_nodes
 from nodal_tool.blackbox_validation import BlackBoxBranchObserver, validate_blackbox_observers
+from nodal_tool.ground import apply_ground_constraint, validate_ground_partition
 
 
 _IDENTIFIER_RE = re.compile(r"\b[A-Za-z_]\w*\b")
@@ -119,18 +120,33 @@ def main() -> None:
     all_nodes = list(payload["all_nodes"])
     external_nodes = list(payload["external_nodes"])
     voltage_nodes = list(payload.get("voltage_nodes", all_nodes))
+    ground_nodes = list(payload.get("ground_nodes", []))
 
     G_full = _parse_matrix(payload["G_full"])
     Ihis_full = _parse_vector(payload["Ihis_full"])
 
-    result = eliminate_internal_nodes(G_full, Ihis_full, all_nodes, external_nodes)
-    voltage_by_node = dict(zip(all_nodes, voltage_nodes))
+    all_voltage_by_node = dict(zip(all_nodes, voltage_nodes))
+    ground_result = apply_ground_constraint(G_full, Ihis_full, all_nodes, ground_nodes)
+    validation = validate_ground_partition(
+        all_nodes,
+        external_nodes,
+        [node for node in all_nodes if node not in set(external_nodes)],
+        ground_nodes,
+    )
+    external_nodes = [node for node in validation.external_nodes if node in ground_result.remaining_nodes]
+
+    result = eliminate_internal_nodes(ground_result.G_ng, ground_result.Ihis_ng, ground_result.remaining_nodes, external_nodes)
+    voltage_by_node = {node: all_voltage_by_node.get(node, node) for node in ground_result.remaining_nodes}
     V_e = sp.Matrix([[_voltage_symbol(voltage_by_node[node])] for node in result.external_nodes])
     recovered = result.K_v * V_e + result.K_h
     substitutions = {
         _voltage_symbol(voltage_by_node[node]): recovered[index, 0]
         for index, node in enumerate(result.internal_nodes)
     }
+    substitutions.update({
+        _voltage_symbol(all_voltage_by_node.get(node, node)): value
+        for node, value in ground_result.ground_voltage_map.items()
+    })
 
     reduced_observers = []
     for observer in payload.get("observers", []):
@@ -146,6 +162,9 @@ def main() -> None:
         "ok": True,
         "external_nodes": result.external_nodes,
         "internal_nodes": result.internal_nodes,
+        "ground_nodes": validation.ground_nodes,
+        "ground_voltage_map": {node: _clean_expr(value) for node, value in ground_result.ground_voltage_map.items()},
+        "warnings": validation.warnings,
         "G_red": _clean_matrix(result.G_red),
         "Ihis_red": _clean_vector(result.Ihis_red),
         "K_v": _clean_matrix(result.K_v),
@@ -154,10 +173,16 @@ def main() -> None:
     }
 
     if payload.get("G_full_tagged") is not None and payload.get("Ihis_full_tagged") is not None:
-        tagged_result = eliminate_internal_nodes(
+        tagged_ground = apply_ground_constraint(
             _parse_matrix(payload["G_full_tagged"]),
             _parse_vector(payload["Ihis_full_tagged"]),
             all_nodes,
+            ground_nodes,
+        )
+        tagged_result = eliminate_internal_nodes(
+            tagged_ground.G_ng,
+            tagged_ground.Ihis_ng,
+            tagged_ground.remaining_nodes,
             external_nodes,
         )
         response.update(
