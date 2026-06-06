@@ -238,7 +238,11 @@ The Python server is recommended for first-time users because it can automatical
 - `exports/` - saved circuit JSON files / 保存的电路 JSON 文件。
 - `tests/` - regression tests / 回归测试。
 
-## Running Tests / 运行测试
+## Optional Developer Tests / 可选开发测试
+
+Regular users do not need to run these tests. They are useful when modifying the source code or checking a development build.
+
+普通用户只需要运行 `start.bat`，不需要运行这些测试。只有修改源码或检查开发版本时才需要。
 
 Run the core Python tests with:
 
