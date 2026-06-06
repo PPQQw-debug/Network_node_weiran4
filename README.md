@@ -6,6 +6,40 @@ Branch Builder is a local browser-based tool for building and analyzing network-
 
 Branch Builder 是一个本地运行的浏览器工具，用于绘制和分析网络节点电路模型。你可以搭建支路、变压器、自定义黑盒和打包后的 YBox，并输出完整节点方程和节点消去后的等效方程。
 
+## Install and Run / 安装和运行
+
+**Recommended for first-time users:**
+
+1. Download the project package or ZIP file.
+2. Extract the whole folder.
+3. Double-click `start.bat`.
+4. Keep the local server window open while using the app.
+
+`start.bat` will:
+
+- find Python on your computer;
+- install `sympy` automatically if it is missing;
+- start the local server;
+- open `http://127.0.0.1:4177/` in your browser.
+
+**首次使用推荐方式：**
+
+1. 下载项目安装包或 ZIP 压缩包。
+2. 解压整个文件夹。
+3. 双击运行 `start.bat`。
+4. 使用过程中保持本地服务器窗口不要关闭。
+
+`start.bat` 会自动：
+
+- 查找电脑上的 Python；
+- 如果缺少 `sympy`，自动安装；
+- 启动本地服务；
+- 在浏览器中打开 `http://127.0.0.1:4177/`。
+
+If Windows blocks the script, right-click `start.bat`, choose **Properties**, unblock it if needed, then run it again.
+
+如果 Windows 阻止运行脚本，请右键 `start.bat`，打开“属性”，按需解除阻止后再运行。
+
 ## Features / 功能
 
 - Draw and edit circuit branches on a canvas.
@@ -84,9 +118,17 @@ Local AI notes, personal working notes, temporary screenshots, logs, ad-hoc root
 
 ## Quick Start / 快速启动
 
-Open a terminal in this project folder and run:
+For Windows, use the one-click launcher:
 
-在项目文件夹中打开终端，运行：
+Windows 推荐使用一键启动：
+
+```text
+start.bat
+```
+
+Alternatively, open a terminal in this project folder and run:
+
+也可以在项目文件夹中打开终端，运行：
 
 ```powershell
 python local_server.py
@@ -100,9 +142,9 @@ Then open this URL in your browser:
 http://127.0.0.1:4177/
 ```
 
-Keep the terminal window open while using the app.
+Keep the server window open while using the app.
 
-使用过程中请保持终端窗口不要关闭。
+使用过程中请保持服务器窗口不要关闭。
 
 ## Running on Another Computer / 在另一台电脑运行
 
@@ -113,6 +155,12 @@ Copy the whole project folder to the other computer. Do not copy only `index.htm
 On the other computer:
 
 在另一台电脑上：
+
+```text
+Double-click start.bat
+```
+
+或者使用命令行：
 
 ```powershell
 cd path\to\network_node
