@@ -279,7 +279,35 @@
     .transformer-coil {
       fill: none;
       stroke: #485761;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .transformer-core {
+      stroke: #7a8a94;
+      stroke-width: 3;
+      stroke-linecap: round;
+    }
+
+    .port-pin {
+      fill: #fffefa;
+      stroke: #485761;
       stroke-width: 2;
+    }
+
+    .dot {
+      fill: #172026;
+      stroke: none;
+    }
+
+    .component-subtext {
+      font-size: 11px;
+      fill: var(--muted);
+      text-anchor: middle;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .branch.selected .branch-body {
@@ -290,6 +318,17 @@
     .branch.selected .transformer-coil {
       stroke: var(--blue);
       stroke-width: 3;
+    }
+
+    .branch.selected .transformer-core,
+    .branch.selected .port-pin {
+      stroke: var(--blue);
+      stroke-width: 3;
+    }
+
+    .branch.selected .dot {
+      stroke: var(--blue);
+      stroke-width: 2;
     }
 
     .ground-symbol {
@@ -312,9 +351,15 @@
 
     .branch.current-hover .lead,
     .branch.current-hover .terminal,
-    .branch.current-hover .transformer-coil {
+    .branch.current-hover .transformer-coil,
+    .branch.current-hover .transformer-core,
+    .branch.current-hover .port-pin {
       stroke: #f59e0b;
       stroke-width: 4;
+    }
+
+    .branch.current-hover .dot {
+      fill: #f59e0b;
     }
 
     .branch.formula-highlight .branch-body {
@@ -326,9 +371,15 @@
     .branch.formula-highlight .lead,
     .branch.formula-highlight .terminal,
     .branch.formula-highlight .transformer-coil,
+    .branch.formula-highlight .transformer-core,
+    .branch.formula-highlight .port-pin,
     .branch.formula-highlight .ground-symbol {
       stroke: var(--branch-highlight-color, #ef4444);
       stroke-width: 4;
+    }
+
+    .branch.formula-highlight .dot {
+      fill: var(--branch-highlight-color, #ef4444);
     }
 
     .current-hover-area {
@@ -2936,12 +2987,13 @@
         return { x: Number(saved.x), y: Number(saved.y) };
       }
       if (branch.kind === "single_phase_transformer") {
-        const inset = Math.min(28, Math.max(14, branch.height * 0.2));
+        const leadOut = Math.max(26, Math.min(34, branch.width * 0.18));
+        const yOffset = Math.max(32, Math.min(branch.height * 0.39, branch.height / 2 - 12));
         const points = {
-          P: [-branch.width / 2, -branch.height / 2 + inset],
-          N: [-branch.width / 2, branch.height / 2 - inset],
-          S: [branch.width / 2, -branch.height / 2 + inset],
-          T: [branch.width / 2, branch.height / 2 - inset]
+          P: [-branch.width / 2 - leadOut, -yOffset],
+          N: [-branch.width / 2 - leadOut, yOffset],
+          S: [branch.width / 2 + leadOut, -yOffset],
+          T: [branch.width / 2 + leadOut, yOffset]
         };
         const [x, y] = points[side];
         return { x, y };
@@ -3536,6 +3588,24 @@
           </div>
         </div>
       `;
+    }
+
+    function selectField(label, field, value, options) {
+      return `
+        <div class="field">
+          <label>${escapeHtml(label)}</label>
+          <select data-field="${escapeHtml(field)}">
+            ${options.map(option => `
+              <option value="${escapeHtml(option.value)}" ${option.value === value ? "selected" : ""}>${escapeHtml(option.label)}</option>
+            `).join("")}
+          </select>
+        </div>
+      `;
+    }
+
+    function transformerTerminalDisplayName(branch, side) {
+      const netId = netLookup().get(terminalKey(branch.id, side)) || "";
+      return nodeDisplayName(netId) || branch.nodes?.[side] || side;
     }
 
     function readonlyField(label, value) {
@@ -8256,7 +8326,19 @@
         else if (field === "name") branch[field] = value.trim();
         else if (field.startsWith("current.")) {
           const [, index, key] = field.split(".");
-          branch.currents[Number(index)][key] = value.trim();
+          const current = branch.currents[Number(index)];
+          if (key === "direction") {
+            const pair = Number(index) === 0 ? ["P", "N"] : ["S", "T"];
+            if (value === `${pair[1]}to${pair[0]}`) {
+              current.from = pair[1];
+              current.to = pair[0];
+            } else {
+              current.from = pair[0];
+              current.to = pair[1];
+            }
+          } else {
+            current[key] = value.trim();
+          }
         }
         renderAfterSidePanelEdit();
         return;
@@ -8522,14 +8604,19 @@
         const mathModel = branch.packageOriginal
             ? `${readonlyMultilineField("局部 G 矩阵", branchValue(branch, "gMatrix"))}${readonlyMultilineField("局部 Ihis 向量", branchValue(branch, "ihisVector"))}`
             : `${editableField("局部 G 矩阵", "gMatrix", branchValue(branch, "gMatrix"), true)}${editableField("局部 Ihis 向量", "ihisVector", branchValue(branch, "ihisVector"), true)}`;
-        const currents = branch.currents.map((current, index) => `
+        const currents = branch.currents.map((current, index) => {
+          const pair = index === 0 ? ["P", "N"] : ["S", "T"];
+          const directionValue = current.from === pair[1] && current.to === pair[0] ? `${pair[1]}to${pair[0]}` : `${pair[0]}to${pair[1]}`;
+          const firstLabel = transformerTerminalDisplayName(branch, pair[0]);
+          const secondLabel = transformerTerminalDisplayName(branch, pair[1]);
+          return `
             ${editableField(`观测电流 ${index + 1}`, `current.${index}.name`, current.name)}
-            <div class="row">
-              ${editableField("from", `current.${index}.from`, current.from)}
-              ${editableField("to", `current.${index}.to`, current.to)}
-            </div>
-            ${editableField("公式", `current.${index}.expression`, current.expression)}
-          `).join("");
+            ${selectField("方向", `current.${index}.direction`, directionValue, [
+              { value: `${pair[0]}to${pair[1]}`, label: `${firstLabel} 到 ${secondLabel}` },
+              { value: `${pair[1]}to${pair[0]}`, label: `${secondLabel} 到 ${firstLabel}` }
+            ])}
+          `;
+        }).join("");
         editor.innerHTML = editorGroupList([
           editorGroup("basics", "基本信息", basics, false),
           editorGroup("cases", "工况", switchCaseEditor(branch, false), false),
@@ -9616,8 +9703,8 @@
           renderGround(branch, selected, nets);
           return;
         }
-        const bodyWidth = Math.max(50, Math.min(120, (branch.width || 150) * 0.5));
-        const bodyHeight = branch.height || 48;
+        const bodyWidth = Math.max(50, Math.min(104, (branch.width || 150) * 0.44));
+        const bodyHeight = Math.max(32, Math.min(44, branch.height || 48));
         const bodyX = branch.x - bodyWidth / 2;
         const bodyY = branch.y - bodyHeight / 2;
         const posA = terminalDrawPosition(branch, "A");
@@ -9628,6 +9715,11 @@
         const netB = nodeDisplayName(netBId);
         const colorA = netColor(netAId);
         const colorB = netColor(netBId);
+        const arrowSpan = Math.max(28, Math.min(48, bodyWidth * 0.58));
+        const arrowPath = branch.direction === "AtoB"
+          ? `M ${branch.x - arrowSpan / 2} ${branch.y} L ${branch.x + arrowSpan / 2} ${branch.y}`
+          : `M ${branch.x + arrowSpan / 2} ${branch.y} L ${branch.x - arrowSpan / 2} ${branch.y}`;
+        const gText = branchValue(branch, "g");
 
         const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
         const currentHighlight = branchCurrentHighlight(branch);
@@ -9641,9 +9733,10 @@
           <rect class="hitbox" x="${bodyX - 48}" y="${bodyY - 24}" width="${bodyWidth + 96}" height="${bodyHeight + 48}" rx="8"></rect>
           <line class="lead" x1="${posA.x}" y1="${posA.y}" x2="${bodyX}" y2="${branch.y}"></line>
           <line class="lead" x1="${bodyX + bodyWidth}" y1="${branch.y}" x2="${posB.x}" y2="${posB.y}"></line>
-          <rect class="branch-body" x="${bodyX}" y="${bodyY}" width="${bodyWidth}" height="${bodyHeight}" rx="7"></rect>
-          <path class="direction" d="${branch.direction === "AtoB" ? `M ${branch.x - 28} ${branch.y - 34} L ${branch.x + 28} ${branch.y - 34}` : `M ${branch.x + 28} ${branch.y - 34} L ${branch.x - 28} ${branch.y - 34}`}"></path>
-          <text class="branch-label" x="${branch.x}" y="${branch.y + 5}">${escapeSvg(branch.name)}</text>
+          <rect class="branch-body" x="${bodyX}" y="${bodyY}" width="${bodyWidth}" height="${bodyHeight}" rx="4"></rect>
+          <path class="direction" d="${arrowPath}"></path>
+          <text class="branch-label" x="${branch.x}" y="${branch.y - 6}">${escapeSvg(branch.name)}</text>
+          <text class="component-subtext" x="${branch.x}" y="${branch.y + 15}">${escapeSvg(gText)}</text>
           ${switchCaseLabelSvg(branch, 20)}
           <circle class="port-drag-hit" cx="${posA.x}" cy="${posA.y}" r="24" data-port-side="A"></circle>
           <circle class="port-drag-hit" cx="${posB.x}" cy="${posB.y}" r="24" data-port-side="B"></circle>
@@ -9735,7 +9828,7 @@
       group.setAttribute("transform", `rotate(${branch.rotation} ${branch.x} ${branch.y})`);
       group.dataset.branchId = branch.id;
 
-      const bodyRadius = Math.max(22, Math.min(34, (branch.height || 56) * 0.42));
+      const bodyRadius = Math.max(22, Math.min(32, (branch.height || 56) * 0.42));
       const bodyLeft = branch.x - bodyRadius;
       const bodyRight = branch.x + bodyRadius;
       const hitWidth = Math.max(120, branch.width || 150);
@@ -9749,8 +9842,8 @@
       const colorA = netColor(netAId);
       const colorB = netColor(netBId);
       const arrow = branch.direction === "AtoB"
-        ? `M ${branch.x - 14} ${branch.y} L ${branch.x + 14} ${branch.y}`
-        : `M ${branch.x + 14} ${branch.y} L ${branch.x - 14} ${branch.y}`;
+        ? `M ${branch.x - 15} ${branch.y} L ${branch.x + 15} ${branch.y}`
+        : `M ${branch.x + 15} ${branch.y} L ${branch.x - 15} ${branch.y}`;
 
       group.innerHTML = `
         <rect class="hitbox" x="${branch.x - hitWidth / 2 - 24}" y="${branch.y - hitHeight / 2 - 18}" width="${hitWidth + 48}" height="${hitHeight + 36}" rx="8"></rect>
@@ -9759,7 +9852,7 @@
         <circle class="branch-body" cx="${branch.x}" cy="${branch.y}" r="${bodyRadius}"></circle>
         <path class="direction" d="${arrow}"></path>
         <text class="branch-label" x="${branch.x}" y="${branch.y - bodyRadius - 10}">${escapeSvg(branch.name)}</text>
-        <text class="node-label" x="${branch.x}" y="${branch.y + bodyRadius + 18}">${escapeSvg(currentSourceModeLabel(branch))}</text>
+        <text class="component-subtext" x="${branch.x}" y="${branch.y + bodyRadius + 17}">${escapeSvg(currentSourceModeLabel(branch))}</text>
         <circle class="port-drag-hit" cx="${posA.x}" cy="${posA.y}" r="24" data-port-side="A"></circle>
         <circle class="port-drag-hit" cx="${posB.x}" cy="${posB.y}" r="24" data-port-side="B"></circle>
         <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "A") ? "hot" : ""}${netHoverClass(netAId)}" cx="${posA.x}" cy="${posA.y}" r="8" data-terminal="${terminalKey(branch.id, "A")}" data-port-side="A"></circle>
@@ -9815,32 +9908,84 @@
       group.dataset.branchId = branch.id;
       const width = branch.width || 170;
       const height = branch.height || 112;
-      const left = branch.x - width / 2;
-      const right = branch.x + width / 2;
-      const top = branch.y - height / 2;
-      const coilHeight = Math.max(30, height * 0.72);
-      const coilTop = branch.y - coilHeight / 2;
-      const coilBottom = branch.y + coilHeight / 2;
-      const coilControl = Math.max(18, width * 0.18);
-      const coilXs = [-0.18, -0.06, 0.06, 0.18].map(scale => branch.x + width * scale);
-
       const terminals = ["P", "N", "S", "T"].map(side => {
         const p = terminalDrawPosition(branch, side);
         return [side, p.x, p.y];
       });
+      const terminalBySide = Object.fromEntries(terminals.map(([side, x, y]) => [side, { x, y }]));
+      const pPos = terminalBySide.P;
+      const nPos = terminalBySide.N;
+      const sPos = terminalBySide.S;
+      const tPos = terminalBySide.T;
+      const boxLeft = branch.x - width / 2;
+      const boxTop = branch.y - height / 2;
+      const boxRight = branch.x + width / 2;
+      const boxBottom = branch.y + height / 2;
+      const coilHeight = Math.max(54, Math.min(height * 0.78, height - 20));
+      const coilTop = branch.y - coilHeight / 2;
+      const coilBottom = branch.y + coilHeight / 2;
+      const coreGap = Math.max(8, Math.min(11, width * 0.06));
+      const coreLeft = branch.x - coreGap / 2;
+      const coreRight = branch.x + coreGap / 2;
+      const coilOffset = Math.max(17, Math.min(24, width * 0.125));
+      const leftCoilX = coreLeft - coilOffset;
+      const rightCoilX = coreRight + coilOffset;
+      const coilBulge = Math.max(13, Math.min(18, width * 0.1));
+      const leftTopLead = { x: boxLeft + 20, y: coilTop };
+      const leftBottomLead = { x: boxLeft + 20, y: coilBottom };
+      const rightTopLead = { x: boxRight - 20, y: coilTop };
+      const rightBottomLead = { x: boxRight - 20, y: coilBottom };
+      const symbolLeft = Math.min(boxLeft, pPos.x, nPos.x);
+      const symbolRight = Math.max(boxRight, sPos.x, tPos.x);
+      const symbolTop = Math.min(boxTop, pPos.y, sPos.y) - 8;
+      const symbolBottom = Math.max(boxBottom, nPos.y, tPos.y) + 10;
+      const coilPath = (x, direction) => {
+        const turns = 5;
+        const step = coilHeight / turns;
+        let d = `M ${x} ${coilTop}`;
+        for (let i = 0; i < turns; i++) {
+          const y0 = coilTop + i * step;
+          const y1 = y0 + step;
+          d += ` C ${x + direction * coilBulge} ${y0 + step * 0.05}, ${x + direction * coilBulge} ${y1 - step * 0.05}, ${x} ${y1}`;
+        }
+        return d;
+      };
+      const currentSpec = name => branch.currents?.find(item => String(item.name || "").toLowerCase() === name);
+      const transformerArrowPath = (current, topSide, bottomSide, x) => {
+        const from = current?.from || topSide;
+        const to = current?.to || bottomSide;
+        const arrowTop = branch.y - Math.min(26, coilHeight * 0.34);
+        const arrowBottom = branch.y + Math.min(26, coilHeight * 0.34);
+        return from === bottomSide && to === topSide
+          ? `M ${x} ${arrowBottom} L ${x} ${arrowTop}`
+          : `M ${x} ${arrowTop} L ${x} ${arrowBottom}`;
+      };
+      const primaryArrow = transformerArrowPath(currentSpec("primary"), "P", "N", leftCoilX - coilBulge - 14);
+      const secondaryArrow = transformerArrowPath(currentSpec("secondary"), "S", "T", rightCoilX + coilBulge + 14);
+      const firstArcStep = coilHeight / 5;
+      const firstArcDotY = coilTop + firstArcStep * 0.5;
+      const firstArcDotOffset = coilBulge * 0.35;
       group.innerHTML = `
-        <rect class="hitbox" x="${left - 18}" y="${top - 18}" width="${width + 36}" height="${height + 36}" rx="8"></rect>
-        <rect class="branch-body" x="${left}" y="${top}" width="${width}" height="${height}" rx="8"></rect>
-        ${transformerHoverArea(branch, currentHighlight, left, top, width, height)}
-        ${terminals.map(([side, x, y]) => {
-          const anchor = componentLeadAnchor(branch, side, { x, y });
-          return `<line class="lead" x1="${x}" y1="${y}" x2="${anchor.x}" y2="${anchor.y}"></line>`;
-        }).join("")}
-        ${coilXs.map((x, index) => {
-          const direction = index < 2 ? -1 : 1;
-          return `<path class="transformer-coil" d="M ${x} ${coilTop} C ${x + direction * coilControl} ${branch.y - coilHeight * 0.25}, ${x + direction * coilControl} ${branch.y + coilHeight * 0.25}, ${x} ${coilBottom}"></path>`;
-        }).join("")}
-        <text class="branch-label" x="${branch.x}" y="${branch.y + 5}">${escapeSvg(branch.name)}</text>
+        <rect class="hitbox" x="${symbolLeft - 18}" y="${symbolTop - 12}" width="${symbolRight - symbolLeft + 36}" height="${symbolBottom - symbolTop + 24}" rx="8"></rect>
+        <rect class="branch-body" x="${boxLeft}" y="${boxTop}" width="${width}" height="${height}" rx="4"></rect>
+        ${transformerHoverArea(branch, currentHighlight, symbolLeft, symbolTop, symbolRight - symbolLeft, symbolBottom - symbolTop)}
+        <line class="lead" x1="${pPos.x}" y1="${pPos.y}" x2="${leftTopLead.x}" y2="${leftTopLead.y}"></line>
+        <line class="lead" x1="${nPos.x}" y1="${nPos.y}" x2="${leftBottomLead.x}" y2="${leftBottomLead.y}"></line>
+        <line class="lead" x1="${rightTopLead.x}" y1="${rightTopLead.y}" x2="${sPos.x}" y2="${sPos.y}"></line>
+        <line class="lead" x1="${rightBottomLead.x}" y1="${rightBottomLead.y}" x2="${tPos.x}" y2="${tPos.y}"></line>
+        <line class="lead" x1="${leftTopLead.x}" y1="${leftTopLead.y}" x2="${leftCoilX}" y2="${coilTop}"></line>
+        <line class="lead" x1="${leftBottomLead.x}" y1="${leftBottomLead.y}" x2="${leftCoilX}" y2="${coilBottom}"></line>
+        <line class="lead" x1="${rightCoilX}" y1="${coilTop}" x2="${rightTopLead.x}" y2="${rightTopLead.y}"></line>
+        <line class="lead" x1="${rightCoilX}" y1="${coilBottom}" x2="${rightBottomLead.x}" y2="${rightBottomLead.y}"></line>
+        <path class="transformer-coil" d="${coilPath(leftCoilX, 1)}"></path>
+        <path class="transformer-coil" d="${coilPath(rightCoilX, -1)}"></path>
+        <line class="transformer-core" x1="${coreLeft}" y1="${coilTop - 8}" x2="${coreLeft}" y2="${coilBottom + 8}"></line>
+        <line class="transformer-core" x1="${coreRight}" y1="${coilTop - 8}" x2="${coreRight}" y2="${coilBottom + 8}"></line>
+        <circle class="dot" cx="${leftCoilX + firstArcDotOffset}" cy="${firstArcDotY}" r="4"></circle>
+        <circle class="dot" cx="${rightCoilX - firstArcDotOffset}" cy="${firstArcDotY}" r="4"></circle>
+        <path class="direction" d="${primaryArrow}"></path>
+        <path class="direction" d="${secondaryArrow}"></path>
+        <text class="branch-label" x="${branch.x}" y="${coilTop - 14}">${escapeSvg(branch.name)}</text>
         ${switchCaseLabelSvg(branch, 22)}
         ${terminals.map(([side, x, y]) => {
           const netId = nets.get(terminalKey(branch.id, side)) || "";
@@ -9882,11 +10027,11 @@
 
       group.innerHTML = `
         <rect class="hitbox" x="${left - 18}" y="${top - 18}" width="${branch.width + 36}" height="${branch.height + 36}" rx="8"></rect>
-        <rect class="branch-body" x="${left}" y="${top}" width="${branch.width}" height="${branch.height}" rx="8"></rect>
+        <rect class="branch-body" x="${left}" y="${top}" width="${branch.width}" height="${branch.height}" rx="4"></rect>
         ${customCurrentHoverOverlay(branch, currentHighlight)}
         ${packagedInternalHoverOverlay(branch)}
-        <text class="branch-label" x="${branch.x}" y="${branch.y + 5}">${escapeSvg(branch.name)}</text>
-        ${switchCaseLabelSvg(branch, 22) || `<text class="node-label" x="${branch.x}" y="${branch.y + 24}">${escapeSvg(terminalSides(branch).length)}-node network</text>`}
+        <text class="branch-label" x="${branch.x}" y="${branch.y - 5}">${escapeSvg(branch.name)}</text>
+        ${switchCaseLabelSvg(branch, 22) || `<text class="component-subtext" x="${branch.x}" y="${branch.y + 16}">${escapeSvg(terminalSides(branch).length)}-port network</text>`}
         ${terminals.map(([side, x, y, edge]) => {
           const netId = nets.get(terminalKey(branch.id, side)) || "";
           const net = nodeDisplayName(netId);
@@ -9897,7 +10042,7 @@
           return `
             <circle class="port-drag-hit" cx="${x}" cy="${y}" r="24" data-port-side="${side}"></circle>
             <line class="lead" x1="${x}" y1="${y}" x2="${inner.x}" y2="${inner.y}"></line>
-            <circle class="lead-anchor" cx="${inner.x}" cy="${inner.y}" r="5" data-lead-anchor-side="${side}"></circle>
+            <circle class="port-pin lead-anchor" cx="${inner.x}" cy="${inner.y}" r="5" data-lead-anchor-side="${side}"></circle>
             <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, side) ? "hot" : ""}${netHoverClass(netId)}" cx="${x}" cy="${y}" r="8" data-terminal="${terminalKey(branch.id, side)}" data-port-side="${side}"></circle>
             <rect class="net-badge-bg${netHoverClass(netId)}" data-net-id="${netId}" data-port-side="${side}" x="${x - 17}" y="${badgeY}" width="34" height="18" rx="5" fill="${color}"></rect>
             <text class="net-badge" data-net-id="${netId}" data-port-side="${side}" x="${x}" y="${badgeY + 9}">${escapeSvg(net)}</text>
@@ -10322,8 +10467,10 @@
       };
       state.canvasTabDrag = drag;
       const move = moveEvent => {
-        const distance = Math.hypot(moveEvent.clientX - drag.startX, moveEvent.clientY - drag.startY);
-        if (!drag.dragging && distance < 6) return;
+        const dx = moveEvent.clientX - drag.startX;
+        const dy = moveEvent.clientY - drag.startY;
+        const horizontalIntent = Math.abs(dx) >= 14 && Math.abs(dx) > Math.abs(dy) * 1.2;
+        if (!drag.dragging && !horizontalIntent) return;
         if (!drag.dragging) {
           drag.dragging = true;
           drag.saved = true;
@@ -10331,13 +10478,14 @@
         }
         moveEvent.preventDefault();
         const dropIndex = canvasTabDropIndex(moveEvent.clientX);
+        if (dropIndex === drag.dropIndex) return;
         drag.dropIndex = dropIndex;
         reorderCanvas(drag.id, dropIndex);
         renderCanvasTabs();
       };
       const up = upEvent => {
         window.removeEventListener("pointermove", move);
-        window.removeEventListener("pointerup", up);
+        window.removeEventListener("pointerup", up, true);
         if (state.canvasTabDrag !== drag) return;
         const wasDragging = drag.dragging;
         state.canvasTabDrag = null;
@@ -10351,7 +10499,7 @@
         upEvent.stopPropagation();
       };
       window.addEventListener("pointermove", move);
-      window.addEventListener("pointerup", up);
+      window.addEventListener("pointerup", up, true);
     }
 
     function canvasTabDropIndex(x) {
