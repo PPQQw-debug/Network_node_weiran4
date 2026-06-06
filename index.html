@@ -450,6 +450,19 @@
       pointer-events: all;
     }
 
+    .resize-handle {
+      fill: #fffefa;
+      stroke: var(--blue);
+      stroke-width: 2;
+      cursor: nwse-resize;
+      pointer-events: all;
+    }
+
+    .resize-handle[data-resize-handle="ne"],
+    .resize-handle[data-resize-handle="sw"] {
+      cursor: nesw-resize;
+    }
+
     .terminal.external {
       stroke: var(--green);
       stroke-width: 3;
@@ -1943,6 +1956,7 @@
       wireDrag: null,
       portDrag: null,
       leadAnchorDrag: null,
+      resizeDrag: null,
       hoverCurrent: null,
       hoverNetId: null,
       showLocalLabels: false,
@@ -2093,6 +2107,7 @@
       state.wireDrag = null;
       state.portDrag = null;
       state.leadAnchorDrag = null;
+      state.resizeDrag = null;
       state.hoverCurrent = null;
       state.panDrag = null;
       state.marquee = null;
@@ -2931,6 +2946,51 @@
       expandWorldForBounds(bounds, margin);
       if (bounds.left < margin) branch.x += margin - bounds.left;
       if (bounds.top < margin) branch.y += margin - bounds.top;
+    }
+
+    function componentResizeBox(branch) {
+      if (branch.kind === "two_node_branch" || !branch.kind) {
+        return {
+          width: Math.max(50, (branch.width || 150) - 56),
+          height: Math.max(32, branch.height || 48)
+        };
+      }
+      return {
+        width: branch.width || 150,
+        height: branch.height || 48
+      };
+    }
+
+    function applyResizeBoxSize(branch, width, height) {
+      if (branch.kind === "two_node_branch" || !branch.kind) {
+        branch.width = Math.round(width + 56);
+        branch.height = Math.round(height);
+        return;
+      }
+      branch.width = Math.round(width);
+      branch.height = Math.round(height);
+    }
+
+    function resizeHandlesSvg(branch, selected) {
+      if (!selected || state.tool !== "select" || branch.kind === "ground") return "";
+      const { width, height } = componentResizeBox(branch);
+      const size = 10;
+      const handles = [
+        ["nw", branch.x - width / 2, branch.y - height / 2],
+        ["ne", branch.x + width / 2, branch.y - height / 2],
+        ["se", branch.x + width / 2, branch.y + height / 2],
+        ["sw", branch.x - width / 2, branch.y + height / 2]
+      ];
+      return handles.map(([handle, x, y]) => `
+        <rect class="resize-handle" data-resize-handle="${handle}" x="${x - size / 2}" y="${y - size / 2}" width="${size}" height="${size}" rx="2"></rect>
+      `).join("");
+    }
+
+    function resizeMinSize(branch, axis) {
+      if (branch.kind === "single_phase_transformer") return axis === "width" ? 120 : 82;
+      if (branch.kind === "current_source") return axis === "width" ? 90 : 54;
+      if (branch.kind === "custom_n_port") return axis === "width" ? 90 : 70;
+      return axis === "width" ? 70 : 40;
     }
 
     function expandWorldForBounds(bounds, margin = 80) {
@@ -4778,6 +4838,7 @@
       state.pendingTerminal = null;
       state.drag = null;
       state.wireDrag = null;
+      state.resizeDrag = null;
       state.marquee = null;
       state.zoom = data.zoom || state.zoom || 1;
       state.viewCenter = structuredClone(data.viewCenter || state.viewCenter || { x: WORLD.width / 2, y: WORLD.height / 2 });
@@ -4941,6 +5002,7 @@
       state.pendingTerminal = null;
       state.drag = null;
       state.wireDrag = null;
+      state.resizeDrag = null;
       state.marquee = null;
       render();
       return { branches: importedBranches.length, wires: importedWires.length, groups: importedGroups.length };
@@ -9703,8 +9765,8 @@
           renderGround(branch, selected, nets);
           return;
         }
-        const bodyWidth = Math.max(50, Math.min(104, (branch.width || 150) * 0.44));
-        const bodyHeight = Math.max(32, Math.min(44, branch.height || 48));
+        const bodyWidth = Math.max(50, (branch.width || 150) - 56);
+        const bodyHeight = Math.max(32, branch.height || 48);
         const bodyX = branch.x - bodyWidth / 2;
         const bodyY = branch.y - bodyHeight / 2;
         const posA = terminalDrawPosition(branch, "A");
@@ -9738,6 +9800,7 @@
           <text class="branch-label" x="${branch.x}" y="${branch.y - 6}">${escapeSvg(branch.name)}</text>
           <text class="component-subtext" x="${branch.x}" y="${branch.y + 15}">${escapeSvg(gText)}</text>
           ${switchCaseLabelSvg(branch, 20)}
+          ${resizeHandlesSvg(branch, selected)}
           <circle class="port-drag-hit" cx="${posA.x}" cy="${posA.y}" r="24" data-port-side="A"></circle>
           <circle class="port-drag-hit" cx="${posB.x}" cy="${posB.y}" r="24" data-port-side="B"></circle>
           <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "A") ? "hot" : ""}${netHoverClass(netAId)}" cx="${posA.x}" cy="${posA.y}" r="8" data-terminal="${terminalKey(branch.id, "A")}" data-port-side="A"></circle>
@@ -9770,6 +9833,11 @@
         });
 
         group.addEventListener("pointerdown", event => {
+          const resizeHandle = event.target.dataset.resizeHandle;
+          if (state.tool === "select" && resizeHandle) {
+            startResizeDrag(branch, resizeHandle, event);
+            return;
+          }
           const terminal = event.target.dataset.terminal;
           const portSide = event.target.dataset.portSide;
           if (state.tool === "select" && portSide) {
@@ -9853,6 +9921,7 @@
         <path class="direction" d="${arrow}"></path>
         <text class="branch-label" x="${branch.x}" y="${branch.y - bodyRadius - 10}">${escapeSvg(branch.name)}</text>
         <text class="component-subtext" x="${branch.x}" y="${branch.y + bodyRadius + 17}">${escapeSvg(currentSourceModeLabel(branch))}</text>
+        ${resizeHandlesSvg(branch, selected)}
         <circle class="port-drag-hit" cx="${posA.x}" cy="${posA.y}" r="24" data-port-side="A"></circle>
         <circle class="port-drag-hit" cx="${posB.x}" cy="${posB.y}" r="24" data-port-side="B"></circle>
         <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "A") ? "hot" : ""}${netHoverClass(netAId)}" cx="${posA.x}" cy="${posA.y}" r="8" data-terminal="${terminalKey(branch.id, "A")}" data-port-side="A"></circle>
@@ -9987,6 +10056,7 @@
         <path class="direction" d="${secondaryArrow}"></path>
         <text class="branch-label" x="${branch.x}" y="${coilTop - 14}">${escapeSvg(branch.name)}</text>
         ${switchCaseLabelSvg(branch, 22)}
+        ${resizeHandlesSvg(branch, selected)}
         ${terminals.map(([side, x, y]) => {
           const netId = nets.get(terminalKey(branch.id, side)) || "";
           const net = nodeDisplayName(netId);
@@ -10032,6 +10102,7 @@
         ${packagedInternalHoverOverlay(branch)}
         <text class="branch-label" x="${branch.x}" y="${branch.y - 5}">${escapeSvg(branch.name)}</text>
         ${switchCaseLabelSvg(branch, 22) || `<text class="component-subtext" x="${branch.x}" y="${branch.y + 16}">${escapeSvg(terminalSides(branch).length)}-port network</text>`}
+        ${resizeHandlesSvg(branch, selected)}
         ${terminals.map(([side, x, y, edge]) => {
           const netId = nets.get(terminalKey(branch.id, side)) || "";
           const net = nodeDisplayName(netId);
@@ -10251,6 +10322,11 @@
           startPanDrag(event);
           return;
         }
+        const resizeHandle = event.target.dataset.resizeHandle;
+        if (state.tool === "select" && resizeHandle) {
+          startResizeDrag(branch, resizeHandle, event);
+          return;
+        }
         const leadAnchorSide = event.target.dataset.leadAnchorSide;
         if (state.tool === "select" && leadAnchorSide) {
           startLeadAnchorDrag(branch, leadAnchorSide);
@@ -10344,6 +10420,65 @@
         side,
         before: snapshot()
       };
+    }
+
+    function branchResizeLocalFromPoint(origin, point) {
+      const radians = -(origin.rotation || 0) * Math.PI / 180;
+      return rotateLocal(0, 0, point.x - origin.x, point.y - origin.y, radians);
+    }
+
+function startResizeDrag(branch, handle, event) {
+      selectBranch(branch.id);
+      const resizeBox = componentResizeBox(branch);
+      state.resizeDrag = {
+        branchId: branch.id,
+        handle,
+        origin: {
+          x: branch.x,
+          y: branch.y,
+          width: resizeBox.width,
+          height: resizeBox.height,
+          branchWidth: branch.width || 150,
+          branchHeight: branch.height || 48,
+          rotation: branch.rotation || 0
+        },
+        before: snapshot()
+      };
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    function updateResizeDrag(point) {
+      const drag = state.resizeDrag;
+      if (!drag) return;
+      const branch = findBranch(drag.branchId);
+      if (!branch) return;
+      const local = branchResizeLocalFromPoint(drag.origin, point);
+      const halfW = drag.origin.width / 2;
+      const halfH = drag.origin.height / 2;
+      let left = -halfW;
+      let right = halfW;
+      let top = -halfH;
+      let bottom = halfH;
+      const minW = resizeMinSize(branch, "width");
+      const minH = resizeMinSize(branch, "height");
+      const maxW = 420;
+      const maxH = 360;
+
+      if (drag.handle.includes("w")) left = Math.max(right - maxW, Math.min(right - minW, local.x));
+      if (drag.handle.includes("e")) right = Math.max(left + minW, Math.min(left + maxW, local.x));
+      if (drag.handle.includes("n")) top = Math.max(bottom - maxH, Math.min(bottom - minH, local.y));
+      if (drag.handle.includes("s")) bottom = Math.max(top + minH, Math.min(top + maxH, local.y));
+
+      const width = right - left;
+      const height = bottom - top;
+      const centerLocal = { x: (left + right) / 2, y: (top + bottom) / 2 };
+      const centerWorld = rotateLocal(drag.origin.x, drag.origin.y, centerLocal.x, centerLocal.y, (drag.origin.rotation || 0) * Math.PI / 180);
+      branch.x = centerWorld.x;
+      branch.y = centerWorld.y;
+      applyResizeBoxSize(branch, width, height);
+      clampComponent(branch);
+      render();
     }
 
     function renderWires() {
@@ -10772,6 +10907,10 @@
         updateLeadAnchorDrag(point);
         return;
       }
+      if (state.resizeDrag) {
+        updateResizeDrag(point);
+        return;
+      }
       if (!state.drag) return;
       const dx = point.x - state.drag.start.x;
       const dy = point.y - state.drag.start.y;
@@ -10808,7 +10947,7 @@
     });
 
     window.addEventListener("pointerup", () => {
-      const hadInteraction = Boolean(state.marquee || state.drag || state.wireDrag || state.portDrag || state.leadAnchorDrag || state.panDrag);
+      const hadInteraction = Boolean(state.marquee || state.drag || state.wireDrag || state.portDrag || state.leadAnchorDrag || state.resizeDrag || state.panDrag);
       if (!hadInteraction) return;
       if (state.marquee) {
         finishMarqueeSelection();
@@ -10840,6 +10979,20 @@
         state.history.push(state.leadAnchorDrag.before);
         state.future = [];
       }
+      if (state.resizeDrag) {
+        const branch = findBranch(state.resizeDrag.branchId);
+        const origin = state.resizeDrag.origin;
+        const resized = branch && (
+          branch.x !== origin.x ||
+          branch.y !== origin.y ||
+          branch.width !== origin.branchWidth ||
+          branch.height !== origin.branchHeight
+        );
+        if (resized) {
+          state.history.push(state.resizeDrag.before);
+          state.future = [];
+        }
+      }
       if (state.panDrag && canvas.hasPointerCapture?.(state.panDrag.pointerId)) {
         canvas.releasePointerCapture(state.panDrag.pointerId);
       }
@@ -10847,6 +11000,7 @@
       state.wireDrag = null;
       state.portDrag = null;
       state.leadAnchorDrag = null;
+      state.resizeDrag = null;
       state.panDrag = null;
       render();
     });
@@ -11033,6 +11187,7 @@
       state.wireDrag = null;
       state.portDrag = null;
       state.leadAnchorDrag = null;
+      state.resizeDrag = null;
       state.nextBranch = data.nextBranch;
       state.nextTransformer = data.nextTransformer;
       state.nextCustom = data.nextCustom || inferNextNumber(state.branches, "C");
