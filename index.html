@@ -2955,6 +2955,12 @@
           height: Math.max(32, branch.height || 48)
         };
       }
+      if (branch.kind === "ground") {
+        return {
+          width: Math.max(42, branch.width || 50),
+          height: Math.max(38, branch.height || 42)
+        };
+      }
       return {
         width: branch.width || 150,
         height: branch.height || 48
@@ -2972,7 +2978,7 @@
     }
 
     function resizeHandlesSvg(branch, selected) {
-      if (!selected || state.tool !== "select" || branch.kind === "ground") return "";
+      if (!selected || state.tool !== "select") return "";
       const { width, height } = componentResizeBox(branch);
       const size = 10;
       const handles = [
@@ -2990,6 +2996,7 @@
       if (branch.kind === "single_phase_transformer") return axis === "width" ? 120 : 82;
       if (branch.kind === "current_source") return axis === "width" ? 90 : 54;
       if (branch.kind === "custom_n_port") return axis === "width" ? 90 : 70;
+      if (branch.kind === "ground") return axis === "width" ? 42 : 38;
       return axis === "width" ? 70 : 40;
     }
 
@@ -3058,7 +3065,7 @@
         const [x, y] = points[side];
         return { x, y };
       }
-      if (branch.kind === "ground") return { x: 0, y: -24 };
+      if (branch.kind === "ground") return { x: 0, y: -(Math.max(38, branch.height || 42) / 2 + 16) };
       return { x: side === "A" ? -branch.width / 2 : branch.width / 2, y: 0 };
     }
 
@@ -9950,14 +9957,27 @@
       const netId = nets.get(terminalKey(branch.id, "G")) || "";
       const net = nodeDisplayName(netId);
       const color = netColor(netId);
+      const boxWidth = Math.max(42, branch.width || 50);
+      const boxHeight = Math.max(38, branch.height || 42);
+      const boxX = branch.x - boxWidth / 2;
+      const boxY = branch.y - boxHeight / 2;
+      const scaleX = boxWidth / 50;
+      const scaleY = boxHeight / 42;
+      const symbolCenterY = branch.y - 1 * scaleY;
+      const symbolTop = symbolCenterY - 14 * scaleY;
+      const symbolStem = symbolCenterY - 8 * scaleY;
+      const symbolY1 = symbolCenterY - 4 * scaleY;
+      const symbolY2 = symbolCenterY + 5 * scaleY;
+      const symbolY3 = symbolCenterY + 14 * scaleY;
       const stemTop = posG.y + 8;
-      const stemBottom = branch.y - 10;
+      const stemBottom = boxY + 3;
       group.innerHTML = `
-        <rect class="hitbox" x="${branch.x - 34}" y="${posG.y - 24}" width="68" height="${Math.max(62, (branch.height || 56) + 10)}" rx="8"></rect>
+        <rect class="hitbox" x="${Math.min(posG.x, boxX) - 14}" y="${Math.min(posG.y, boxY) - 24}" width="${Math.max(posG.x, boxX + boxWidth) - Math.min(posG.x, boxX) + 28}" height="${Math.max(posG.y, boxY + boxHeight) - Math.min(posG.y, boxY) + 36}" rx="8"></rect>
         <line class="lead" x1="${posG.x}" y1="${stemTop}" x2="${branch.x}" y2="${stemBottom}"></line>
-        <rect class="branch-body" x="${branch.x - 25}" y="${branch.y - 13}" width="50" height="42" rx="7"></rect>
-        <path class="ground-symbol" d="M ${branch.x} ${branch.y - 8} V ${branch.y - 2} M ${branch.x - 18} ${branch.y + 2} H ${branch.x + 18} M ${branch.x - 12} ${branch.y + 11} H ${branch.x + 12} M ${branch.x - 7} ${branch.y + 20} H ${branch.x + 7}"></path>
-        <text class="branch-label" x="${branch.x}" y="${branch.y + 36}">${escapeSvg(branch.name)}</text>
+        <rect class="branch-body" x="${boxX}" y="${boxY}" width="${boxWidth}" height="${boxHeight}" rx="7"></rect>
+        <path class="ground-symbol" d="M ${branch.x} ${symbolTop} V ${symbolStem} M ${branch.x - 18 * scaleX} ${symbolY1} H ${branch.x + 18 * scaleX} M ${branch.x - 12 * scaleX} ${symbolY2} H ${branch.x + 12 * scaleX} M ${branch.x - 7 * scaleX} ${symbolY3} H ${branch.x + 7 * scaleX}"></path>
+        <text class="branch-label" x="${branch.x}" y="${boxY + boxHeight + 16}">${escapeSvg(branch.name)}</text>
+        ${resizeHandlesSvg(branch, selected)}
         <circle class="port-drag-hit" cx="${posG.x}" cy="${posG.y}" r="24" data-port-side="G"></circle>
         <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "G") ? "hot" : ""}${netHoverClass(netId)}" cx="${posG.x}" cy="${posG.y}" r="8" data-terminal="${terminalKey(branch.id, "G")}" data-port-side="G"></circle>
         <rect class="net-badge-bg${netHoverClass(netId)}" data-net-id="${netId}" data-port-side="G" x="${posG.x - 17}" y="${posG.y - 42}" width="34" height="18" rx="5" fill="${color}"></rect>
