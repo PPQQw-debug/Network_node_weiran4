@@ -42,6 +42,8 @@ If Windows blocks the script, right-click `start.bat`, choose **Properties**, un
 
 ## Features / 功能
 
+![Branch Builder circuit and matrix equation preview](branch-builder-matrix-equation.png)
+
 - Draw and edit circuit branches on a canvas.
 - Build two-node branches, single-phase transformers, custom N-node black boxes, and Y-box packages.
 - Generate full nodal equations in the form `I = G V + Ihis`.

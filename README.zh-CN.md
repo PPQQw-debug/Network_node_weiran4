@@ -24,6 +24,8 @@ Branch Builder 是一个本地运行的浏览器工具，用于搭建和分析�
 
 ## 主要功能
 
+![Branch Builder 电路与矩阵方程预览](branch-builder-matrix-equation.png)
+
 - 在画布中绘制、拖拽、缩放、旋转和编辑电路元件。
 - 支持二节点支路、单相变压器、自定义 N 节点黑盒和 YBox。
 - 输出统一形式的节点方程：`I = G V + Ihis`。
