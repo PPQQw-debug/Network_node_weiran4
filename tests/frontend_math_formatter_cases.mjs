@@ -16,6 +16,9 @@ const context = {
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  },
+  wrapMathHighlight() {
+    return "";
   }
 };
 vm.createContext(context);

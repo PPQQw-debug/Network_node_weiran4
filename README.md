@@ -58,6 +58,18 @@ If Windows blocks the script, right-click `start.bat`, choose **Properties**, un
 - Save exported circuits into the local `exports/` folder.
 - Switch between Chinese and English UI text.
 
+### Voltage Source Approximation / 电压源近似
+
+`VoltageSourceSeriesR` represents an explicitly supplied voltage source `Vs` with a series conductance `G`. Because the project uses the unified nodal form `I = G * V + Ihis` and does not use MNA, this element is stamped as a Norton equivalent:
+
+```text
+i(p -> n) = G * (V_p - V_n - Vs)
+```
+
+This produces a symmetric conductance stamp and history-current terms `Ihis[p] += -G*Vs`, `Ihis[n] += G*Vs`, fully compatible with internal-node elimination and black-box reduction.
+
+Use a larger `G` to approximate an ideal voltage source more closely, but avoid making it too large because the matrix can become ill-conditioned. `G` must be positive; zero or negative series conductance is rejected.
+
 中文功能概览：
 
 - 在画布上绘制、拖拽和编辑电路元件。
@@ -73,6 +85,18 @@ If Windows blocks the script, right-click `start.bat`, choose **Properties**, un
 - 导入和导出电路 JSON 文件。
 - 将导出的电路保存到本地 `exports/` 文件夹。
 - 支持中英文界面切换。
+
+### 电压源近似
+
+`VoltageSourceSeriesR` 表示外部显式输入的电压源 `Vs` 串联导纳 `G`。由于本项目统一使用 `I = G * V + Ihis`，且不使用 MNA，该元件会转换为 Norton 等效：
+
+```text
+i(p -> n) = G * (V_p - V_n - Vs)
+```
+
+它会生成对称的导纳矩阵 stamp，并写入历史电流项：`Ihis[p] += -G*Vs`，`Ihis[n] += G*Vs`，因此可以直接参与内部节点消去和黑盒约简。
+
+`G` 越大越接近理想电压源，但过大会导致矩阵病态。`G` 必须为正数，0 或负数会报错。
 
 ## Recent Updates / 最近更新
 

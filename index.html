@@ -338,9 +338,39 @@
       stroke-linecap: round;
     }
 
+    .voltage-source-symbol,
+    .source-plus,
+    .resistor-symbol {
+      fill: none;
+      stroke: #485761;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .source-label {
+      font-size: 11px;
+      font-weight: 700;
+      fill: #485761;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
     .branch.selected .ground-symbol {
       stroke: var(--blue);
       stroke-width: 3;
+    }
+
+    .branch.selected .voltage-source-symbol,
+    .branch.selected .source-plus,
+    .branch.selected .resistor-symbol {
+      stroke: var(--blue);
+      stroke-width: 3;
+    }
+
+    .branch.selected .source-label {
+      fill: var(--blue);
     }
 
     .branch.current-hover .branch-body {
@@ -353,7 +383,10 @@
     .branch.current-hover .terminal,
     .branch.current-hover .transformer-coil,
     .branch.current-hover .transformer-core,
-    .branch.current-hover .port-pin {
+    .branch.current-hover .port-pin,
+    .branch.current-hover .voltage-source-symbol,
+    .branch.current-hover .source-plus,
+    .branch.current-hover .resistor-symbol {
       stroke: #f59e0b;
       stroke-width: 4;
     }
@@ -373,12 +406,19 @@
     .branch.formula-highlight .transformer-coil,
     .branch.formula-highlight .transformer-core,
     .branch.formula-highlight .port-pin,
-    .branch.formula-highlight .ground-symbol {
+    .branch.formula-highlight .ground-symbol,
+    .branch.formula-highlight .voltage-source-symbol,
+    .branch.formula-highlight .source-plus,
+    .branch.formula-highlight .resistor-symbol {
       stroke: var(--branch-highlight-color, #ef4444);
       stroke-width: 4;
     }
 
     .branch.formula-highlight .dot {
+      fill: var(--branch-highlight-color, #ef4444);
+    }
+
+    .branch.formula-highlight .source-label {
       fill: var(--branch-highlight-color, #ef4444);
     }
 
@@ -1750,6 +1790,9 @@
         <button class="tool" id="addCurrentSourceTool" title="添加电流源" aria-label="添加电流源">
           <svg width="22" height="20" viewBox="0 0 28 22" aria-hidden="true"><path d="M1 11h7m12 0h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 11h6m-3-3 3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
+        <button class="tool" id="addVoltageSourceTool" title="添加电压源串联 G" aria-label="添加电压源串联 G">
+          <svg width="24" height="20" viewBox="0 0 30 22" aria-hidden="true"><path d="M1 11h7m14 0h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="15" cy="11" r="6.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 6.8v4M13 8.8h4M13 14h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><text x="22.5" y="8" font-size="5.2" font-weight="700" fill="currentColor">Vs</text></svg>
+        </button>
         <button class="tool" id="addGroundTool" title="添加 Ground" aria-label="添加 Ground">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v7M7 11h10M8.5 15h7M10 19h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
@@ -2400,6 +2443,13 @@
       "A 到 B": "A to B",
       "B 到 A": "B to A",
       "电流源": "Current Source",
+      "电压源串联 G": "Voltage Source + G",
+      "电压源 / Vs": "Voltage Source / Vs",
+      "串联导纳 / G": "Series Conductance / G",
+      "该元件用 Norton 等效 stamp：电流方向为 P 到 N，i = G*(V_P - V_N - Vs)。G 不能为 0 或负数。": "This element stamps the Norton equivalent: current direction P to N, i = G*(V_P - V_N - Vs). G cannot be zero or negative.",
+      "串联导纳不能为空。": "Series conductance is required.",
+      "串联导纳不能为 0。": "Series conductance cannot be 0.",
+      "串联导纳不能为负数。": "Series conductance cannot be negative.",
       "源类型": "Source Type",
       "独立电流源": "Independent Current Source",
       "节点电压相关": "Voltage Controlled",
@@ -2549,6 +2599,7 @@
       select: document.getElementById("selectTool"),
       branch: document.getElementById("addBranchTool"),
       currentSource: document.getElementById("addCurrentSourceTool"),
+      voltageSource: document.getElementById("addVoltageSourceTool"),
       ground: document.getElementById("addGroundTool"),
       transformer: document.getElementById("addTransformerTool"),
       custom: document.getElementById("addCustomTool"),
@@ -2610,6 +2661,30 @@
         controlNegative: "",
         description: "",
         mathEnabled: true
+      };
+      state.branches.push(branch);
+      clampComponent(branch);
+      selectBranch(branch.id);
+      render();
+    }
+
+    function createVoltageSourceSeriesR(x, y) {
+      commitHistory();
+      syncNextCounters();
+      const n = state.nextBranch++;
+      const branch = {
+        id: `B${n}`,
+        name: `V${n}`,
+        kind: "voltage_source_series_r",
+        x,
+        y,
+        width: 160,
+        height: 56,
+        rotation: 0,
+        nodes: { P: `v${n}p`, N: `v${n}n` },
+        voltage: `Vs${n}`,
+        conductance: "G",
+        direction: "PtoN"
       };
       state.branches.push(branch);
       clampComponent(branch);
@@ -2902,15 +2977,17 @@
           ? "点击画布添加二端口支路"
           : tool === "currentSource"
             ? "点击画布添加电流源"
-            : tool === "ground"
-              ? "点击画布添加 Ground"
-              : tool === "transformer"
-                ? "点击画布添加单相变压器"
-                : tool === "custom"
-                  ? "点击画布添加自定义 N 节点支路"
-                  : tool === "pan"
-                    ? "拖动画布平移"
-                    : "选择 / 拖动";
+            : tool === "voltageSource"
+              ? "点击画布添加电压源串联 G"
+              : tool === "ground"
+                ? "点击画布添加 Ground"
+                : tool === "transformer"
+                  ? "点击画布添加单相变压器"
+                  : tool === "custom"
+                    ? "点击画布添加自定义 N 节点支路"
+                    : tool === "pan"
+                      ? "拖动画布平移"
+                      : "选择 / 拖动";
       render();
     }
 
@@ -2995,6 +3072,7 @@
     function resizeMinSize(branch, axis) {
       if (branch.kind === "single_phase_transformer") return axis === "width" ? 120 : 82;
       if (branch.kind === "current_source") return axis === "width" ? 90 : 54;
+      if (branch.kind === "voltage_source_series_r") return axis === "width" ? 100 : 54;
       if (branch.kind === "custom_n_port") return axis === "width" ? 90 : 70;
       if (branch.kind === "ground") return axis === "width" ? 42 : 38;
       return axis === "width" ? 70 : 40;
@@ -3018,13 +3096,14 @@
     function terminalSides(branch) {
       if (branch.kind === "ground") return ["G"];
       if (branch.kind === "single_phase_transformer") return ["P", "N", "S", "T"];
+      if (branch.kind === "voltage_source_series_r") return ["P", "N"];
       if (branch.kind === "custom_n_port") return branch.ports || Object.keys(branch.nodes || {});
       return ["A", "B"];
     }
 
     function branchNodeForSide(branch, side) {
       if (branch.kind === "ground") return branch.nodeG;
-      if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") return branch.nodes?.[side];
+      if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port" || branch.kind === "voltage_source_series_r") return branch.nodes?.[side];
       return side === "A" ? branch.nodeA : branch.nodeB;
     }
 
@@ -3066,6 +3145,7 @@
         return { x, y };
       }
       if (branch.kind === "ground") return { x: 0, y: -(Math.max(38, branch.height || 42) / 2 + 16) };
+      if (branch.kind === "voltage_source_series_r") return { x: side === "P" ? -branch.width / 2 : branch.width / 2, y: 0 };
       return { x: side === "A" ? -branch.width / 2 : branch.width / 2, y: 0 };
     }
 
@@ -3189,7 +3269,8 @@
     function branchTerminalNode(key) {
       const parsed = parseTerminal(key);
       const branch = findBranch(parsed.branchId);
-      if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") return branch.nodes[parsed.side];
+      if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port" || branch.kind === "voltage_source_series_r") return branch.nodes[parsed.side];
+      if (branch.kind === "ground") return branch.nodeG;
       return parsed.side === "A" ? branch.nodeA : branch.nodeB;
     }
 
@@ -3245,7 +3326,7 @@
     }
 
     function autoSnapTerminalToOwnBody(branch, side) {
-      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer" && branch.kind !== "current_source") return;
+      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer" && branch.kind !== "current_source" && branch.kind !== "voltage_source_series_r") return;
       const point = terminalPosition(branch, side);
       const anchorDraw = componentLeadAnchor(branch, side, terminalDrawPosition(branch, side));
       const anchor = anchorDraw ? rotatedDrawPoint(branch, anchorDraw) : null;
@@ -3255,7 +3336,7 @@
     }
 
     function autoSnapBranchLeadsToOwnBody(branch) {
-      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer" && branch.kind !== "current_source") return;
+      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer" && branch.kind !== "current_source" && branch.kind !== "voltage_source_series_r") return;
       terminalSides(branch).forEach(side => autoSnapTerminalToOwnBody(branch, side));
     }
 
@@ -3263,6 +3344,11 @@
       if (branch.kind === "two_node_branch" || branch.kind === "current_source") {
         const bodyWidth = Math.max(50, Math.min(120, (branch.width || 150) * 0.5));
         const x = side === "A" ? branch.x - bodyWidth / 2 : branch.x + bodyWidth / 2;
+        return { x, y: branch.y };
+      }
+      if (branch.kind === "voltage_source_series_r") {
+        const bodyWidth = Math.max(74, (branch.width || 160) - 70);
+        const x = side === "P" ? branch.x - bodyWidth / 2 : branch.x + bodyWidth / 2;
         return { x, y: branch.y };
       }
       if (branch.kind === "single_phase_transformer") {
@@ -4124,7 +4210,7 @@
     }
 
     function normalizeSwitchCases(branch) {
-      if (branch?.kind === "current_source") {
+      if (branch?.kind === "current_source" || branch?.kind === "voltage_source_series_r") {
         delete branch.switchCases;
         branch.activeSwitchCase = 0;
         return;
@@ -4190,9 +4276,12 @@
     }
 
     function currentSourceIhis(branch) {
-      return branch.sourceMode === "node_voltage"
-        ? (branch.sourceIhis || "0")
-        : (branch.currentExpression || branch.sourceIhis || branch.name || "0");
+      if (branch.sourceMode === "node_voltage") return branch.sourceIhis || "0";
+      const expression = String(branch.currentExpression || "").trim();
+      if (expression) return expression;
+      const sourceIhis = String(branch.sourceIhis || "").trim();
+      if (sourceIhis && sourceIhis !== "0") return sourceIhis;
+      return branch.name || "0";
     }
 
     function currentSourceControlText(branch) {
@@ -4319,6 +4408,53 @@
       lines.push(`Ihis[${fromNode}] += ${ihis}`);
       lines.push(`Ihis[${toNode}] -= ${ihis}`);
       return lines.join("\n");
+    }
+
+    function voltageSourceSeriesConductance(branch) {
+      if (branch.conductance !== undefined && String(branch.conductance).trim() !== "") return wrapExpr(branch.conductance);
+      if (branch.resistance !== undefined && String(branch.resistance).trim() !== "") return exprDiv("1", branch.resistance);
+      return "G";
+    }
+
+    function voltageSourceSeriesIhis(branch) {
+      return negateExpr(exprMul(voltageSourceSeriesConductance(branch), branch.voltage || "Vs"));
+    }
+
+    function voltageSourceSeriesCurrentExpression(branch, groupByTerminal = null) {
+      const netName = side => terminalNetNameFromMap(terminalKey(branch.id, side), groupByTerminal);
+      const p = netName("P");
+      const n = netName("N");
+      const gs = voltageSourceSeriesConductance(branch);
+      const vs = branch.voltage || "Vs";
+      return `(${gs}) * (V_${p} - V_${n} - (${vs}))`;
+    }
+
+    function voltageSourceSeriesStampPreview(branch) {
+      const pNode = terminalNetName(terminalKey(branch.id, "P"));
+      const nNode = terminalNetName(terminalKey(branch.id, "N"));
+      const gs = voltageSourceSeriesConductance(branch);
+      const ihis = voltageSourceSeriesIhis(branch);
+      return [
+        `Gs = ${gs}`,
+        `G[${pNode}, ${pNode}] += ${gs}`,
+        `G[${pNode}, ${nNode}] -= ${gs}`,
+        `G[${nNode}, ${pNode}] -= ${gs}`,
+        `G[${nNode}, ${nNode}] += ${gs}`,
+        `Ihis[${pNode}] += ${ihis}`,
+        `Ihis[${nNode}] -= ${ihis}`
+      ].join("\n");
+    }
+
+    function validateVoltageSourceSeriesR(branch) {
+      const warnings = [];
+      const conductance = String(branch.conductance || "").trim();
+      if (!conductance) warnings.push(tr("串联导纳不能为空。"));
+      const numeric = Number(conductance);
+      if (conductance && Number.isFinite(numeric)) {
+        if (numeric === 0) warnings.push(tr("串联导纳不能为 0。"));
+        if (numeric < 0) warnings.push(tr("串联导纳不能为负数。"));
+      }
+      return warnings;
     }
 
     function validateCurrentSourceAgainstGroups(branch, groups) {
@@ -4511,6 +4647,8 @@
           if (!term.error) texts.push(term.coefficient);
         });
         texts.push(currentSourceIhis(branch));
+      } else if (branch.kind === "voltage_source_series_r") {
+        texts.push(voltageSourceSeriesConductance(branch), voltageSourceSeriesIhis(branch));
       } else if (branchUsesMatrix(branch)) {
         parseMatrixRows(branchValue(branch, "gMatrix")).flat().forEach(item => texts.push(item));
         parseMatrixRows(branchValue(branch, "ihisVector")).flat().forEach(item => texts.push(item));
@@ -4610,6 +4748,11 @@
         const expression = currentSourceExpression(branch);
         return `i_${branch.name}_${fromLabel}_to_${toLabel} = ${expression}`;
       }
+      if (branch.kind === "voltage_source_series_r") {
+        const pLabel = terminalNetNameFromMap(terminalKey(branch.id, "P"), groupByTerminal);
+        const nLabel = terminalNetNameFromMap(terminalKey(branch.id, "N"), groupByTerminal);
+        return `i_${branch.name}_${pLabel}_to_${nLabel} = ${voltageSourceSeriesCurrentExpression(branch, groupByTerminal)}`;
+      }
       if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") {
         const replacements = {};
         terminalSides(branch).forEach(side => {
@@ -4684,6 +4827,9 @@
       if (branch.kind === "current_source") {
         return lines.map(line => ({ line, branchId: branch.id, part: "source" }));
       }
+      if (branch.kind === "voltage_source_series_r") {
+        return lines.map(line => ({ line, branchId: branch.id, part: "voltage-source" }));
+      }
       return lines.map(line => ({ line, branchId: branch.id, part: "whole" }));
     }
 
@@ -4704,8 +4850,8 @@
           ])),
           switchCase: switchCaseLabel(branch) || null,
           switchCases: branch.switchCases || null,
-          G: branch.kind === "current_source" ? "0" : ((branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "gMatrix") : branchValue(branch, "g")),
-          Ihis: branch.kind === "current_source" ? "0" : ((branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "ihisVector") : branchValue(branch, "ihis")),
+          G: branch.kind === "current_source" ? "0" : (branch.kind === "voltage_source_series_r" ? matrixLiteral(localGMatrix(branch)) : ((branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "gMatrix") : branchValue(branch, "g"))),
+          Ihis: branch.kind === "current_source" ? "0" : (branch.kind === "voltage_source_series_r" ? vectorLiteral(localIhisVector(branch)) : ((branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "ihisVector") : branchValue(branch, "ihis"))),
           source: branch.kind === "current_source" ? {
             mode: branch.sourceMode || "independent",
             currentExpression: branch.currentExpression || "",
@@ -4718,10 +4864,16 @@
             controlNegative: branch.controlNegative || "",
             description: branch.description || "",
             mathEnabled: Boolean(branch.mathEnabled)
-          } : null,
+          } : (branch.kind === "voltage_source_series_r" ? {
+            kind: "VoltageSourceSeriesR",
+            voltage: branch.voltage || "Vs",
+            conductance: voltageSourceSeriesConductance(branch),
+            nodeP: branch.nodes?.P || "",
+            nodeN: branch.nodes?.N || ""
+          } : null),
           current: {
-            from: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.from) : (branch.direction === "AtoB" ? "A" : "B"),
-            to: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.to) : (branch.direction === "AtoB" ? "B" : "A"),
+            from: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.from) : (branch.kind === "voltage_source_series_r" ? "P" : (branch.direction === "AtoB" ? "A" : "B")),
+            to: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.to) : (branch.kind === "voltage_source_series_r" ? "N" : (branch.direction === "AtoB" ? "B" : "A")),
             formula: currentFormula(branch)
           },
           drawing: {
@@ -4949,6 +5101,20 @@
             : (Array.isArray(branch.controlRows) ? branch.controlRows : currentSourceControlRows(branch));
           branch.description = branch.source?.description || branch.description || "";
           branch.mathEnabled = true;
+        } else if (branch.kind === "voltage_source_series_r") {
+          const n = state.nextBranch++;
+          branch.id = `B${n}`;
+          branch.name = branch.name || `V${n}`;
+          branch.width = branch.width || 160;
+          branch.height = branch.height || 56;
+          branch.nodes = branch.nodes || {
+            P: branch.terminals?.P?.node || branch.nodeP || branch.source?.nodeP || `v${n}p`,
+            N: branch.terminals?.N?.node || branch.nodeN || branch.source?.nodeN || `v${n}n`
+          };
+          branch.voltage = branch.voltage || branch.source?.voltage || "Vs";
+          branch.conductance = branch.conductance || branch.source?.conductance || (branch.source?.resistance || branch.resistance ? exprDiv("1", branch.source?.resistance || branch.resistance) : "G");
+          delete branch.resistance;
+          branch.direction = "PtoN";
         } else if (branch.kind === "ground") {
           const n = state.nextBranch++;
           branch.id = `B${n}`;
@@ -5040,6 +5206,10 @@
             terminals: branch.terminals,
             G: branch.G,
             Ihis: branch.Ihis,
+            source: branch.source,
+            voltage: branch.source?.voltage || branch.voltage,
+            conductance: branch.source?.conductance || branch.conductance,
+            resistance: branch.source?.resistance || branch.resistance,
             direction: "AtoB"
           })),
           wires: data.wires || [],
@@ -5089,6 +5259,7 @@
         if (!branch) continue;
         if (branch.kind === "custom_n_port" && branch.nodes?.[parsed.side]) return branch.nodes[parsed.side];
         if (branch.kind === "single_phase_transformer" && branch.nodes?.[parsed.side]) return branch.nodes[parsed.side];
+        if (branch.kind === "voltage_source_series_r" && branch.nodes?.[parsed.side]) return branch.nodes[parsed.side];
         if (parsed.side === "A" && branch.nodeA) return branch.nodeA;
         if (parsed.side === "B" && branch.nodeB) return branch.nodeB;
       }
@@ -5203,6 +5374,7 @@
       if (kind === "single_phase_transformer") return `Tr${state.nextTransformer - 1}`;
       if (kind === "custom_n_port") return `Custom${state.nextCustom - 1}`;
       if (kind === "current_source") return `I${state.nextBranch - 1}`;
+      if (kind === "voltage_source_series_r") return `V${state.nextBranch - 1}`;
       if (kind === "ground") return `GND${state.nextBranch - 1}`;
       return `R${state.nextBranch - 1}`;
     }
@@ -5211,6 +5383,7 @@
       if (kind === "single_phase_transformer") return "Tr";
       if (kind === "custom_n_port") return "Custom";
       if (kind === "current_source") return "I";
+      if (kind === "voltage_source_series_r") return "V";
       if (kind === "ground") return "GND";
       return "R";
     }
@@ -5310,6 +5483,9 @@
           const n = Number(branch.id.slice(1));
           branch.nodeA = `n${n}a`;
           branch.nodeB = `n${n}b`;
+        } else if (branch.kind === "voltage_source_series_r") {
+          const n = Number(branch.id.slice(1));
+          branch.nodes = { P: `v${n}p`, N: `v${n}n` };
         } else if (branch.kind === "ground") {
           const n = Number(branch.id.slice(1));
           branch.nodeG = `gnd${n}`;
@@ -5648,6 +5824,9 @@
             if (!term.error) addText(term.coefficient);
           });
           addText(currentSourceIhis(branch));
+        } else if (branch.kind === "voltage_source_series_r") {
+          addText(branch.voltage);
+          addText(voltageSourceSeriesConductance(branch));
         }
         (branch.switchCases || []).forEach(item => {
           switchedValueFields(branch).forEach(field => addText(item[field]));
@@ -5717,6 +5896,14 @@
           lines.push(`# ${branch.name} is a linear current source stamped directly into global G/Ihis.`);
           lines.push(`# Output direction: ${branch.direction === "AtoB" ? "A -> B" : "B -> A"}`);
           lines.push(`# ${currentFormula(branch)}`);
+        } else if (branch.kind === "voltage_source_series_r") {
+          const gs = voltageSourceSeriesConductance(branch);
+          const ihis = voltageSourceSeriesIhis(branch);
+          lines.push(`# ${branch.name} is a voltage source with series conductance, stamped as a Norton equivalent.`);
+          lines.push(`# Direction: P -> N; i = Gs*(V_P - V_N - Vs); Gs = ${gs}; Ihis_P = ${ihis}; Ihis_N = -(${ihis})`);
+          lines.push(`G_${branch.name} = sp.Matrix(${matrixLiteral(localGMatrix(branch))})`);
+          lines.push(`Ihis_${branch.name} = sp.Matrix(${vectorLiteral(localIhisVector(branch))})`);
+          lines.push(`${branch.name} = SubNetwork(name="${branch.name}", local_nodes=["P", "N"], G_local=G_${branch.name}, Ihis_local=Ihis_${branch.name})`);
         } else if (branch.kind === "ground") {
           lines.push(`# ${branch.name} is a ground constraint: ${currentFormula(branch)}`);
           lines.push(`# Ground is applied after full stamping by removing its row/column because V_ground = 0.`);
@@ -6808,8 +6995,8 @@
         const eqIndex = line.indexOf("=");
         const lhs = eqIndex >= 0 ? line.slice(0, eqIndex).trim() : line.trim();
         const rhs = eqIndex >= 0 ? line.slice(eqIndex + 1).trim() : "0";
-        const fromSide = inner.direction === "AtoB" ? "A" : "B";
-        const toSide = inner.direction === "AtoB" ? "B" : "A";
+        const fromSide = inner.kind === "voltage_source_series_r" ? "P" : (inner.direction === "AtoB" ? "A" : "B");
+        const toSide = inner.kind === "voltage_source_series_r" ? "N" : (inner.direction === "AtoB" ? "B" : "A");
         const fromLabel = displayForSide(fromSide);
         const toLabel = displayForSide(toSide);
         return [{
@@ -7017,6 +7204,10 @@
           stampCurrentSourceBranch(branch, side => groupByTerminal.get(terminalKey(branch.id, side))?.id, groupLookup, groupIndex, G, Ihis, warnings);
           return;
         }
+        if (branch.kind === "voltage_source_series_r") {
+          stampVoltageSourceSeriesRBranch(branch, side => groupByTerminal.get(terminalKey(branch.id, side))?.id, groupIndex, G, Ihis, warnings);
+          return;
+        }
         const sourceId = branch.id;
         const sides = terminalSides(branch);
         const localG = localGMatrix(branch);
@@ -7075,8 +7266,8 @@
         }).join("\n");
       }
       if (branch.kind === "current_source") {
-        const fromSide = branch.direction === "AtoB" ? "A" : "B";
-        const toSide = branch.direction === "AtoB" ? "B" : "A";
+        const fromSide = branch.kind === "voltage_source_series_r" ? "P" : (branch.direction === "AtoB" ? "A" : "B");
+        const toSide = branch.kind === "voltage_source_series_r" ? "N" : (branch.direction === "AtoB" ? "B" : "A");
         const fromLabel = displayForSide(fromSide);
         const toLabel = displayForSide(toSide);
         const displayByNode = new Map();
@@ -7085,6 +7276,11 @@
           if (group?.id) displayByNode.set(group.id, group.display || group.id);
         });
         return `i_${branch.name}_${fromLabel}_to_${toLabel} = ${currentSourceExpression(branch, displayByNode)}`;
+      }
+      if (branch.kind === "voltage_source_series_r") {
+        const fromLabel = displayForSide("P");
+        const toLabel = displayForSide("N");
+        return `i_${branch.name}_${fromLabel}_to_${toLabel} = (${voltageSourceSeriesConductance(branch)}) * (V_${fromLabel} - V_${toLabel} - (${branch.voltage || "Vs"}))`;
       }
 
       const fromSide = branch.direction === "AtoB" ? "A" : "B";
@@ -7813,8 +8009,8 @@
           stampCurrentSourceBranch(branch, side => netByTerminal.get(terminalKey(branch.id, side)), nodeLookup, nodeIndex, G, Ihis, warnings);
           return;
         }
-        if (expandPackaged && branch.kind === "custom_n_port" && branch.packageOriginal) {
-          stampPackagedOriginal(branch, netByTerminal, nodeIndex, G, Ihis);
+        if (branch.kind === "voltage_source_series_r") {
+          stampVoltageSourceSeriesRBranch(branch, side => netByTerminal.get(terminalKey(branch.id, side)), nodeIndex, G, Ihis, warnings);
           return;
         }
         const sourceId = branch.id;
@@ -7922,23 +8118,46 @@
       addTerm(Ihis[toRow], negateExpr(ihis), branch.id);
     }
 
+    function stampVoltageSourceSeriesRBranch(branch, netForSide, nodeIndex, G, Ihis, warnings = null) {
+      validateVoltageSourceSeriesR(branch).forEach(message => warnings?.push(`${branch.name}: ${message}`));
+      const pNode = netForSide("P");
+      const nNode = netForSide("N");
+      const pRow = nodeIndex.get(pNode);
+      const nRow = nodeIndex.get(nNode);
+      if (pRow === undefined || nRow === undefined) return;
+      const gs = voltageSourceSeriesConductance(branch);
+      const j = voltageSourceSeriesIhis(branch);
+      addTerm(G[pRow][pRow], gs, branch.id);
+      addTerm(G[pRow][nRow], negateExpr(gs), branch.id);
+      addTerm(G[nRow][pRow], negateExpr(gs), branch.id);
+      addTerm(G[nRow][nRow], gs, branch.id);
+      addTerm(Ihis[pRow], j, branch.id);
+      addTerm(Ihis[nRow], negateExpr(j), branch.id);
+    }
+
     function displayNameForAssembledNode(assembled, node) {
       return assembled.displayByNode?.get(node) || nodeDisplayName(node);
     }
 
     function stampPackagedOriginal(branch, netByTerminal, nodeIndex, G, Ihis) {
       const packed = packagedOriginalSystem(branch, netByTerminal);
-      if (!packed) return;
+      if (!packed) return false;
+      let stamped = false;
       packed.nodeIds.forEach((rowNode, r) => {
         const row = nodeIndex.get(rowNode);
         if (row === undefined) return;
+        const beforeIhis = Ihis[row].length;
         addTerms(Ihis[row], packed.Ihis[r] || []);
+        if (Ihis[row].length !== beforeIhis) stamped = true;
         packed.nodeIds.forEach((colNode, c) => {
           const col = nodeIndex.get(colNode);
           if (col === undefined) return;
+          const beforeG = G[row][col].length;
           addTerms(G[row][col], packed.G[r]?.[c] || []);
+          if (G[row][col].length !== beforeG) stamped = true;
         });
       });
+      return stamped;
     }
 
     function packagedOriginalSystem(branch, netByTerminal) {
@@ -8033,6 +8252,13 @@
           }, orderedNodeLookup, orderedNodeIndex, localG, localIhis);
           return;
         }
+        if (item.kind === "voltage_source_series_r") {
+          stampVoltageSourceSeriesRBranch(item, side => {
+            const index = groupByTerminal.get(terminalKey(item.id, side));
+            return index === undefined ? null : ordered[index]?.id;
+          }, orderedNodeIndex, localG, localIhis);
+          return;
+        }
         const sourceId = item.id;
         const sides = terminalSides(item);
         const g = localGMatrix(item);
@@ -8081,6 +8307,13 @@
       if (branch.kind === "current_source") {
         return [["0", "0"], ["0", "0"]];
       }
+      if (branch.kind === "voltage_source_series_r") {
+        const gs = voltageSourceSeriesConductance(branch);
+        return [
+          [gs, negateExpr(gs)],
+          [negateExpr(gs), gs]
+        ];
+      }
       const g = wrapExpr(branchValue(branch, "g") || "0");
       return [
         [g, negateExpr(g)],
@@ -8095,6 +8328,10 @@
       }
       if (branch.kind === "current_source") {
         return ["0", "0"];
+      }
+      if (branch.kind === "voltage_source_series_r") {
+        const j = voltageSourceSeriesIhis(branch);
+        return [j, negateExpr(j)];
       }
       const j = wrapExpr(branchValue(branch, "ihis") || "0");
       return [j, negateExpr(j)];
@@ -8380,6 +8617,12 @@
         render();
         return;
       }
+      if (branch.kind === "voltage_source_series_r") {
+        if (field.startsWith("node.")) branch.nodes[field.slice(5)] = value.trim();
+        else if (field === "name" || field === "voltage" || field === "conductance") branch[field] = value.trim();
+        renderAfterSidePanelEdit();
+        return;
+      }
       if (branch.kind === "single_phase_transformer") {
         if (field.startsWith("node.")) branch.nodes[field.slice(5)] = value.trim();
         else if (field === "ihisVector") {
@@ -8620,6 +8863,45 @@
         editor.innerHTML = editorGroupList([
           editorGroup("basics", "名称配置", basics, false),
           editorGroup("source", "源类型", sourceConfig, true),
+          editorGroup("math", "数学模型", mathModel, true),
+          editorGroup("highlight", "高亮", branchHighlightEditor(branch, false), false),
+          editorGroup("terminals", "端点标识", terminals, false)
+        ]);
+        bindEditorInputs();
+        bindEditorEditButtons();
+        bindEditorGroups();
+        return;
+      }
+
+      if (branch.kind === "voltage_source_series_r") {
+        const basics = `
+          ${editableField("元件名", "name", branch.name)}
+          <div class="row">
+            ${editableField("宽度", "width", branch.width || 160)}
+            ${editableField("高度", "height", branch.height || 56)}
+          </div>
+        `;
+        const warnings = validateVoltageSourceSeriesR(branch);
+        const mathModel = `
+          <div class="row">
+            ${editableField("电压源 / Vs", "voltage", branch.voltage || "Vs")}
+            ${editableField("串联导纳 / G", "conductance", voltageSourceSeriesConductance(branch))}
+          </div>
+          ${warnings.length ? `<div class="validation-warning">${warnings.map(escapeHtml).join("<br>")}</div>` : ""}
+          <div class="field">
+            <label>${escapeHtml(tr("Stamp 预览"))}</label>
+            <div class="stamp-preview">${escapeHtml(voltageSourceSeriesStampPreview(branch))}</div>
+          </div>
+          <div class="modal-help">${escapeHtml(tr("该元件用 Norton 等效 stamp：电流方向为 P 到 N，i = G*(V_P - V_N - Vs)。G 不能为 0 或负数。"))}</div>
+        `;
+        const terminals = `
+          <div class="row">
+            ${editableField("P 节点", "node.P", branch.nodes?.P || "")}
+            ${editableField("N 节点", "node.N", branch.nodes?.N || "")}
+          </div>
+        `;
+        editor.innerHTML = editorGroupList([
+          editorGroup("basics", "名称配置", basics, false),
           editorGroup("math", "数学模型", mathModel, true),
           editorGroup("highlight", "高亮", branchHighlightEditor(branch, false), false),
           editorGroup("terminals", "端点标识", terminals, false)
@@ -9768,6 +10050,10 @@
           renderCurrentSource(branch, selected, nets);
           return;
         }
+        if (branch.kind === "voltage_source_series_r") {
+          renderVoltageSourceSeriesR(branch, selected, nets);
+          return;
+        }
         if (branch.kind === "ground") {
           renderGround(branch, selected, nets);
           return;
@@ -9939,6 +10225,72 @@
         <text class="net-badge" data-net-id="${netBId}" data-port-side="B" x="${posB.x}" y="${posB.y - 33}">${escapeSvg(netB)}</text>
         ${state.showLocalLabels ? `<text class="node-label" data-port-side="A" x="${posA.x}" y="${posA.y + 24}">${escapeSvg(branch.nodeA)}</text>` : ""}
         ${state.showLocalLabels ? `<text class="node-label" data-port-side="B" x="${posB.x}" y="${posB.y + 24}">${escapeSvg(branch.nodeB)}</text>` : ""}
+      `;
+
+      bindBranchGroupInteractions(group, branch);
+      branchLayer.appendChild(group);
+    }
+
+    function renderVoltageSourceSeriesR(branch, selected, nets) {
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      const currentHighlight = branchCurrentHighlight(branch);
+      const canvasHighlight = branchCanvasHighlight(branch);
+      group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}${canvasHighlight.className}`);
+      if (canvasHighlight.style) group.setAttribute("style", canvasHighlight.style);
+      group.setAttribute("transform", `rotate(${branch.rotation} ${branch.x} ${branch.y})`);
+      group.dataset.branchId = branch.id;
+
+      const width = Math.max(120, branch.width || 160);
+      const height = Math.max(54, branch.height || 56);
+      const bodyHeight = Math.max(36, Math.min(54, height));
+      const bodyWidth = Math.max(74, width - 70);
+      const bodyX = branch.x - bodyWidth / 2;
+      const bodyY = branch.y - bodyHeight / 2;
+      const posP = terminalDrawPosition(branch, "P");
+      const posN = terminalDrawPosition(branch, "N");
+      const netPId = nets.get(terminalKey(branch.id, "P")) || "";
+      const netNId = nets.get(terminalKey(branch.id, "N")) || "";
+      const netP = nodeDisplayName(netPId);
+      const netN = nodeDisplayName(netNId);
+      const colorP = netColor(netPId);
+      const colorN = netColor(netNId);
+      const resistorX1 = branch.x - 43;
+      const resistorX2 = branch.x - 3;
+      const resistorY = branch.y;
+      const zigStep = 7;
+      const resistorPath = `M ${resistorX1} ${resistorY} l ${zigStep * 0.5} -7 l ${zigStep} 14 l ${zigStep} -14 l ${zigStep} 14 l ${zigStep} -14 l ${zigStep * 0.5} 7`;
+      const sourceCx = branch.x + 28;
+      const sourceR = Math.min(16, bodyHeight * 0.36);
+      const arrowY = branch.y - 9;
+      const arrowStartX = bodyX + bodyWidth + 7;
+      const arrowEndX = Math.min(posN.x - 6, arrowStartX + 34);
+      const arrowPath = `M ${arrowStartX} ${arrowY} L ${arrowEndX} ${arrowY}`;
+
+      group.innerHTML = `
+        <rect class="hitbox" x="${Math.min(posP.x, bodyX) - 24}" y="${bodyY - 26}" width="${Math.max(posN.x, bodyX + bodyWidth) - Math.min(posP.x, bodyX) + 48}" height="${bodyHeight + 52}" rx="8"></rect>
+        <line class="lead" x1="${posP.x}" y1="${posP.y}" x2="${bodyX}" y2="${branch.y}"></line>
+        <line class="lead" x1="${bodyX + bodyWidth}" y1="${branch.y}" x2="${posN.x}" y2="${posN.y}"></line>
+        <rect class="branch-body" x="${bodyX}" y="${bodyY}" width="${bodyWidth}" height="${bodyHeight}" rx="4"></rect>
+        <line class="lead" x1="${bodyX}" y1="${branch.y}" x2="${resistorX1}" y2="${branch.y}"></line>
+        <path class="resistor-symbol" d="${resistorPath}"></path>
+        <line class="lead" x1="${resistorX2}" y1="${branch.y}" x2="${sourceCx - sourceR}" y2="${branch.y}"></line>
+        <circle class="voltage-source-symbol" cx="${sourceCx}" cy="${branch.y}" r="${sourceR}"></circle>
+        <path class="source-plus" d="M ${sourceCx - 6} ${branch.y - 4} V ${branch.y + 4} M ${sourceCx - 10} ${branch.y} H ${sourceCx - 2} M ${sourceCx + 4} ${branch.y} H ${sourceCx + 12}"></path>
+        <line class="lead" x1="${sourceCx + sourceR}" y1="${branch.y}" x2="${bodyX + bodyWidth}" y2="${branch.y}"></line>
+        <path class="direction" d="${arrowPath}"></path>
+        <text class="branch-label" x="${branch.x}" y="${bodyY - 10}">${escapeSvg(branch.name)}</text>
+        <text class="component-subtext" x="${branch.x}" y="${bodyY + bodyHeight + 17}">${escapeSvg(`${branch.voltage || "Vs"}, ${voltageSourceSeriesConductance(branch)}`)}</text>
+        ${resizeHandlesSvg(branch, selected)}
+        <circle class="port-drag-hit" cx="${posP.x}" cy="${posP.y}" r="24" data-port-side="P"></circle>
+        <circle class="port-drag-hit" cx="${posN.x}" cy="${posN.y}" r="24" data-port-side="N"></circle>
+        <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "P") ? "hot" : ""}${netHoverClass(netPId)}" cx="${posP.x}" cy="${posP.y}" r="8" data-terminal="${terminalKey(branch.id, "P")}" data-port-side="P"></circle>
+        <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "N") ? "hot" : ""}${netHoverClass(netNId)}" cx="${posN.x}" cy="${posN.y}" r="8" data-terminal="${terminalKey(branch.id, "N")}" data-port-side="N"></circle>
+        <rect class="net-badge-bg${netHoverClass(netPId)}" data-net-id="${netPId}" data-port-side="P" x="${posP.x - 17}" y="${posP.y - 42}" width="34" height="18" rx="5" fill="${colorP}"></rect>
+        <rect class="net-badge-bg${netHoverClass(netNId)}" data-net-id="${netNId}" data-port-side="N" x="${posN.x - 17}" y="${posN.y - 42}" width="34" height="18" rx="5" fill="${colorN}"></rect>
+        <text class="net-badge" data-net-id="${netPId}" data-port-side="P" x="${posP.x}" y="${posP.y - 33}">${escapeSvg(netP)}</text>
+        <text class="net-badge" data-net-id="${netNId}" data-port-side="N" x="${posN.x}" y="${posN.y - 33}">${escapeSvg(netN)}</text>
+        ${state.showLocalLabels ? `<text class="node-label" data-port-side="P" x="${posP.x}" y="${posP.y + 24}">${escapeSvg(branch.nodes?.P || "")}</text>` : ""}
+        ${state.showLocalLabels ? `<text class="node-label" data-port-side="N" x="${posN.x}" y="${posN.y + 24}">${escapeSvg(branch.nodes?.N || "")}</text>` : ""}
       `;
 
       bindBranchGroupInteractions(group, branch);
@@ -10870,6 +11222,11 @@ function startResizeDrag(branch, handle, event) {
         setTool("select");
         return;
       }
+      if (state.tool === "voltageSource") {
+        createVoltageSourceSeriesR(point.x, point.y);
+        setTool("select");
+        return;
+      }
       if (state.tool === "ground") {
         createGround(point.x, point.y);
         setTool("select");
@@ -11136,6 +11493,7 @@ function startResizeDrag(branch, handle, event) {
     });
     document.getElementById("addBranchTool").addEventListener("click", () => setTool("branch"));
     document.getElementById("addCurrentSourceTool").addEventListener("click", () => setTool("currentSource"));
+    document.getElementById("addVoltageSourceTool").addEventListener("click", () => setTool("voltageSource"));
     document.getElementById("addGroundTool").addEventListener("click", () => setTool("ground"));
     document.getElementById("addTransformerTool").addEventListener("click", () => setTool("transformer"));
     document.getElementById("addCustomTool").addEventListener("click", () => {
