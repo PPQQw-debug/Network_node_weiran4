@@ -1064,6 +1064,136 @@
       box-shadow: inset 3px 0 0 #f59e0b;
     }
 
+    .optimized-summary-grid {
+      display: grid;
+      grid-template-columns: minmax(360px, 1fr) minmax(300px, 0.75fr);
+      gap: 10px;
+      align-items: start;
+      width: 100%;
+      min-width: min(100%, 980px);
+    }
+
+    .optimized-summary-grid > .formula-card {
+      width: auto;
+      min-width: 0;
+      overflow-x: auto;
+    }
+
+    .analysis-table {
+      border-collapse: collapse;
+      font-size: 14px;
+      min-width: 260px;
+      color: #f7fbff;
+    }
+
+    .analysis-table th,
+    .analysis-table td {
+      border: 1px solid #4b6172;
+      padding: 6px 10px;
+      text-align: left;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .analysis-table th {
+      color: #c5d2dc;
+      font-family: system-ui, sans-serif;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .analysis-table td {
+      font-family: "Cambria Math", "Times New Roman", serif;
+    }
+
+    .gkk-analysis-layout {
+      display: grid;
+      grid-template-columns: minmax(320px, max-content) minmax(260px, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .ihis-block-preview {
+      display: inline-grid;
+      grid-template-columns: auto max-content max-content auto;
+      gap: 10px;
+      align-items: center;
+      width: max-content;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    .ihis-block-vector {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(62px, max-content);
+      padding: 10px 14px;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      color: #f7fbff;
+    }
+
+    .ihis-block-vector::before,
+    .ihis-block-vector::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      border-top: 2px solid #dce8ef;
+      border-bottom: 2px solid #dce8ef;
+      pointer-events: none;
+    }
+
+    .ihis-block-vector::before {
+      left: 0;
+      border-left: 2px solid #dce8ef;
+    }
+
+    .ihis-block-vector::after {
+      right: 0;
+      border-right: 2px solid #dce8ef;
+    }
+
+    .ihis-block-cell {
+      min-height: 34px;
+      min-width: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 16px;
+      font-size: 17px;
+      white-space: nowrap;
+    }
+
+    .ihis-block-cell.split-top {
+      border-top: 2px dashed #65cfff;
+    }
+
+    .ihis-block-labels {
+      display: grid;
+      align-items: center;
+      color: #9fd5ff;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: system-ui, sans-serif;
+    }
+
+    .ihis-block-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .ihis-block-label::before {
+      content: "}";
+      color: #dce8ef;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 34px;
+      font-weight: 400;
+      line-height: 0.7;
+    }
+
     .inline-formula-preview {
       display: grid;
       gap: 5px;
@@ -1153,6 +1283,144 @@
     .matrix-cell {
       min-width: 58px;
       text-align: center;
+    }
+
+    .actual-block-preview {
+      display: inline-grid;
+      grid-template-columns: auto auto;
+      gap: 6px 12px;
+      align-items: center;
+      padding: 10px 0 8px;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      color: #f7fbff;
+      width: max-content;
+      max-width: 100%;
+      overflow-x: auto;
+    }
+
+    .actual-block-column-labels,
+    .actual-block-bottom-labels {
+      grid-column: 1;
+      display: grid;
+      align-items: center;
+      color: #9fd5ff;
+      font-family: system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .actual-block-bottom-labels {
+      padding-top: 2px;
+    }
+
+    .actual-block-label {
+      white-space: nowrap;
+    }
+
+    .actual-block-matrix-row {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .actual-block-matrix {
+      position: relative;
+      display: grid;
+      gap: 0;
+      padding: 12px 16px;
+    }
+
+    .actual-block-matrix::before,
+    .actual-block-matrix::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      border-top: 2px solid #dce8ef;
+      border-bottom: 2px solid #dce8ef;
+      pointer-events: none;
+    }
+
+    .actual-block-matrix::before {
+      left: 0;
+      border-left: 2px solid #dce8ef;
+    }
+
+    .actual-block-matrix::after {
+      right: 0;
+      border-right: 2px solid #dce8ef;
+    }
+
+    .actual-block-cell {
+      min-width: 220px;
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 16px;
+      text-align: center;
+      font-size: 17px;
+      line-height: 1.18;
+      white-space: nowrap;
+      width: max-content;
+    }
+
+    .actual-block-cell *,
+    .actual-block-label *,
+    .actual-block-side-label * {
+      white-space: nowrap;
+    }
+
+    .actual-block-cell.split-left {
+      border-left: 2px dashed #65cfff;
+    }
+
+    .actual-block-cell.split-top {
+      border-top: 2px dashed #65cfff;
+    }
+
+    .actual-block-cell.block-ellipsis {
+      color: #9fd5ff;
+      font-size: 22px;
+      width: auto;
+      min-width: 64px;
+    }
+
+    .actual-block-side-labels {
+      display: grid;
+      align-items: center;
+      color: #9fd5ff;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: system-ui, sans-serif;
+    }
+
+    .actual-block-side-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .actual-block-side-label::before {
+      content: "}";
+      color: #dce8ef;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 0.7;
+    }
+
+    .actual-block-caption {
+      grid-column: 1 / -1;
+      color: #9fb2c0;
+      font-family: system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
     }
 
     .math-branch-highlight {
@@ -1381,6 +1649,13 @@
     .modal.output-modal {
       width: min(1180px, calc(100vw - 48px));
       height: min(820px, calc(100vh - 48px));
+    }
+
+    .modal.output-modal.fullscreen {
+      width: calc(100vw - 12px);
+      height: calc(100vh - 12px);
+      max-height: calc(100vh - 12px);
+      border-radius: 6px;
     }
 
     .modal-output-body {
@@ -1700,6 +1975,10 @@
         overflow-x: auto;
       }
 
+      .optimized-summary-grid {
+        grid-template-columns: 1fr;
+      }
+
       .matrix-equation {
         min-width: max-content;
       }
@@ -1843,6 +2122,7 @@
             <button class="tab active" data-output="formulas">支路电流</button>
             <button class="tab" data-output="nodeEquations">节点方程</button>
             <button class="tab" data-output="reducedEquations">消去版本</button>
+            <button class="tab" data-output="optimizedElimination">优化消元 / C导出</button>
             <button class="tab" data-output="model">模型 JSON</button>
             <button class="tab" data-output="python">Python 草稿</button>
             <button class="output-action text-action" id="toggleReducedBranchCurrents" title="显示支路电流消去版本" aria-label="显示支路电流消去版本">展开支路消去</button>
@@ -1897,9 +2177,12 @@
   </div>
 
   <div class="modal-backdrop" id="outputDialog" role="dialog" aria-modal="true" aria-labelledby="outputTitle">
-    <div class="modal output-modal">
+    <div class="modal output-modal" id="outputDialogModal">
       <div class="modal-header">
         <div class="modal-title" id="outputTitle">输出窗口</div>
+        <button class="tool" id="toggleOutputFullscreen" title="全屏" aria-label="全屏">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <button class="tool" id="closeOutputDialog" title="关闭" aria-label="关闭">
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
@@ -2014,6 +2297,10 @@
       canvasTabDrag: null,
       language: "zh",
       activeOutput: "formulas",
+      optimizedEliminationDisplay: "compact",
+      optimizedEliminationSimplify: "light",
+      optimizedEliminationAssumeSpd: true,
+      optimizedEliminationUseSuggestedOrder: false,
       nextBranch: 1,
       nextTransformer: 1,
       nextCustom: 1,
@@ -2028,10 +2315,12 @@
     let reducedRenderToken = 0;
     let branchCurrentRenderToken = 0;
     let pythonDraftRenderToken = 0;
+    let optimizedEliminationRenderToken = 0;
     const CACHE_LIMIT = 16;
     const reducedCache = new Map();
     const branchCurrentCache = new Map();
     const pythonDraftCache = new Map();
+    const optimizedEliminationCache = new Map();
 
     function cacheGet(cache, key) {
       const value = cache.get(key);
@@ -2058,6 +2347,7 @@
       reducedRenderToken += 1;
       branchCurrentRenderToken += 1;
       pythonDraftRenderToken += 1;
+      optimizedEliminationRenderToken += 1;
     }
 
     function blankCanvasData(name = "画布") {
@@ -2296,6 +2586,7 @@
     const workspace = document.querySelector(".workspace");
     const outputResizeBar = document.getElementById("outputResizeBar");
     const outputDialog = document.getElementById("outputDialog");
+    const outputDialogModal = document.getElementById("outputDialogModal");
     const outputDialogBody = document.getElementById("outputDialogBody");
     const renameDialog = document.getElementById("renameDialog");
     const renameTitle = document.getElementById("renameTitle");
@@ -2361,6 +2652,7 @@
       "支路电流": "Branch Currents",
       "节点方程": "Node Equations",
       "消去版本": "Reduced",
+      "优化消元 / C导出": "Optimized Elimination / C Export",
       "展开支路消去": "Expand Currents",
       "隐藏支路消去": "Hide Current Reduction",
       "显示支路电流消去版本": "Show reduced branch currents",
@@ -5717,10 +6009,25 @@
       outputDialogBody.innerHTML = outputText.innerHTML;
       outputDialogBody.className = `modal-output-body ${outputText.classList.contains("code") ? "code" : ""}`;
       outputDialog.classList.add("open");
+      updateOutputFullscreenButton();
     }
 
     function closeOutputDialog() {
       outputDialog.classList.remove("open");
+      outputDialogModal.classList.remove("fullscreen");
+      updateOutputFullscreenButton();
+    }
+
+    function updateOutputFullscreenButton() {
+      const button = document.getElementById("toggleOutputFullscreen");
+      const active = outputDialogModal.classList.contains("fullscreen");
+      button.title = active ? "退出全屏" : "全屏";
+      button.setAttribute("aria-label", button.title);
+    }
+
+    function toggleOutputFullscreen() {
+      outputDialogModal.classList.toggle("fullscreen");
+      updateOutputFullscreenButton();
     }
 
     function pythonStringList(items) {
@@ -6009,6 +6316,14 @@
         const cached = currentReducedHtml();
         outputText.innerHTML = cached || `<div class="formula-empty">${escapeHtml(tr("正在用 SymPy 化简节点消去方程..."))}</div>`;
         renderReducedEquationsAsync(token);
+        return;
+      }
+      if (state.activeOutput === "optimizedElimination") {
+        outputText.className = "output-body";
+        const token = ++optimizedEliminationRenderToken;
+        const payload = optimizedEliminationPayload();
+        outputText.innerHTML = `<div class="formula-list"><div class="formula-empty">${optText("正在计算优化消元 / C导出...", "Computing optimized elimination / C export...")}</div></div>`;
+        renderOptimizedEliminationAsync(token, payload);
         return;
       }
       outputText.className = "output-body";
@@ -6301,12 +6616,18 @@
     const MATH_FORMAT_MAX_DEPTH = 80;
     const MATH_FORMAT_MAX_EXPR_LENGTH = 9000;
 
+    function normalizeMathPowers(text) {
+      return String(text ?? "0")
+        .replace(/\^\{([^{}]+)\}/g, "**($1)")
+        .replace(/\^([A-Za-z0-9_]+)/g, "**$1");
+    }
+
     function formatMath(text) {
-      return formatExpr(String(text ?? "0").trim() || "0", 0, true);
+      return formatExpr(normalizeMathPowers(text).trim() || "0", 0, true);
     }
 
     function formatMathNoHighlight(text) {
-      return formatExpr(String(text ?? "0").trim() || "0", 0, false);
+      return formatExpr(normalizeMathPowers(text).trim() || "0", 0, false);
     }
 
     function formatMathWithTagged(displayText, taggedText = null) {
@@ -6827,6 +7148,66 @@
       }</span>`;
     }
 
+    function isZeroText(value) {
+      return /^(?:0|0\.0+)$/.test(String(value ?? "").trim());
+    }
+
+    function isSimpleSymbolText(value) {
+      const text = String(value ?? "").trim();
+      return /^-?[A-Za-z][A-Za-z0-9_]*(?:\^\{?\d+\}?)?$/.test(text);
+    }
+
+    function compactMatrixToken(value, prefix, rowIndex, colIndex) {
+      const text = String(value ?? "0").trim() || "0";
+      if (isZeroText(text) || isSimpleSymbolText(text)) return text;
+      return `${prefix}[${rowIndex}][${colIndex}]`;
+    }
+
+    function compactMatrixRows(rows, prefix) {
+      return (rows || []).map((row, rowIndex) =>
+        (row || []).map((value, colIndex) => compactMatrixToken(value, prefix, rowIndex, colIndex))
+      );
+    }
+
+    function renderCompactMatrix(rows, prefix, cols = null) {
+      return renderMatrix(compactMatrixRows(rows || [], prefix), cols);
+    }
+
+    function compactMatrixRowsFromSource(rows, sourcePrefix, rowSourceIndices, colSourceIndices) {
+      return (rows || []).map((row, rowIndex) =>
+        (row || []).map((value, colIndex) => {
+          const sourceRow = rowSourceIndices?.[rowIndex] ?? rowIndex;
+          const sourceCol = colSourceIndices?.[colIndex] ?? colIndex;
+          return compactMatrixToken(value, sourcePrefix, sourceRow, sourceCol);
+        })
+      );
+    }
+
+    function renderCompactMatrixFromSource(rows, sourcePrefix, rowSourceIndices, colSourceIndices, cols = null) {
+      return renderMatrix(compactMatrixRowsFromSource(rows || [], sourcePrefix, rowSourceIndices, colSourceIndices), cols);
+    }
+
+    function renderCompactVector(items, prefix) {
+      return renderVectorMatrix((items || []).map((value, index) => compactMatrixToken(value, prefix, index, 0)));
+    }
+
+    function optText(zh, en) {
+      return state.language === "en" ? en : zh;
+    }
+
+    function optimizedBlockTypeLabel(type) {
+      const labels = {
+        pure_diagonal: optText("纯对角", "pure diagonal"),
+        diagonal_plus_coupled: optText("对角 + 耦合", "diagonal + coupled"),
+        general: optText("一般", "general")
+      };
+      return labels[type] || type || optText("未知", "unknown");
+    }
+
+    function optimizedBooleanLabel(value) {
+      return value ? optText("是", "true") : optText("否", "false");
+    }
+
     async function renderReducedEquationsAsync(token) {
       const payload = buildReducedPayload();
       const staticHtml = reducedStaticMessage(payload);
@@ -6965,6 +7346,428 @@
         }
       }
       throw lastError || new Error("节点消去失败");
+    }
+
+    function optimizedEliminationPayload() {
+      return {
+        ...buildReducedPayload(),
+        mode: "structured_formula",
+        display_mode: state.optimizedEliminationDisplay || "compact",
+        simplify_level: state.optimizedEliminationSimplify || "light",
+        assume_spd: state.optimizedEliminationAssumeSpd !== false,
+        use_suggested_order: state.optimizedEliminationUseSuggestedOrder === true
+      };
+    }
+
+    function optimizedEliminationCacheKey(payload) {
+      return JSON.stringify({
+        language: state.language,
+        display_mode: payload.display_mode,
+        simplify_level: payload.simplify_level,
+        assume_spd: payload.assume_spd,
+        use_suggested_order: payload.use_suggested_order,
+        all_nodes: payload.all_nodes,
+        external_nodes: payload.external_nodes,
+        internal_nodes: payload.internal_nodes,
+        ground_nodes: payload.ground_nodes,
+        G_full: payload.G_full,
+        Ihis_full: payload.Ihis_full
+      });
+    }
+
+    async function requestOptimizedElimination(payload) {
+      const urls = localApiUrls("/optimized-elimination");
+      let lastError = null;
+      for (const url of urls) {
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const result = await response.json();
+          if (!response.ok || result.ok === false) {
+            throw Object.assign(new Error(result.error || optText("优化消元失败", "Optimized elimination failed")), { backendError: true });
+          }
+          return result;
+        } catch (error) {
+          if (error.backendError) throw error;
+          lastError = error;
+        }
+      }
+      throw lastError || new Error(optText("优化消元失败", "Optimized elimination failed"));
+    }
+
+    function renderOptimizedControls() {
+      const display = state.optimizedEliminationDisplay || "compact";
+      const simplify = state.optimizedEliminationSimplify || "light";
+      const spd = state.optimizedEliminationAssumeSpd !== false;
+      return `
+        <div class="formula-card">
+          <div class="formula-name">优化消元设置 / Optimized elimination controls</div>
+          <div class="property-grid">
+            <label class="field">
+              <span>计算模式 / Mode</span>
+              <input value="结构化公式 / Structured Formula" readonly>
+            </label>
+            <label class="field">
+              <span>显示方式 / Display</span>
+              <select data-optimized-control="display">
+                <option value="compact" ${display === "compact" ? "selected" : ""}>紧凑 / Compact</option>
+                <option value="step" ${display === "step" ? "selected" : ""}>分步 / Step-by-step</option>
+                <option value="expanded" ${display === "expanded" ? "selected" : ""}>展开 / Expanded</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>化简程度 / Simplification</span>
+              <select data-optimized-control="simplify">
+                <option value="none" ${simplify === "none" ? "selected" : ""}>不化简 / None</option>
+                <option value="light" ${simplify === "light" ? "selected" : ""}>轻量 / Light</option>
+                <option value="full" ${simplify === "full" ? "selected" : ""}>完整 / Full</option>
+              </select>
+            </label>
+            <label class="field checkbox-field">
+              <span>SPD/对称假设</span>
+              <input data-optimized-control="spd" type="checkbox" ${spd ? "checked" : ""}>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderOptimizedWarningBox(result = null) {
+      const warnings = state.language === "en"
+        ? [
+            "This tab assumes the eliminated block is symmetric positive definite, or at least suitable for symmetric Schur-style reduction. Treat results with controlled current sources or asymmetric black-box stamps as reference.",
+            "Structured formulas are shown as matrices, vectors, and block matrices by default. Large scalar expressions are not expanded."
+          ]
+        : [
+            "该优化消元页面假设待消元矩阵为对称正定，或至少适合对称舒尔消元；如果包含受控电流源、非对称黑盒等非对称元件贡献，请只作为参考。",
+            "结构化公式默认显示矩阵、向量和块矩阵形式，不默认展开巨大的标量表达式。"
+          ];
+      if (result?.warnings?.length) warnings.push(...result.warnings);
+      return `
+        <div class="formula-card validation-warning">
+          <div class="formula-name">${optText("提示", "Warning")}</div>
+          <div class="formula-empty">${warnings.map(escapeHtml).join("<br>")}</div>
+        </div>
+      `;
+    }
+
+    function displayNodeList(nodes, displayNames = {}) {
+      return (nodes || []).map(node => displayNames[node] || nodeDisplayName(node)).join(", ");
+    }
+
+    function renderOptimizedPartition(payload, result = null) {
+      const displayNames = payload.node_display_names || {};
+      const external = result?.external_nodes || payload.external_nodes || [];
+      const internal = result?.internal_nodes || payload.internal_nodes || [];
+      const structuredOrder = result?.effective_internal_nodes || internal;
+      return `
+        <div class="formula-card">
+          <div class="formula-name">Node partition</div>
+          <div class="formula-line"><span class="formula-rhs">External: ${escapeHtml(displayNodeList(external, displayNames))}</span></div>
+          <div class="formula-line"><span class="formula-rhs">Internal: ${escapeHtml(displayNodeList(internal, displayNames))}</span></div>
+          <div class="formula-line"><span class="formula-rhs">Structured k order: ${escapeHtml(displayNodeList(structuredOrder, displayNames))}</span></div>
+        </div>
+      `;
+    }
+
+    function compactBlockEntries(nodes) {
+      if (nodes.length <= 3) {
+        return nodes.map(node => ({ type: "node", node }));
+      }
+      return [
+        { type: "node", node: nodes[0] },
+        { type: "ellipsis" },
+        { type: "node", node: nodes[nodes.length - 1] }
+      ];
+    }
+
+    function blockEntryLabel(entry, displayNames = {}) {
+      if (entry.type === "ellipsis") return "…";
+      return displayNames[entry.node] || nodeDisplayName(entry.node);
+    }
+
+    function blockMatrixCellValue(payload, rowEntry, colEntry, nodeIndex) {
+      if (rowEntry.type === "ellipsis" && colEntry.type === "ellipsis") return "⋱";
+      if (rowEntry.type === "ellipsis") return "⋮";
+      if (colEntry.type === "ellipsis") return "⋯";
+      const row = nodeIndex.get(rowEntry.node);
+      const col = nodeIndex.get(colEntry.node);
+      return payload.G_full?.[row]?.[col] ?? "0";
+    }
+
+    function renderFormulaModeActualBlock(payload) {
+      const displayNames = payload.node_display_names || {};
+      const external = payload.external_nodes || [];
+      const internal = payload.internal_nodes || [];
+      if (!internal.length) return "";
+      const externalEntries = compactBlockEntries(external).map(entry => ({ ...entry, role: "external" }));
+      const internalEntries = compactBlockEntries(internal).map(entry => ({ ...entry, role: "internal" }));
+      const rowEntries = [...externalEntries, ...internalEntries];
+      const colEntries = [...externalEntries, ...internalEntries];
+      const nodeIndex = new Map((payload.all_nodes || []).map((node, index) => [node, index]));
+      const gridColumns = `repeat(${colEntries.length}, minmax(220px, max-content))`;
+      const gridRows = `repeat(${rowEntries.length}, minmax(42px, auto))`;
+      const externalColSpan = Math.max(1, externalEntries.length);
+      const internalColStart = externalEntries.length + 1;
+      const internalColSpan = Math.max(1, internalEntries.length);
+      const externalRowSpan = Math.max(1, externalEntries.length);
+      const internalRowStart = externalEntries.length + 1;
+      const internalRowSpan = Math.max(1, internalEntries.length);
+      const cells = rowEntries.flatMap((rowEntry, rowIndex) => colEntries.map((colEntry, colIndex) => {
+        const isInternalBoundaryRow = rowIndex === externalEntries.length;
+        const isInternalBoundaryCol = colIndex === externalEntries.length;
+        const value = blockMatrixCellValue(payload, rowEntry, colEntry, nodeIndex);
+        const classes = [
+          "actual-block-cell",
+          isInternalBoundaryCol ? "split-left" : "",
+          isInternalBoundaryRow ? "split-top" : "",
+          rowEntry.type === "ellipsis" || colEntry.type === "ellipsis" ? "block-ellipsis" : ""
+        ].filter(Boolean).join(" ");
+        return `<span class="${classes}" title="${escapeHtml(blockEntryLabel(rowEntry, displayNames))}, ${escapeHtml(blockEntryLabel(colEntry, displayNames))}">${formatMath(value)}</span>`;
+      })).join("");
+
+      return `
+        <div class="actual-block-preview" aria-label="${escapeHtml(optText("G 矩阵分块预览", "G matrix block preview"))}">
+          <div class="actual-block-column-labels" style="grid-template-columns: ${gridColumns};">
+            <span class="actual-block-label" style="grid-column: 1 / span ${externalColSpan};">Grr</span>
+            <span class="actual-block-label" style="grid-column: ${internalColStart} / span ${internalColSpan};">Grk</span>
+          </div>
+          <div></div>
+          <div class="actual-block-matrix-row">
+            <div class="actual-block-matrix" style="grid-template-columns: ${gridColumns}; grid-template-rows: ${gridRows};">
+              ${cells}
+            </div>
+            <div class="actual-block-side-labels" style="grid-template-rows: ${gridRows};">
+              <div class="actual-block-side-label" style="grid-row: 1 / span ${externalRowSpan};">Grr / Grk</div>
+              <div class="actual-block-side-label" style="grid-row: ${internalRowStart} / span ${internalRowSpan};">Gkr / Gkk</div>
+            </div>
+          </div>
+          <div></div>
+          <div class="actual-block-bottom-labels" style="grid-template-columns: ${gridColumns};">
+            <span class="actual-block-label" style="grid-column: 1 / span ${externalColSpan};">Gkr</span>
+            <span class="actual-block-label" style="grid-column: ${internalColStart} / span ${internalColSpan};">Gkk</span>
+          </div>
+          <div></div>
+          <div class="actual-block-caption">${optText("真实 G 矩阵按 r/k 整体分成四块；r 是保留节点，k 是所有内部节点组成的块。任一方向超过 3 个节点时用省略号压缩。", "The real G matrix is split into r/k blocks. r contains retained nodes; k contains all internal nodes. More than 3 nodes in one direction are compressed with ellipses.")}</div>
+        </div>
+      `;
+    }
+
+    function renderStructuredFormulaSummary() {
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("最终紧凑公式", "Final Compact Formulas")}</div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("G_red")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("G_rr - G_rk*W*G_kr")}</span></div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("Ihis_red")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("Ihis_r - G_rk*W*Ihis_k")}</span></div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("V_k")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("-W*G_kr*V_r - W*Ihis_k")}</span></div>
+        </div>
+      `;
+    }
+
+    function renderStructuredAnalysis(result, payload = {}) {
+      const structured = result.structured || {};
+      const analysis = structured.analysis || {};
+      const effective = structured.effective_analysis || analysis;
+      const suggested = analysis.suggested_order || [];
+      const user = result.internal_nodes || [];
+      const displayNames = payload.node_display_names || {};
+      const differs = JSON.stringify(suggested) !== JSON.stringify(user);
+      return `
+        <div>
+          <div class="formula-name">${optText("分块分析", "Block Analysis")}</div>
+          <table class="analysis-table">
+            <tbody>
+              <tr><th>${optText("块类型", "Block type")}</th><td>${escapeHtml(optimizedBlockTypeLabel(effective.block_type || structured.block_type))}</td></tr>
+              <tr><th>${optText("用户顺序", "User order")}</th><td>${escapeHtml(displayNodeList(result.internal_nodes || [], displayNames))}</td></tr>
+              <tr><th>${optText("建议顺序", "Suggested order")}</th><td>${escapeHtml(displayNodeList(suggested, displayNames))}</td></tr>
+              <tr><th>${optText("对角节点", "Diagonal nodes")}</th><td>${escapeHtml(displayNodeList(effective.diagonal_nodes || [], displayNames) || "-")}</td></tr>
+              <tr><th>${optText("耦合节点", "Coupled nodes")}</th><td>${escapeHtml(displayNodeList(effective.coupled_nodes || [], displayNames) || "-")}</td></tr>
+              <tr><th>${optText("对称", "Symmetric")}</th><td>${escapeHtml(optimizedBooleanLabel(Boolean(effective.is_symmetric)))}</td></tr>
+            </tbody>
+          </table>
+          ${differs ? `<button class="text-button" data-optimized-action="useSuggested">${optText("使用建议顺序", "Use suggested block order")}</button>` : ""}
+        </div>
+      `;
+    }
+
+    function renderIhisPartition(result) {
+      const blocks = result.structured?.blocks || {};
+      const rRows = blocks.Ihis_r || [];
+      const kRows = blocks.Ihis_i || [];
+      const values = [...rRows, ...kRows];
+      const rCount = rRows.length;
+      const kCount = kRows.length;
+      const cells = values.map((value, index) => {
+        const isKStart = index === rCount && rCount > 0;
+        const prefix = index < rCount ? "Ihis_r" : "Ihis_k";
+        const sourceIndex = index < rCount ? index : index - rCount;
+        return `<span class="ihis-block-cell ${isKStart ? "split-top" : ""}">${formatMath(compactMatrixToken(value, prefix, sourceIndex, 0))}</span>`;
+      }).join("");
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("Ihis 分块预览", "Ihis Block Preview")}</div>
+          <div class="ihis-block-preview">
+            <span class="formula-lhs">${formatMath("Ihis")}</span>
+            <span class="formula-eq">=</span>
+            <div class="ihis-block-vector" style="grid-template-rows: repeat(${Math.max(1, values.length)}, minmax(34px, auto));">
+              ${cells || `<span class="ihis-block-cell">0</span>`}
+            </div>
+            <div class="ihis-block-labels" style="grid-template-rows: repeat(${Math.max(1, values.length)}, minmax(34px, auto));">
+              <div class="ihis-block-label" style="grid-row: 1 / span ${Math.max(1, rCount)};">Ihis<sub>r</sub></div>
+              <div class="ihis-block-label" style="grid-row: ${rCount + 1} / span ${Math.max(1, kCount)};">Ihis<sub>k</sub></div>
+            </div>
+          </div>
+          <div class="actual-block-caption">${optText("右端向量按保留节点 r 和待消去节点 k 分块。", "The right-hand vector is split into retained nodes r and eliminated nodes k.")}</div>
+        </div>
+      `;
+    }
+
+    function renderStructuredBlocks(result, payload) {
+      const blocks = result.structured?.blocks || {};
+      const blockPayload = { ...payload, internal_nodes: result.effective_internal_nodes || payload.internal_nodes || [] };
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("G 分块预览", "G Block Preview")}</div>
+          ${renderFormulaModeActualBlock(blockPayload)}
+        </div>
+        ${renderIhisPartition(result)}
+        <div class="formula-card">
+          <div class="gkk-analysis-layout">
+          <div>
+            <div class="formula-name">${optText("Gkk 紧凑矩阵", "Gkk Compact Matrix")}</div>
+            <div class="matrix-equation"><span class="formula-lhs">${formatMath("G_kk")}</span><span class="formula-eq">=</span>${renderCompactMatrix(blocks.G_ii || [], "Gkk")}</div>
+            <div class="actual-block-caption">${optText("复杂元素默认用 Gkk[row][col] 代替；单个符号会直接保留，例如 AP。", "Complex entries are shown as Gkk[row][col]; simple symbols such as AP are kept.")}</div>
+          </div>
+          ${renderStructuredAnalysis(result, payload)}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPureDiagonalStructured(result) {
+      const details = result.structured?.details || {};
+      const size = (details.W || []).length;
+      const wRows = Array.from({ length: size }, (_, row) =>
+        Array.from({ length: size }, (_, col) => row === col ? `1/Gkk[${row}][${col}]` : "0")
+      );
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("纯对角 Gkk 的 W", "W for Pure Diagonal Gkk")}</div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("G_kk")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("diag(Gkk[0][0], ..., Gkk[k][k])")}</span></div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("W")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("G_kk^{-1}")}</span><span class="formula-eq">=</span>${renderMatrix(wRows)}</div>
+        </div>
+      `;
+    }
+
+    function renderDiagonalCoupledStructured(result) {
+      const details = result.structured?.details || {};
+      const effectiveNodes = result.effective_internal_nodes || result.internal_nodes || [];
+      const analysis = result.structured?.effective_analysis || {};
+      const nodeToKIndex = new Map(effectiveNodes.map((node, index) => [node, index]));
+      const diagonalIndices = (analysis.diagonal_nodes || []).map(node => nodeToKIndex.get(node)).filter(index => index !== undefined);
+      const coupledIndices = (analysis.coupled_nodes || []).map(node => nodeToKIndex.get(node)).filter(index => index !== undefined);
+      const M = details.M || [];
+      const is2x2 = M.length === 2 && M[0]?.length === 2;
+      const mSymbol = is2x2 ? [["M11", "M12"], ["M12", "M22"]] : compactMatrixRows(M, "M");
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("对角 + 耦合块结构", "Diagonal + Coupled Block Structure")}</div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("G_kk")}</span><span class="formula-eq">=</span>${renderMatrix([["D", "U"], ["U^T", "S"]])}</div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("D")}</span><span class="formula-eq">=</span>${renderCompactMatrixFromSource(details.D || [], "Gkk", diagonalIndices, diagonalIndices)}</div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("U")}</span><span class="formula-eq">=</span>${renderCompactMatrixFromSource(details.U || [], "Gkk", diagonalIndices, coupledIndices)}</div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("S")}</span><span class="formula-eq">=</span>${renderCompactMatrixFromSource(details.S || [], "Gkk", coupledIndices, coupledIndices)}</div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("M")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("S - U^T*D^{-1}*U")}</span></div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("M")}</span><span class="formula-eq">=</span>${renderMatrix(mSymbol)}</div>
+          ${is2x2 ? `
+            <div class="formula-line"><span class="formula-lhs">${formatMath("detM")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("M11*M22 - M12^2")}</span></div>
+            <div class="matrix-equation"><span class="formula-lhs">${formatMath("M^{-1}")}</span><span class="formula-eq">=</span>${renderMatrix([["M22/detM", "-M12/detM"], ["-M12/detM", "M11/detM"]])}</div>
+          ` : `<div class="formula-line"><span class="formula-lhs">${formatMath("M^{-1}")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("M^{-1}")}</span></div>`}
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("W")}</span><span class="formula-eq">=</span>${renderMatrix([["D^{-1}+D^{-1}*U*M^{-1}*U^T*D^{-1}", "-D^{-1}*U*M^{-1}"], ["-M^{-1}*U^T*D^{-1}", "M^{-1}"]])}</div>
+        </div>
+      `;
+    }
+
+    function renderGeneralStructured() {
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("一般块结构", "General Block Structure")}</div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("W")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("G_kk^{-1}")}</span></div>
+          <div class="formula-empty">${optText("无法识别简单对角块或对角+小耦合块结构，因此仅显示 W = Gkk^{-1} 的矩阵形式。若需要更简单的表达式，请调整内部节点排序或分组。", "No simple diagonal or diagonal-plus-small-coupled structure was detected, so only W = Gkk^{-1} is shown in matrix form. Adjust internal-node ordering or grouping for simpler expressions.")}</div>
+        </div>
+      `;
+    }
+
+    function renderStructuredByType(result) {
+      const type = result.structured?.block_type;
+      if (type === "pure_diagonal") return renderPureDiagonalStructured(result);
+      if (type === "diagonal_plus_coupled") return renderDiagonalCoupledStructured(result);
+      return renderGeneralStructured();
+    }
+
+    function renderOptimizedFormulaResult(result, payload) {
+      const cDraft = `
+        <div class="formula-card">
+          <div class="formula-name">${optText("结构化 C 草稿", "Structured C Draft")}</div>
+          <pre class="code">${escapeHtml(result.structured?.c_draft || "")}</pre>
+        </div>
+      `;
+      return `${renderStructuredBlocks(result, payload)}${renderStructuredByType(result)}${renderStructuredFormulaSummary()}${cDraft}`;
+    }
+
+    function renderOptimizedEliminationResult(result, payload) {
+      return `
+        <div class="formula-list">
+          ${renderOptimizedWarningBox(result)}
+          ${renderOptimizedFormulaResult(result, payload)}
+        </div>
+      `;
+    }
+
+    async function renderOptimizedEliminationAsync(token, payload) {
+      const staticHtml = reducedStaticMessage(payload);
+      if (staticHtml) {
+        if (token === optimizedEliminationRenderToken) {
+          outputText.innerHTML = `<div class="formula-list">${staticHtml}</div>`;
+        }
+        return;
+      }
+
+      const key = optimizedEliminationCacheKey(payload);
+      const cachedEntry = cacheGet(optimizedEliminationCache, key);
+      if (cachedEntry?.result) {
+        if (token === optimizedEliminationRenderToken) outputText.innerHTML = renderOptimizedEliminationResult(cachedEntry.result, payload);
+        return;
+      }
+      if (cachedEntry?.pending) {
+        try {
+          const result = await cachedEntry.pending;
+          if (token === optimizedEliminationRenderToken) outputText.innerHTML = renderOptimizedEliminationResult(result, payload);
+        } catch (error) {
+          if (token === optimizedEliminationRenderToken) outputText.innerHTML = `<div class="formula-empty">${optText("优化消元失败", "Optimized elimination failed")}：${escapeHtml(error.message || String(error))}</div>`;
+        }
+        return;
+      }
+
+      const pending = requestOptimizedElimination(payload).then(result => {
+        const current = optimizedEliminationCache.get(key);
+        if (current?.pending === pending) cacheSet(optimizedEliminationCache, key, { result, pending: null });
+        return result;
+      }).catch(error => {
+        const current = optimizedEliminationCache.get(key);
+        if (current?.pending === pending) optimizedEliminationCache.delete(key);
+        throw error;
+      });
+      cacheSet(optimizedEliminationCache, key, { result: null, pending });
+
+      try {
+        const result = await pending;
+        if (token === optimizedEliminationRenderToken) outputText.innerHTML = renderOptimizedEliminationResult(result, payload);
+      } catch (error) {
+        if (token === optimizedEliminationRenderToken) outputText.innerHTML = `<div class="formula-empty">${optText("优化消元失败", "Optimized elimination failed")}：${escapeHtml(error.message || String(error))}</div>`;
+      }
     }
 
     function packagedObserverEntries(branch, groupByTerminal, internalNames) {
@@ -11424,11 +12227,31 @@ function startResizeDrag(branch, handle, event) {
       render();
     });
     document.getElementById("closeOutputDialog").addEventListener("click", closeOutputDialog);
+    document.getElementById("toggleOutputFullscreen").addEventListener("click", toggleOutputFullscreen);
     outputDialog.addEventListener("pointerdown", event => {
       if (event.target === outputDialog) closeOutputDialog();
     });
     outputText.addEventListener("pointerover", handleFormulaHover);
     outputText.addEventListener("pointerout", handleFormulaHoverOut);
+    outputText.addEventListener("change", event => {
+      const control = event.target.closest?.("[data-optimized-control]");
+      if (!control) return;
+      const kind = control.dataset.optimizedControl;
+      if (kind === "display") state.optimizedEliminationDisplay = control.value || "compact";
+      if (kind === "simplify") state.optimizedEliminationSimplify = control.value || "light";
+      if (kind === "spd") state.optimizedEliminationAssumeSpd = Boolean(control.checked);
+      optimizedEliminationRenderToken += 1;
+      renderOutput();
+    });
+    outputText.addEventListener("click", event => {
+      const action = event.target.closest?.("[data-optimized-action]");
+      if (!action) return;
+      if (action.dataset.optimizedAction === "useSuggested") {
+        state.optimizedEliminationUseSuggestedOrder = true;
+        optimizedEliminationRenderToken += 1;
+        renderOutput();
+      }
+    });
     outputDialogBody.addEventListener("pointerover", handleFormulaHover);
     outputDialogBody.addEventListener("pointerout", handleFormulaHoverOut);
     document.getElementById("closeRenameDialog").addEventListener("click", closeRenameDialog);

@@ -118,6 +118,9 @@ class BranchBuilderHandler(SimpleHTTPRequestHandler):
             if parsed.path == "/reduce-system":
                 self.write_json(200, run_python_json("reduce_api.py", self.read_json()))
                 return
+            if parsed.path == "/optimized-elimination":
+                self.write_json(200, run_python_json("optimized_elimination_api.py", self.read_json()))
+                return
             if parsed.path == "/validate-blackbox-observers":
                 self.write_json(200, run_python_json("blackbox_validation_api.py", self.read_json()))
                 return

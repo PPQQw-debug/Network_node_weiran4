@@ -48,6 +48,7 @@ If Windows blocks the script, right-click `start.bat`, choose **Properties**, un
 - Build two-node branches, single-phase transformers, custom N-node black boxes, and Y-box packages.
 - Generate full nodal equations in the form `I = G V + Ihis`.
 - Reduce internal nodes with Schur complement logic.
+- Use the new Optimized Elimination / C Export tab for large symbolic systems: it keeps the eliminated block as structured `Gkk` formulas, detects diagonal/coupled sub-blocks, and exports C-style steps without solve/LU/Cholesky calls.
 - Display internal-node voltage recovery formulas.
 - Define and validate branch-current observers for black-box components.
 - Define per-component switch cases for `G` and `Ihis`, then double-click a component on the canvas to switch cases.
@@ -76,6 +77,7 @@ Use a larger `G` to approximate an ideal voltage source more closely, but avoid 
 - 支持二节点支路、单相变压器、自定义 N 节点黑盒和 YBox 打包元件。
 - 生成统一形式的完整节点方程：`I = G V + Ihis`。
 - 使用 Schur complement 对内部节点进行消去。
+- 新增“优化消元 / C导出”tab：面向大型符号系统，使用结构化 `Gkk` 块公式展示消元过程，自动识别对角/耦合子块，并导出不含 solve/LU/Cholesky 的 C 风格步骤。
 - 显示内部节点电压恢复公式。
 - 为黑盒元件定义和校验支路观测电流。
 - 为元件定义多个 `G`/`Ihis` 开关工况，并可在画布中双击元件切换。
@@ -100,6 +102,7 @@ i(p -> n) = G * (V_p - V_n - Vs)
 
 ## Recent Updates / 最近更新
 
+- Added the Optimized Elimination / C Export result tab. It leaves the existing full and reduced matrix pages unchanged, preserves the user-defined internal-node order, shows real `G` and `Ihis` r/k block previews, suggests clearer `Gkk = [[D, U], [U^T, S]]` block order when possible, and exports compact matrix-form C draft steps without expanding large scalar expressions.
 - Canvas tabs can be reordered by dragging. Circuit exports now use `version: 3` and preserve more project state, including all canvases, node styling, switch cases, packaged-box settings, UI options, and cached derivation results.
 - Switch cases are stored with each component. For ordinary branches, edit case-specific `G` and `Ihis`; for matrix components, edit case-specific local `G` and `Ihis` matrices. Double-click the component to cycle cases.
 - Packaged Y-boxes do not use an outer switch case. Instead, their editor lists internal branches that have multiple cases; changing an internal case recomputes the packaged box through the local SymPy backend.
@@ -109,6 +112,7 @@ i(p -> n) = G * (V_p - V_n - Vs)
 
 中文最近更新：
 
+- 新增“优化消元 / C导出”结果 tab。它不改变现有完整矩阵和消去矩阵页面；保留用户定义的 internal node 顺序，显示真实 `G` 和 `Ihis` 的 r/k 分块预览，并在可行时建议更清晰的 `Gkk = [[D, U], [U^T, S]]` 分块顺序；C 草稿只导出紧凑矩阵步骤，不展开巨大标量表达式。
 - 画布标签支持拖拽排序。电路导出升级为 `version: 3`，会保存更完整的工程状态，包括所有画布、节点样式、开关工况、打包黑盒设置、界面选项和已缓存的推导结果。
 - 开关工况保存在每个元件上。普通支路可编辑每个工况的 `G` 和 `Ihis`；矩阵元件可编辑每个工况的局部 `G` 矩阵和 `Ihis` 向量。画布中双击元件可切换工况。
 - 打包后的 YBox 不使用外层 switch case。它会在编辑器中列出内部具有多个工况的支路；切换内部工况后，通过本地 SymPy 后端重新计算打包黑盒。
@@ -255,10 +259,12 @@ The Python server is recommended for first-time users because it can automatical
 - `local_server.py` - recommended local server / 推荐使用的本地服务。
 - `server.js` - optional Node.js local server / 可选 Node.js 本地服务。
 - `reduce_api.py` - backend API wrapper for equation reduction / 节点方程消元 API。
+- `optimized_elimination_api.py` - API wrapper for the Optimized Elimination / C Export tab / 优化消元与 C 导出 API。
 - `elimination.py` - symbolic node-elimination logic / 符号节点消去逻辑。
 - `observers.py` - branch-current observer reduction logic / 支路观测电流消去逻辑。
 - `blackbox_validation_api.py` - API wrapper for black-box observer validation / 黑盒观测电流校验 API。
 - `nodal_tool/blackbox_validation.py` - black-box observer consistency checks / 黑盒观测电流一致性检查。
+- `nodal_tool/optimized_elimination.py` - structured `Gkk` block analysis and C draft helpers without solve/LU/Cholesky calls / 结构化 `Gkk` 分块分析，以及不含 solve/LU/Cholesky 的 C 草稿生成。
 - `exports/` - saved circuit JSON files / 保存的电路 JSON 文件。
 - `tests/` - regression tests / 回归测试。
 
