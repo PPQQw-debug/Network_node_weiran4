@@ -1414,6 +1414,96 @@
       line-height: 0.7;
     }
 
+    .actual-block-order-panel {
+      align-self: stretch;
+      display: grid;
+      gap: 0;
+      min-width: 180px;
+      max-width: 260px;
+      padding: 12px;
+      border: 1px solid rgba(101, 207, 255, 0.38);
+      border-radius: 7px;
+      background: rgba(8, 31, 45, 0.54);
+      color: #dce8ef;
+      font-family: system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .actual-block-order-title {
+      color: #9fd5ff;
+      font-size: 12px;
+      font-weight: 800;
+      align-self: start;
+      padding-bottom: 8px;
+    }
+
+    .actual-block-order-line {
+      display: grid;
+      grid-template-columns: 24px minmax(64px, 1fr);
+      align-items: center;
+      align-content: center;
+      column-gap: 12px;
+      min-height: 0;
+    }
+
+    .actual-block-order-label {
+      color: #9fb2c0;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .actual-block-order-value {
+      display: grid;
+      gap: 3px;
+      justify-items: start;
+      color: #22c55e;
+      font-size: 16px;
+      line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+
+    .actual-block-order-node {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .formula-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .formula-title-row .formula-name {
+      margin: 0;
+    }
+
+    .copy-draft-button {
+      flex: 0 0 auto;
+      min-height: 28px;
+      padding: 5px 9px;
+      border: 1px solid rgba(101, 207, 255, 0.45);
+      border-radius: 6px;
+      background: rgba(8, 31, 45, 0.58);
+      color: #dce8ef;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .copy-draft-button:hover {
+      border-color: #65cfff;
+      color: #fff;
+    }
+
+    .copy-draft-button.copied {
+      border-color: #22c55e;
+      color: #86efac;
+    }
+
     .actual-block-caption {
       grid-column: 1 / -1;
       color: #9fb2c0;
@@ -2300,7 +2390,7 @@
       optimizedEliminationDisplay: "compact",
       optimizedEliminationSimplify: "light",
       optimizedEliminationAssumeSpd: true,
-      optimizedEliminationUseSuggestedOrder: false,
+      optimizedEliminationUseSuggestedOrder: true,
       nextBranch: 1,
       nextTransformer: 1,
       nextCustom: 1,
@@ -3982,6 +4072,7 @@
         state.nodeLabels[renamingNodeId] = clean;
       }
       syncPackagedExposedNodeDisplay(renamingNodeId);
+      invalidateMathCaches();
       closeRenameDialog();
       render();
     }
@@ -4002,6 +4093,7 @@
       }
       delete state.nodeLabels[renamingNodeId];
       syncPackagedExposedNodeDisplay(renamingNodeId);
+      invalidateMathCaches();
       closeRenameDialog();
       render();
     }
@@ -6001,6 +6093,25 @@
       }
     }
 
+    async function copyTextToClipboard(text, fallbackElement = null) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (error) {
+        if (fallbackElement) {
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(fallbackElement);
+          selection.removeAllRanges();
+          selection.addRange(range);
+          document.execCommand("copy");
+          selection.removeAllRanges();
+          return true;
+        }
+        return false;
+      }
+    }
+
     function closeExportDialog() {
       exportDialog.classList.remove("open");
     }
@@ -7355,7 +7466,7 @@
         display_mode: state.optimizedEliminationDisplay || "compact",
         simplify_level: state.optimizedEliminationSimplify || "light",
         assume_spd: state.optimizedEliminationAssumeSpd !== false,
-        use_suggested_order: state.optimizedEliminationUseSuggestedOrder === true
+        use_suggested_order: state.optimizedEliminationUseSuggestedOrder !== false
       };
     }
 
@@ -7369,6 +7480,7 @@
         all_nodes: payload.all_nodes,
         external_nodes: payload.external_nodes,
         internal_nodes: payload.internal_nodes,
+        node_display_names: payload.node_display_names,
         ground_nodes: payload.ground_nodes,
         G_full: payload.G_full,
         Ihis_full: payload.Ihis_full
@@ -7503,6 +7615,12 @@
       const external = payload.external_nodes || [];
       const internal = payload.internal_nodes || [];
       if (!internal.length) return "";
+      const orderTitle = optText("当前 G 矩阵节点顺序", "Current G Matrix Node Order");
+      const orderNodeStack = nodes => (nodes || []).length
+        ? nodes.map(node => `<span class="actual-block-order-node">${escapeHtml(displayNames[node] || nodeDisplayName(node))}</span>`).join("")
+        : `<span class="actual-block-order-node">-</span>`;
+      const rOrder = orderNodeStack(external);
+      const kOrder = orderNodeStack(internal);
       const externalEntries = compactBlockEntries(external).map(entry => ({ ...entry, role: "external" }));
       const internalEntries = compactBlockEntries(internal).map(entry => ({ ...entry, role: "internal" }));
       const rowEntries = [...externalEntries, ...internalEntries];
@@ -7544,6 +7662,17 @@
               <div class="actual-block-side-label" style="grid-row: 1 / span ${externalRowSpan};">Grr / Grk</div>
               <div class="actual-block-side-label" style="grid-row: ${internalRowStart} / span ${internalRowSpan};">Gkr / Gkk</div>
             </div>
+            <div class="actual-block-order-panel" style="grid-template-rows: auto ${gridRows};">
+              <div class="actual-block-order-title" style="grid-row: 1;">${escapeHtml(orderTitle)}</div>
+              <div class="actual-block-order-line" style="grid-row: 2 / span ${externalRowSpan};">
+                <span class="actual-block-order-label">r</span>
+                <span class="actual-block-order-value">${rOrder}</span>
+              </div>
+              <div class="actual-block-order-line" style="grid-row: ${externalRowSpan + 2} / span ${internalRowSpan};">
+                <span class="actual-block-order-label">k</span>
+                <span class="actual-block-order-value">${kOrder}</span>
+              </div>
+            </div>
           </div>
           <div></div>
           <div class="actual-block-bottom-labels" style="grid-template-columns: ${gridColumns};">
@@ -7575,6 +7704,9 @@
       const user = result.internal_nodes || [];
       const displayNames = payload.node_display_names || {};
       const differs = JSON.stringify(suggested) !== JSON.stringify(user);
+      const autoOrderNote = differs
+        ? `<div class="actual-block-caption">${optText("已自动按结构建议顺序重排 k 节点。", "The k nodes have been automatically reordered using the suggested structured order.")}</div>`
+        : "";
       return `
         <div>
           <div class="formula-name">${optText("分块分析", "Block Analysis")}</div>
@@ -7588,7 +7720,7 @@
               <tr><th>${optText("对称", "Symmetric")}</th><td>${escapeHtml(optimizedBooleanLabel(Boolean(effective.is_symmetric)))}</td></tr>
             </tbody>
           </table>
-          ${differs ? `<button class="text-button" data-optimized-action="useSuggested">${optText("使用建议顺序", "Use suggested block order")}</button>` : ""}
+          ${autoOrderNote}
         </div>
       `;
     }
@@ -7602,9 +7734,7 @@
       const kCount = kRows.length;
       const cells = values.map((value, index) => {
         const isKStart = index === rCount && rCount > 0;
-        const prefix = index < rCount ? "Ihis_r" : "Ihis_k";
-        const sourceIndex = index < rCount ? index : index - rCount;
-        return `<span class="ihis-block-cell ${isKStart ? "split-top" : ""}">${formatMath(compactMatrixToken(value, prefix, sourceIndex, 0))}</span>`;
+        return `<span class="ihis-block-cell ${isKStart ? "split-top" : ""}">${formatMath(value || "0")}</span>`;
       }).join("");
       return `
         <div class="formula-card">
@@ -7628,9 +7758,16 @@
     function renderStructuredBlocks(result, payload) {
       const blocks = result.structured?.blocks || {};
       const blockPayload = { ...payload, internal_nodes: result.effective_internal_nodes || payload.internal_nodes || [] };
+      const userOrder = result.internal_nodes || payload.internal_nodes || [];
+      const effectiveOrder = result.effective_internal_nodes || userOrder;
+      const isReordered = JSON.stringify(userOrder) !== JSON.stringify(effectiveOrder);
+      const orderNotice = isReordered
+        ? `<div class="formula-empty">${optText("提示：优化消元会自动按结构重排内部 k 节点；下方 G 矩阵和 C Draft 使用右侧显示的重排顺序。", "Note: optimized elimination automatically reorders internal k nodes by structure; the G matrix below and the C draft use the reordered sequence shown on the right.")}</div>`
+        : `<div class="formula-empty">${optText("提示：优化消元会自动检查并按结构重排内部 k 节点；当前顺序已适合，右侧显示的是实际使用顺序。", "Note: optimized elimination automatically checks and reorders internal k nodes by structure; the current order is already suitable, and the right side shows the sequence actually used.")}</div>`;
       return `
         <div class="formula-card">
           <div class="formula-name">${optText("G 分块预览", "G Block Preview")}</div>
+          ${orderNotice}
           ${renderFormulaModeActualBlock(blockPayload)}
         </div>
         ${renderIhisPartition(result)}
@@ -7709,9 +7846,12 @@
 
     function renderOptimizedFormulaResult(result, payload) {
       const cDraft = `
-        <div class="formula-card">
-          <div class="formula-name">${optText("结构化 C 草稿", "Structured C Draft")}</div>
-          <pre class="code">${escapeHtml(result.structured?.c_draft || "")}</pre>
+        <div class="formula-card" data-c-draft-card>
+          <div class="formula-title-row">
+            <div class="formula-name">${optText("结构化 C 草稿", "Structured C Draft")}</div>
+            <button class="copy-draft-button" type="button" data-copy-c-draft>${optText("复制 C", "Copy C")}</button>
+          </div>
+          <pre class="code" data-c-draft-code>${escapeHtml(result.structured?.c_draft || "")}</pre>
         </div>
       `;
       return `${renderStructuredBlocks(result, payload)}${renderStructuredByType(result)}${renderStructuredFormulaSummary()}${cDraft}`;
@@ -12244,6 +12384,22 @@ function startResizeDrag(branch, handle, event) {
       renderOutput();
     });
     outputText.addEventListener("click", event => {
+      const copyButton = event.target.closest?.("[data-copy-c-draft]");
+      if (copyButton) {
+        const card = copyButton.closest("[data-c-draft-card]");
+        const code = card?.querySelector("[data-c-draft-code]");
+        const text = code?.textContent || "";
+        copyTextToClipboard(text, code).then(ok => {
+          copyButton.textContent = ok ? optText("已复制", "Copied") : optText("复制失败", "Copy failed");
+          copyButton.classList.toggle("copied", ok);
+          statusEl.textContent = ok ? optText("已复制 C 草稿", "C draft copied") : optText("复制 C 草稿失败", "Failed to copy C draft");
+          window.setTimeout(() => {
+            copyButton.textContent = optText("复制 C", "Copy C");
+            copyButton.classList.remove("copied");
+          }, 1400);
+        });
+        return;
+      }
       const action = event.target.closest?.("[data-optimized-action]");
       if (!action) return;
       if (action.dataset.optimizedAction === "useSuggested") {

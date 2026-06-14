@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from typing import Sequence
 
 import sympy as sp
@@ -185,7 +186,8 @@ def sequential_symmetric_eliminate(
 
 
 def _ccode(expr: sp.Expr) -> str:
-    return sp.ccode(expr).replace("M_PI", "PI")
+    code = sp.ccode(expr).replace("M_PI", "PI")
+    return re.sub(r"(?<![eE][+-])(?<![\w.])(\d+)(?![\w.])", r"\1.0", code)
 
 
 def analyze_internal_block_structure(Gii: sp.Matrix, internal_nodes: Sequence[str]) -> dict:
@@ -387,66 +389,266 @@ def cse_c_draft_for_formula_mode(G_red: sp.Matrix, Ihis_red: sp.Matrix) -> str:
     return "\n".join(lines)
 
 
-def c_draft_for_structured_formula(structured: dict) -> str:
-    block_type = structured.get("block_type")
+def _c_matrix_literal(matrix: sp.Matrix, name: str) -> str:
+    matrix = sp.Matrix(matrix)
+    if matrix.rows == 0 or matrix.cols == 0:
+        return f"double {name}[1][1] = {{ {{0.0}} }};  /* Empty {matrix.rows}x{matrix.cols} block. */"
+    rows = []
+    for row in range(matrix.rows):
+        items = ", ".join(_ccode(matrix[row, col]) for col in range(matrix.cols))
+        rows.append(f"    {{{items}}}")
+    return f"double {name}[{matrix.rows}][{matrix.cols}] = {{\n" + ",\n".join(rows) + "\n};"
+
+
+def _c_vector_literal(vector: sp.Matrix, name: str) -> str:
+    vector = _as_column_vector(sp.Matrix(vector), sp.Matrix(vector).rows, name)
+    if vector.rows == 0:
+        return f"double {name}[1][1] = {{ {{0.0}} }};  /* Empty 0x1 block. */"
+    rows = [f"    {{{_ccode(vector[row, 0])}}}" for row in range(vector.rows)]
+    return f"double {name}[{vector.rows}][1] = {{\n" + ",\n".join(rows) + "\n};"
+
+
+def _c_zero_matrix(name: str, rows: int, cols: int) -> str:
+    if rows == 0 or cols == 0:
+        return f"double {name}[1][1] = {{ {{0.0}} }};  /* Empty {rows}x{cols} workspace. */"
+    return f"double {name}[{rows}][{cols}] = {{0.0}};"
+
+
+def _c_copy_subblock(dst: str, src: str, row_offset: int, col_offset: int, rows: int, cols: int) -> list[str]:
+    if rows == 0 or cols == 0:
+        return []
     lines = []
+    for row in range(rows):
+        for col in range(cols):
+            lines.append(f"{dst}[{row + row_offset}][{col + col_offset}] = {src}[{row}][{col}];")
+    return lines
+
+
+def _c_sym_inverse_call(matrix_name: str, inverse_name: str, dim: int) -> list[str]:
+    if dim <= 0:
+        return []
+    if dim == 1:
+        return [f"{inverse_name}[0][0] = 1.0 / {matrix_name}[0][0];"]
+    if dim == 2:
+        return [
+            f"mat_2x2_sym_inv_code({matrix_name}[0][0], {matrix_name}[0][1], {matrix_name}[1][1],",
+            f"                     &{inverse_name}[0][0], &{inverse_name}[0][1], &{inverse_name}[1][1]);",
+            f"{inverse_name}[1][0] = {inverse_name}[0][1];",
+        ]
+    if dim == 3:
+        return [
+            f"mat_3x3_sym_inv_code({matrix_name}[0][0], {matrix_name}[0][1], {matrix_name}[0][2],",
+            f"                     {matrix_name}[1][1], {matrix_name}[1][2],",
+            f"                     {matrix_name}[2][2],",
+            f"                     &{inverse_name}[0][0], &{inverse_name}[0][1], &{inverse_name}[0][2],",
+            f"                     &{inverse_name}[1][1], &{inverse_name}[1][2],",
+            f"                     &{inverse_name}[2][2]);",
+            f"{inverse_name}[1][0] = {inverse_name}[0][1];",
+            f"{inverse_name}[2][0] = {inverse_name}[0][2];",
+            f"{inverse_name}[2][1] = {inverse_name}[1][2];",
+        ]
+    return [
+        f"/* WARNING: {matrix_name} is {dim}x{dim}; RTDS fast symmetric inverse helpers only cover 2x2 and 3x3. */",
+        f"MATH_matx_invert({dim}, &({matrix_name}[0][0]), {dim}, &({inverse_name}[0][0]), {dim});",
+    ]
+
+
+def _c_manual_transpose_assignments(src: str, dst: str, rows: int, cols: int) -> list[str]:
+    lines = []
+    for row in range(cols):
+        for col in range(rows):
+            lines.append(f"{dst}[{row}][{col}] = {src}[{col}][{row}];")
+    return lines
+
+
+def _c_symbol_name(name: str) -> str:
+    suffix = re.sub(r"\W", "_", str(name or "n"))
+    if not suffix or suffix[0].isdigit():
+        suffix = f"n_{suffix}"
+    return suffix
+
+
+def _c_voltage_variable_name(node: str, node_display_names: dict[str, str] | None = None) -> str:
+    display = (node_display_names or {}).get(str(node), str(node))
+    suffix = _c_symbol_name(display)
+    return f"V{suffix}"
+
+
+def _c_node_symbol_vector(name: str, nodes: Sequence[str], node_display_names: dict[str, str] | None = None) -> str:
+    nodes = list(nodes)
+    if not nodes:
+        return f"double {name}[1][1] = {{ {{0.0}} }};  /* Empty symbolic node vector. */"
+    rows = []
+    for node in nodes:
+        display = (node_display_names or {}).get(str(node), str(node))
+        rows.append(f"    {{{_c_symbol_name(display)}}}")
+    return f"double {name}[{len(nodes)}][1] = {{\n" + ",\n".join(rows) + "\n};"
+
+
+def _c_emit_rtds_reduction_tail(
+    nr: int,
+    nk: int,
+    external_nodes: Sequence[str],
+    internal_nodes: Sequence[str],
+    node_display_names: dict[str, str] | None = None,
+) -> list[str]:
+    return [
+        "",
+        "/* Final Schur complement:",
+        "   Gred    = Grr - Grk * W * Gkr",
+        "   Ihisred = Ihisr - Grk * W * Ihisk",
+        "   Vk      = -W * Gkr * Vr - W * Ihisk */",
+        _c_zero_matrix("tmp_Grk_W", nr, nk),
+        _c_zero_matrix("tmp_Grk_W_Gkr", nr, nr),
+        _c_zero_matrix("tmp_Grk_W_Ihisk", nr, 1),
+        _c_zero_matrix("Gred", nr, nr),
+        _c_zero_matrix("Ihisred", nr, 1),
+        "matrix_Mul(NR, NK, NK, tmp_Grk_W, Grk, W);",
+        "matrix_Mul(NR, NK, NR, tmp_Grk_W_Gkr, tmp_Grk_W, Gkr);",
+        "matrix_Sub(NR, NR, Gred, Grr, tmp_Grk_W_Gkr);",
+        "matrix_Mul(NR, NK, 1, tmp_Grk_W_Ihisk, tmp_Grk_W, Ihisk);",
+        "matrix_Sub(NR, 1, Ihisred, Ihisr, tmp_Grk_W_Ihisk);",
+        "",
+        "/* Internal-node voltage recovery. Vr/Vk start as symbolic node-name placeholders. */",
+        _c_node_symbol_vector("Vr", external_nodes, node_display_names),
+        _c_zero_matrix("tmp_W_Gkr", nk, nr),
+        _c_zero_matrix("tmp_W_Gkr_Vr", nk, 1),
+        _c_zero_matrix("tmp_W_Ihisk", nk, 1),
+        _c_zero_matrix("tmp_Vk_sum", nk, 1),
+        _c_node_symbol_vector("Vk", internal_nodes, node_display_names),
+        "matrix_Mul(NK, NK, NR, tmp_W_Gkr, W, Gkr);",
+        "matrix_Mul(NK, NR, 1, tmp_W_Gkr_Vr, tmp_W_Gkr, Vr);",
+        "matrix_Mul(NK, NK, 1, tmp_W_Ihisk, W, Ihisk);",
+        "matrix_Add(NK, 1, tmp_Vk_sum, tmp_W_Gkr_Vr, tmp_W_Ihisk);",
+        "matrix_Scale(NK, 1, -1.0, Vk, tmp_Vk_sum);",
+        "",
+        "/* One variable per eliminated node, in effective k order. */",
+        *[
+            f"double {_c_voltage_variable_name(node, node_display_names)} = Vk[{index}][0];"
+            for index, node in enumerate(internal_nodes)
+        ],
+    ]
+
+
+def c_draft_for_structured_formula(structured: dict, node_display_names: dict[str, str] | None = None) -> str:
+    block_type = structured.get("block_type")
+    blocks = structured.get("blocks", {})
+    Grr = sp.Matrix(blocks.get("G_rr", []))
+    Grk = sp.Matrix(blocks.get("G_ri", []))
+    Gkr = sp.Matrix(blocks.get("G_ir", []))
+    Gkk = sp.Matrix(blocks.get("G_ii", []))
+    Ihisr = sp.Matrix(blocks.get("Ihis_r", []))
+    Ihisk = sp.Matrix(blocks.get("Ihis_i", []))
+    nr = Grr.rows
+    nk = Gkk.rows
+    external_nodes = list(structured.get("external_nodes", []))
+    effective_internal_nodes = list(structured.get("effective_internal_nodes", []))
+    node_display_names = {str(key): str(value) for key, value in (node_display_names or {}).items()}
+
+    lines = [
+        "/* RTDS-style C draft for structured node elimination.",
+        "   Required math helpers: matrix_Add, matrix_Sub, matrix_Mul, matrix_Scale,",
+        "   matrix_Copy, MATH_matx_invert, mat_2x2_sym_inv_code,",
+        "   mat_3x3_sym_inv_code. See LOCAL_math_builtin_functions.md. */",
+        f"enum {{ NR = {nr}, NK = {nk} }};",
+        "",
+        "/* Input blocks: I = G * V + Ihis, partitioned as r = retained, k = eliminated. */",
+        _c_matrix_literal(Grr, "Grr"),
+        _c_matrix_literal(Grk, "Grk"),
+        _c_matrix_literal(Gkr, "Gkr"),
+        _c_matrix_literal(Gkk, "Gkk"),
+        _c_vector_literal(Ihisr, "Ihisr"),
+        _c_vector_literal(Ihisk, "Ihisk"),
+        "",
+    ]
+
     if block_type == "pure_diagonal":
-        terms = structured.get("details", {}).get("rank_update_terms", [])
-        for index, _term in enumerate(terms):
-            lines.append(f"invD[{index}] = 1.0 / Gkk[{index}][{index}];")
-        lines.extend(
-            [
-                "",
-                "W = diag(invD);",
-                "Gred = Grr - G_rk * W * G_kr;",
-                "Ihis_red = Ihis_r - G_rk * W * Ihis_k;",
-                "V_k = -W * G_kr * V_r - W * Ihis_k;",
-            ]
-        )
+        lines.extend([
+            "/* Gkk is diagonal here. Build inv_D directly; do not call a matrix inverse. */",
+            _c_zero_matrix("D", nk, nk),
+            _c_zero_matrix("inv_D", nk, nk),
+            _c_zero_matrix("W", nk, nk),
+            "matrix_Copy(NK, NK, D, Gkk);",
+        ])
+        for index in range(nk):
+            lines.append(f"inv_D[{index}][{index}] = 1.0 / D[{index}][{index}];")
+        lines.append("matrix_Copy(NK, NK, W, inv_D);")
+        lines.extend(_c_emit_rtds_reduction_tail(nr, nk, external_nodes, effective_internal_nodes, node_display_names))
         return "\n".join(lines)
 
     if block_type == "diagonal_plus_coupled":
         details = structured.get("details", {})
-        D = details.get("D")
-        M = details.get("M")
-        for index in range(D.rows if isinstance(D, sp.MatrixBase) else 0):
-            lines.append(f"invD[{index}] = 1.0 / D[{index}][{index}];")
-        if isinstance(M, sp.MatrixBase) and M.shape == (2, 2):
-            lines.extend(
-                [
-                    "",
-                    "Dinv = diag(invD);",
-                    "M = S - transpose(U) * Dinv * U;",
-                    "detM = M[0][0] * M[1][1] - M[0][1] * M[0][1];",
-                    "Minv = (1.0 / detM) * [[M[1][1], -M[0][1]], [-M[0][1], M[0][0]]];",
-                    "",
-                    "W = [[Dinv + Dinv*U*Minv*transpose(U)*Dinv, -Dinv*U*Minv],",
-                    "     [-Minv*transpose(U)*Dinv,              Minv]];",
-                    "Gred = Grr - G_rk * W * G_kr;",
-                    "Ihis_red = Ihis_r - G_rk * W * Ihis_k;",
-                    "V_k = -W * G_kr * V_r - W * Ihis_k;",
-                ]
-            )
-        else:
-            lines.extend(
-                [
-                    "",
-                    "Dinv = diag(invD);",
-                    "M = S - transpose(U) * Dinv * U;",
-                    "Minv = inverse(M);",
-                    "W = block_inverse_from(Dinv, U, Minv);",
-                    "Gred = Grr - G_rk * W * G_kr;",
-                    "Ihis_red = Ihis_r - G_rk * W * Ihis_k;",
-                    "V_k = -W * G_kr * V_r - W * Ihis_k;",
-                ]
-            )
+        D = sp.Matrix(details.get("D", []))
+        U = sp.Matrix(details.get("U", []))
+        S = sp.Matrix(details.get("S", []))
+        kd = D.rows
+        ks = S.rows
+        lines.extend([
+            f"enum {{ KD = {kd}, KS = {ks} }};",
+            "",
+            "/* Gkk = [[D, U], [U^T, S]]. D is diagonal; build inv_D directly. */",
+            _c_matrix_literal(D, "D"),
+            _c_matrix_literal(U, "U"),
+            _c_matrix_literal(S, "S"),
+            _c_zero_matrix("inv_D", kd, kd),
+        ])
+        for index in range(kd):
+            lines.append(f"inv_D[{index}][{index}] = 1.0 / D[{index}][{index}];")
+        lines.extend([
+            "",
+            "/* Build M = S - U^T * inv_D * U using RTDS matrix helpers. */",
+            _c_zero_matrix("U_T", ks, kd),
+            *_c_manual_transpose_assignments("U", "U_T", kd, ks),
+            _c_zero_matrix("tmp_UT_invD", ks, kd),
+            _c_zero_matrix("tmp_UT_invD_U", ks, ks),
+            _c_zero_matrix("M", ks, ks),
+            "matrix_Mul(KS, KD, KD, tmp_UT_invD, U_T, inv_D);",
+            "matrix_Mul(KS, KD, KS, tmp_UT_invD_U, tmp_UT_invD, U);",
+            "matrix_Sub(KS, KS, M, S, tmp_UT_invD_U);",
+            "",
+            "/* Invert M. Use reciprocal for 1x1, symmetric fast inverse for 2x2/3x3. */",
+            _c_zero_matrix("M_inv", ks, ks),
+            *_c_sym_inverse_call("M", "M_inv", ks),
+            "",
+            "/* Build W = inverse(Gkk) from D, U, S block inverse terms. */",
+            _c_zero_matrix("tmp_Dinv_U", kd, ks),
+            _c_zero_matrix("tmp_Dinv_U_Minv", kd, ks),
+            _c_zero_matrix("tmp_Dinv_U_Minv_UT", kd, kd),
+            _c_zero_matrix("tmp_Dinv_U_Minv_UT_Dinv", kd, kd),
+            _c_zero_matrix("W_DD", kd, kd),
+            _c_zero_matrix("W_DS", kd, ks),
+            _c_zero_matrix("tmp_Minv_UT", ks, kd),
+            _c_zero_matrix("W_SD", ks, kd),
+            _c_zero_matrix("W_SS", ks, ks),
+            _c_zero_matrix("W", nk, nk),
+            "matrix_Mul(KD, KD, KS, tmp_Dinv_U, inv_D, U);",
+            "matrix_Mul(KD, KS, KS, tmp_Dinv_U_Minv, tmp_Dinv_U, M_inv);",
+            "matrix_Mul(KD, KS, KD, tmp_Dinv_U_Minv_UT, tmp_Dinv_U_Minv, U_T);",
+            "matrix_Mul(KD, KD, KD, tmp_Dinv_U_Minv_UT_Dinv, tmp_Dinv_U_Minv_UT, inv_D);",
+            "matrix_Add(KD, KD, W_DD, inv_D, tmp_Dinv_U_Minv_UT_Dinv);",
+            "matrix_Scale(KD, KS, -1.0, W_DS, tmp_Dinv_U_Minv);",
+            "matrix_Mul(KS, KS, KD, tmp_Minv_UT, M_inv, U_T);",
+            "matrix_Mul(KS, KD, KD, W_SD, tmp_Minv_UT, inv_D);",
+            "matrix_Scale(KS, KD, -1.0, W_SD, W_SD);",
+            "matrix_Copy(KS, KS, W_SS, M_inv);",
+            *_c_copy_subblock("W", "W_DD", 0, 0, kd, kd),
+            *_c_copy_subblock("W", "W_DS", 0, kd, kd, ks),
+            *_c_copy_subblock("W", "W_SD", kd, 0, ks, kd),
+            *_c_copy_subblock("W", "W_SS", kd, kd, ks, ks),
+        ])
+        lines.extend(_c_emit_rtds_reduction_tail(nr, nk, external_nodes, effective_internal_nodes, node_display_names))
         return "\n".join(lines)
 
     lines = [
-        "",
-        "W = inverse(Gkk);",
-        "Gred = Grr - G_rk * W * G_kr;",
-        "Ihis_red = Ihis_r - G_rk * W * Ihis_k;",
-        "V_k = -W * G_kr * V_r - W * Ihis_k;",
+        *lines,
+        "/* General dense Gkk. Prefer the structured block modes above when possible. */",
+        _c_zero_matrix("W", nk, nk),
+        *(
+            [f"/* WARNING: Gkk is {nk}x{nk}; this uses the general inverse routine. */"]
+            if nk > 3
+            else []
+        ),
+        f"MATH_matx_invert(NK, &(Gkk[0][0]), NK, &(W[0][0]), NK);",
+        *_c_emit_rtds_reduction_tail(nr, nk, external_nodes, effective_internal_nodes, node_display_names),
     ]
     return "\n".join(lines)

@@ -180,7 +180,10 @@ def main() -> None:
                 "Ihis_i": _clean_vector(blocks["Ihis_i"]),
             },
             "details": _clean_value(structured["details"]),
-            "c_draft": c_draft_for_structured_formula(structured),
+            "c_draft": c_draft_for_structured_formula(
+                structured,
+                node_display_names=payload.get("node_display_names") or {},
+            ),
         },
     }
     json.dump(response, sys.stdout, ensure_ascii=False)
