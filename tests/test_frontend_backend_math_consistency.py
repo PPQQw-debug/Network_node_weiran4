@@ -26,7 +26,7 @@ class FrontendBackendMathConsistencyTests(unittest.TestCase):
             import fs from "node:fs";
             import vm from "node:vm";
 
-            const [indexPath, expr] = process.argv.slice(2);
+            const [indexPath, expr] = process.argv.slice(1);
             const html = fs.readFileSync(indexPath, "utf8");
             const start = html.indexOf("const MATH_FORMAT_MAX_DEPTH");
             const end = html.indexOf("function renderNodeEquations", start);
@@ -38,6 +38,9 @@ class FrontendBackendMathConsistencyTests(unittest.TestCase):
                   .replace(/</g, "&lt;")
                   .replace(/>/g, "&gt;")
                   .replace(/"/g, "&quot;");
+              },
+              wrapMathHighlight() {
+                return "";
               }
             };
             vm.createContext(context);
@@ -63,7 +66,7 @@ class FrontendBackendMathConsistencyTests(unittest.TestCase):
         backend_text = str(backend_expr)
         rendered = self._render_with_frontend_formatter(backend_text)
 
-        self.assertIn("-G<sub>12</sub><sup>2</sup>", rendered)
+        self.assertIn('<span class="math-op">-</span> G<sub>12</sub><sup>2</sup>', rendered)
         self.assertIn('<span class="math-op">+</span>', rendered)
         self.assertNotIn("-(G<sub>12</sub><sup>2</sup>", rendered)
 
@@ -83,8 +86,9 @@ class FrontendBackendMathConsistencyTests(unittest.TestCase):
         self.assertIn("sqrt(d - e)", rendered)
         self.assertIn("x<sup>3</sup>", rendered)
         self.assertIn("q<sup>2</sup>", rendered)
-        self.assertIn('<span class="math-op">-</span> m · n', rendered)
+        self.assertIn("-m · n", rendered)
         self.assertNotIn("-(exp(a)", rendered)
+        self.assertNotIn("-(m · n)", rendered)
 
 if __name__ == "__main__":
     unittest.main()

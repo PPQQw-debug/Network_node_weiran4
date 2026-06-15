@@ -6,17 +6,23 @@
   <title>Two-Port Branch Builder</title>
   <style>
     :root {
-      --bg: #fbfaf6;
-      --panel: #fffdf8;
-      --ink: #172026;
-      --muted: #68645d;
-      --line: #ddd7cc;
-      --grid: #cfe8d5;
+      --bg: #f4f6f8;
+      --panel: #ffffff;
+      --panel-soft: #f8fafc;
+      --ink: #15202b;
+      --muted: #637083;
+      --line: #d8dee7;
+      --line-strong: #c4ccd8;
+      --grid: #d7e9dd;
       --blue: #2563eb;
       --green: #15803d;
       --red: #b42318;
       --gold: #a16207;
-      --shadow: 0 12px 26px rgba(72, 53, 28, 0.08);
+      --output-bg: #0d1720;
+      --output-panel: #13212c;
+      --output-line: #2d4050;
+      --output-muted: #a9bac8;
+      --shadow: 0 12px 30px rgba(17, 24, 39, 0.09);
     }
 
     * {
@@ -47,23 +53,29 @@
     .topbar {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 12px;
       min-height: 52px;
-      padding: 8px 14px;
+      padding: 8px 14px 9px;
       border-bottom: 1px solid var(--line);
-      background: #fbfaf4;
+      background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset, 0 8px 22px rgba(15, 23, 42, 0.05);
+      position: relative;
+      z-index: 2;
     }
 
     .brand {
-      font-weight: 700;
-      margin-right: 12px;
+      font-weight: 850;
+      margin-right: 4px;
       padding-top: 9px;
+      padding-right: 14px;
+      border-right: 1px solid var(--line);
       white-space: nowrap;
+      letter-spacing: 0;
     }
 
     .toolbar {
       display: flex;
-      gap: 6px;
+      gap: 7px;
       align-items: center;
       flex-wrap: wrap;
       min-width: 0;
@@ -73,10 +85,11 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 3px 5px;
-      border: 1px solid #e2dacd;
-      border-radius: 8px;
-      background: #fffdf8;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }
 
     .toolbar-label {
@@ -84,7 +97,7 @@
       font-weight: 800;
       color: var(--muted);
       text-transform: uppercase;
-      padding: 0 2px;
+      padding: 0 4px;
       white-space: nowrap;
     }
 
@@ -93,11 +106,18 @@
       height: 34px;
       display: grid;
       place-items: center;
-      border: 1px solid var(--line);
-      background: #fffefa;
+      border: 1px solid #d4dbe5;
+      background: #ffffff;
       color: var(--ink);
-      border-radius: 7px;
+      border-radius: 6px;
       cursor: pointer;
+      transition: border-color 0.14s ease, box-shadow 0.14s ease, transform 0.14s ease, background 0.14s ease;
+    }
+
+    .tool:hover:not(:disabled) {
+      border-color: #9fb0c3;
+      background: #f8fafc;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
     }
 
     .tool.text-tool {
@@ -111,7 +131,8 @@
     .tool.active {
       border-color: var(--blue);
       color: var(--blue);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+      background: #eff6ff;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.14);
     }
 
     .tool:disabled {
@@ -121,9 +142,10 @@
 
     .main {
       display: grid;
-      grid-template-columns: minmax(620px, 1fr) 360px;
+      grid-template-columns: minmax(620px, 1fr) 380px;
       min-height: 0;
       overflow: hidden;
+      background: var(--bg);
     }
 
     .workspace {
@@ -137,18 +159,18 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 10px;
+      padding: 8px 10px;
       border-bottom: 1px solid var(--line);
-      background: #fbfaf4;
+      background: #f8fafc;
       overflow-x: auto;
     }
 
     .canvas-tab {
       border: 1px solid var(--line);
-      background: #fffefa;
+      background: #ffffff;
       color: var(--ink);
       border-radius: 6px;
-      padding: 5px 10px;
+      padding: 6px 11px;
       cursor: pointer;
       font-size: 12px;
       font-weight: 700;
@@ -162,7 +184,12 @@
       border-color: var(--blue);
       background: var(--blue);
       color: #fff;
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.14);
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.16);
+    }
+
+    .canvas-tab:hover:not(.active) {
+      border-color: #aeb9c8;
+      background: #f8fafc;
     }
 
     .canvas-tab.dragging {
@@ -202,14 +229,14 @@
     }
 
     .resize-bar {
-      background: #d7e0e7;
-      border-top: 1px solid #c5d0d8;
-      border-bottom: 1px solid #c5d0d8;
+      background: #cfd8e3;
+      border-top: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line-strong);
       cursor: row-resize;
     }
 
     .resize-bar:hover {
-      background: #b8c7d3;
+      background: #aebdcb;
     }
 
     .canvas-wrap {
@@ -220,7 +247,7 @@
         linear-gradient(var(--grid) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid) 1px, transparent 1px);
       background-size: 24px 24px;
-      background-color: #f2fbf3;
+      background-color: #eef8f1;
     }
 
     svg {
@@ -338,9 +365,39 @@
       stroke-linecap: round;
     }
 
+    .voltage-source-symbol,
+    .source-plus,
+    .resistor-symbol {
+      fill: none;
+      stroke: #485761;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .source-label {
+      font-size: 11px;
+      font-weight: 700;
+      fill: #485761;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
     .branch.selected .ground-symbol {
       stroke: var(--blue);
       stroke-width: 3;
+    }
+
+    .branch.selected .voltage-source-symbol,
+    .branch.selected .source-plus,
+    .branch.selected .resistor-symbol {
+      stroke: var(--blue);
+      stroke-width: 3;
+    }
+
+    .branch.selected .source-label {
+      fill: var(--blue);
     }
 
     .branch.current-hover .branch-body {
@@ -353,7 +410,10 @@
     .branch.current-hover .terminal,
     .branch.current-hover .transformer-coil,
     .branch.current-hover .transformer-core,
-    .branch.current-hover .port-pin {
+    .branch.current-hover .port-pin,
+    .branch.current-hover .voltage-source-symbol,
+    .branch.current-hover .source-plus,
+    .branch.current-hover .resistor-symbol {
       stroke: #f59e0b;
       stroke-width: 4;
     }
@@ -373,12 +433,19 @@
     .branch.formula-highlight .transformer-coil,
     .branch.formula-highlight .transformer-core,
     .branch.formula-highlight .port-pin,
-    .branch.formula-highlight .ground-symbol {
+    .branch.formula-highlight .ground-symbol,
+    .branch.formula-highlight .voltage-source-symbol,
+    .branch.formula-highlight .source-plus,
+    .branch.formula-highlight .resistor-symbol {
       stroke: var(--branch-highlight-color, #ef4444);
       stroke-width: 4;
     }
 
     .branch.formula-highlight .dot {
+      fill: var(--branch-highlight-color, #ef4444);
+    }
+
+    .branch.formula-highlight .source-label {
       fill: var(--branch-highlight-color, #ef4444);
     }
 
@@ -493,7 +560,7 @@
 
     .node-order-list {
       display: grid;
-      gap: 7px;
+      gap: 8px;
     }
 
     .node-order-item {
@@ -501,11 +568,17 @@
       align-items: center;
       gap: 8px;
       min-height: 34px;
-      padding: 7px 9px;
+      padding: 7px 8px;
       border: 1px solid var(--line);
-      border-radius: 6px;
-      background: #fff;
+      border-radius: 7px;
+      background: #ffffff;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
       user-select: none;
+    }
+
+    .node-order-item:hover {
+      border-color: #aeb9c8;
+      background: #f8fafc;
     }
 
     .node-order-item.dragging {
@@ -584,8 +657,8 @@
       min-width: 42px;
       height: 24px;
       border: 1px solid var(--line);
-      border-radius: 5px;
-      background: #fff;
+      border-radius: 6px;
+      background: #ffffff;
       color: var(--muted);
       cursor: pointer;
       font-size: 12px;
@@ -605,8 +678,8 @@
       align-items: center;
       justify-content: center;
       border: 1px solid var(--line);
-      border-radius: 5px;
-      background: #fff;
+      border-radius: 6px;
+      background: #ffffff;
       color: var(--muted);
       cursor: pointer;
       flex: 0 0 auto;
@@ -623,9 +696,9 @@
       gap: 8px;
       min-height: 35px;
       border: 1px solid var(--line);
-      border-radius: 6px;
+      border-radius: 7px;
       padding: 7px 8px;
-      background: #fff;
+      background: #ffffff;
     }
 
     .editable-text {
@@ -703,10 +776,11 @@
       border-left: 1px solid var(--line);
       background: var(--panel);
       overflow: auto;
+      box-shadow: -10px 0 24px rgba(15, 23, 42, 0.035);
     }
 
     .panel-section {
-      padding: 16px;
+      padding: 14px 16px 16px;
       border-bottom: 1px solid var(--line);
     }
 
@@ -715,7 +789,20 @@
       font-weight: 800;
       margin: 0 0 12px;
       text-transform: uppercase;
-      color: #32424c;
+      color: #263442;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-title::before {
+      content: "";
+      width: 3px;
+      height: 14px;
+      border-radius: 999px;
+      background: var(--blue);
+      display: inline-block;
     }
 
     .field {
@@ -727,7 +814,7 @@
     label {
       font-size: 12px;
       color: var(--muted);
-      font-weight: 650;
+      font-weight: 700;
     }
 
     .field-caption {
@@ -744,9 +831,10 @@
 
     .editor-group {
       border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fffefa;
+      border-radius: 7px;
+      background: #ffffff;
       overflow: hidden;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
     }
 
     .editor-group summary {
@@ -762,6 +850,7 @@
       font-weight: 800;
       color: #32424c;
       list-style: none;
+      background: #f8fafc;
     }
 
     .editor-group summary::-webkit-details-marker {
@@ -791,11 +880,20 @@
     input, textarea, select {
       width: 100%;
       border: 1px solid var(--line);
-      border-radius: 6px;
+      border-radius: 7px;
       padding: 8px 9px;
-      background: #fffefa;
+      background: #ffffff;
       color: var(--ink);
       min-width: 0;
+      transition: border-color 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #8fb4ff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.13);
     }
 
     textarea {
@@ -841,8 +939,8 @@
       min-width: 0;
       padding: 7px 8px;
       border: 1px solid var(--line);
-      border-radius: 6px;
-      background: #fff;
+      border-radius: 7px;
+      background: #ffffff;
       font-size: 12px;
       font-weight: 650;
       color: var(--muted);
@@ -916,38 +1014,52 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.5;
+      padding: 2px 0;
     }
 
     .output {
+      position: relative;
       border-top: 1px solid var(--line);
-      background: #101820;
+      background: var(--output-bg);
       color: #eaf0f4;
       min-height: 0;
       display: grid;
-      grid-template-rows: 38px 1fr;
+      grid-template-rows: 42px 1fr;
+      box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.10);
     }
 
     .output-tabs {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 8px;
-      border-bottom: 1px solid #263440;
+      gap: 7px;
+      padding: 6px 10px 5px;
+      border-bottom: 1px solid var(--output-line);
+      background: linear-gradient(180deg, #111f2a 0%, #0c1720 100%);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.035) inset;
     }
 
     .tab {
-      border: 1px solid #344755;
-      background: #17232c;
+      border: 1px solid var(--output-line);
+      background: #122230;
       color: #d8e2e8;
       border-radius: 6px;
-      padding: 5px 10px;
+      padding: 6px 11px;
       cursor: pointer;
       font-size: 12px;
+      font-weight: 750;
+      transition: border-color 0.14s ease, background 0.14s ease, color 0.14s ease;
     }
 
     .tab.active {
       border-color: #5fb3ff;
       color: #fff;
+      background: #12324b;
+      box-shadow: inset 0 -2px 0 #65cfff, 0 0 0 1px rgba(101, 207, 255, 0.14);
+    }
+
+    .tab:hover:not(.active) {
+      border-color: #486173;
+      background: #182a38;
     }
 
     .output-action {
@@ -956,11 +1068,12 @@
       height: 28px;
       display: grid;
       place-items: center;
-      border: 1px solid #344755;
-      background: #17232c;
+      border: 1px solid var(--output-line);
+      background: #122230;
       color: #d8e2e8;
       border-radius: 6px;
       cursor: pointer;
+      transition: border-color 0.14s ease, background 0.14s ease, color 0.14s ease;
     }
 
     .output-action + .output-action {
@@ -981,11 +1094,86 @@
       background: #102b42;
     }
 
+    .output-action:hover {
+      border-color: #5fb3ff;
+      color: #ffffff;
+    }
+
     .output-body {
       margin: 0;
       overflow: auto;
-      padding: 12px 14px;
+      padding: 14px;
       min-height: 0;
+      background:
+        radial-gradient(circle at top left, rgba(101, 207, 255, 0.055), transparent 360px),
+        var(--output-bg);
+    }
+
+    .output.has-minimap .output-body {
+      padding-right: 86px;
+    }
+
+    .output.has-minimap .output-body-formulas {
+      padding-right: 14px;
+    }
+
+    .output-minimap {
+      position: absolute;
+      top: 50px;
+      right: 10px;
+      bottom: 10px;
+      width: 58px;
+      display: none;
+      border: 1px solid rgba(93, 124, 148, 0.58);
+      border-radius: 7px;
+      background: rgba(6, 15, 22, 0.72);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.04) inset,
+        0 8px 18px rgba(0, 0, 0, 0.18);
+      overflow: hidden;
+      cursor: pointer;
+      z-index: 4;
+      user-select: none;
+    }
+
+    .output.has-minimap .output-minimap {
+      display: block;
+    }
+
+    .output-minimap-content {
+      position: absolute;
+      inset: 4px;
+      overflow: hidden;
+    }
+
+    .output-minimap-mark {
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      min-height: 2px;
+      border-radius: 2px;
+      background: rgba(159, 178, 192, 0.46);
+    }
+
+    .output-minimap-mark.matrix {
+      background: rgba(101, 207, 255, 0.58);
+    }
+
+    .output-minimap-mark.warning {
+      background: rgba(248, 113, 113, 0.72);
+    }
+
+    .output-minimap-thumb {
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      min-height: 20px;
+      min-width: 16px;
+      border: 1px solid rgba(101, 207, 255, 0.9);
+      border-radius: 6px;
+      background: rgba(101, 207, 255, 0.14);
+      box-shadow: 0 0 0 1px rgba(101, 207, 255, 0.16) inset;
+      pointer-events: none;
     }
 
     .output-body.code {
@@ -995,23 +1183,75 @@
       white-space: pre-wrap;
     }
 
+    .output pre.code,
+    .modal-output-body pre.code,
+    .output [data-c-draft-code],
+    .modal-output-body [data-c-draft-code] {
+      margin: 0;
+      padding: 12px 14px;
+      border: 1px solid rgba(71, 96, 116, 0.74);
+      border-radius: 7px;
+      background: #0a131b;
+      color: #e5edf4;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+      overflow: auto;
+    }
+
     .formula-list {
       display: grid;
-      gap: 10px;
+      gap: 12px;
       padding-bottom: 8px;
       width: max-content;
       min-width: 100%;
     }
 
+    .output-body-formulas .formula-list {
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      align-items: stretch;
+      width: 100%;
+      min-width: 0;
+    }
+
     .formula-card {
       display: grid;
-      gap: 7px;
-      padding: 10px 12px;
-      border: 1px solid #344755;
-      border-radius: 7px;
-      background: #16232d;
+      gap: 10px;
+      padding: 12px 14px 14px;
+      border: 1px solid rgba(71, 96, 116, 0.92);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #152532 0%, var(--output-panel) 100%);
       width: max-content;
       min-width: calc(100% - 24px);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.045) inset,
+        0 8px 18px rgba(0, 0, 0, 0.10);
+    }
+
+    .output-body-formulas .formula-card {
+      width: auto;
+      min-width: 0;
+      align-content: start;
+      padding: 10px 12px 12px;
+    }
+
+    .output .formula-card > .formula-name:first-child,
+    .modal-output-body .formula-card > .formula-name:first-child {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 24px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(93, 124, 148, 0.42);
+    }
+
+    .output .formula-card > .formula-name:first-child::before,
+    .modal-output-body .formula-card > .formula-name:first-child::before {
+      content: "";
+      width: 3px;
+      height: 14px;
+      border-radius: 999px;
+      background: #65cfff;
+      box-shadow: 0 0 12px rgba(101, 207, 255, 0.38);
+      flex: 0 0 auto;
     }
 
     .formula-card[data-hover-branch-id] {
@@ -1022,6 +1262,143 @@
       border-color: #f59e0b;
       background: #182b31;
       box-shadow: inset 3px 0 0 #f59e0b;
+    }
+
+    .optimized-summary-grid {
+      display: grid;
+      grid-template-columns: minmax(360px, 1fr) minmax(300px, 0.75fr);
+      gap: 10px;
+      align-items: start;
+      width: 100%;
+      min-width: min(100%, 980px);
+    }
+
+    .optimized-summary-grid > .formula-card {
+      width: auto;
+      min-width: 0;
+      overflow-x: auto;
+    }
+
+    .analysis-table {
+      border-collapse: collapse;
+      font-size: 14px;
+      min-width: 260px;
+      color: #f7fbff;
+    }
+
+    .analysis-table th,
+    .analysis-table td {
+      border: 1px solid #42586a;
+      padding: 6px 10px;
+      text-align: left;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .analysis-table th {
+      color: #c5d2dc;
+      font-family: system-ui, sans-serif;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .analysis-table td {
+      font-family: "Cambria Math", "Times New Roman", serif;
+    }
+
+    .gkk-analysis-layout {
+      display: grid;
+      grid-template-columns: minmax(320px, max-content) minmax(260px, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .ihis-block-preview {
+      display: inline-grid;
+      grid-template-columns: auto max-content max-content auto;
+      gap: 10px;
+      align-items: center;
+      width: max-content;
+      max-width: 100%;
+      overflow-x: auto;
+      padding: 12px;
+      border: 1px solid rgba(71, 96, 116, 0.74);
+      border-radius: 8px;
+      background: rgba(7, 20, 30, 0.34);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    }
+
+    .ihis-block-vector {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(62px, max-content);
+      padding: 10px 14px;
+      font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", serif;
+      color: #f7fbff;
+      border-radius: 6px;
+      background: rgba(11, 25, 35, 0.28);
+    }
+
+    .ihis-block-vector::before,
+    .ihis-block-vector::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      border-top: 2px solid #dce8ef;
+      border-bottom: 2px solid #dce8ef;
+      pointer-events: none;
+    }
+
+    .ihis-block-vector::before {
+      left: 0;
+      border-left: 2px solid #dce8ef;
+    }
+
+    .ihis-block-vector::after {
+      right: 0;
+      border-right: 2px solid #dce8ef;
+    }
+
+    .ihis-block-cell {
+      min-height: 34px;
+      min-width: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 16px;
+      font-size: 17px;
+      white-space: nowrap;
+    }
+
+    .ihis-block-cell.split-top {
+      border-top: 2px dashed rgba(101, 207, 255, 0.92);
+    }
+
+    .ihis-block-labels {
+      display: grid;
+      align-items: center;
+      color: #9fd5ff;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: system-ui, sans-serif;
+    }
+
+    .ihis-block-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .ihis-block-label::before {
+      content: "}";
+      color: #dce8ef;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 34px;
+      font-weight: 400;
+      line-height: 0.7;
     }
 
     .inline-formula-preview {
@@ -1052,9 +1429,10 @@
     }
 
     .formula-name {
-      color: #9fb2c0;
+      color: var(--output-muted);
       font-size: 11px;
-      font-weight: 700;
+      font-weight: 800;
+      letter-spacing: 0.02em;
     }
 
     .formula-line {
@@ -1062,19 +1440,32 @@
       align-items: center;
       gap: 10px;
       padding-bottom: 2px;
-      font-family: "Cambria Math", "Times New Roman", serif;
+      font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", serif;
       font-size: 18px;
       line-height: 1.45;
       white-space: nowrap;
       width: max-content;
     }
 
+    .output-body-formulas .formula-line {
+      display: grid;
+      grid-template-columns: max-content 16px max-content;
+      align-items: center;
+      justify-content: start;
+      column-gap: 8px;
+      width: 100%;
+      min-width: 0;
+      padding-top: 2px;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
     .matrix-equation {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 6px 0;
-      font-family: "Cambria Math", "Times New Roman", serif;
+      padding: 8px 0 2px;
+      font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", serif;
       font-size: 18px;
       line-height: 1.35;
       white-space: nowrap;
@@ -1083,9 +1474,9 @@
 
     .matrix {
       display: inline-grid;
-      gap: 8px 16px;
+      gap: 8px 18px;
       position: relative;
-      padding: 7px 12px;
+      padding: 8px 14px;
       color: #f7fbff;
     }
 
@@ -1113,6 +1504,249 @@
     .matrix-cell {
       min-width: 58px;
       text-align: center;
+      padding: 1px 4px;
+    }
+
+    .actual-block-preview {
+      display: inline-grid;
+      grid-template-columns: auto auto;
+      gap: 6px 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid rgba(71, 96, 116, 0.74);
+      border-radius: 8px;
+      background: rgba(7, 20, 30, 0.34);
+      font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math", "Times New Roman", serif;
+      color: #f7fbff;
+      width: max-content;
+      max-width: 100%;
+      overflow-x: auto;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    }
+
+    .actual-block-column-labels,
+    .actual-block-bottom-labels {
+      grid-column: 1;
+      display: grid;
+      align-items: center;
+      color: #9fd5ff;
+      font-family: system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .actual-block-bottom-labels {
+      padding-top: 2px;
+    }
+
+    .actual-block-label {
+      white-space: nowrap;
+    }
+
+    .actual-block-matrix-row {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .actual-block-matrix {
+      position: relative;
+      display: grid;
+      gap: 0;
+      padding: 12px 16px;
+      border-radius: 6px;
+      background: rgba(11, 25, 35, 0.28);
+    }
+
+    .actual-block-matrix::before,
+    .actual-block-matrix::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      border-top: 2px solid #dce8ef;
+      border-bottom: 2px solid #dce8ef;
+      pointer-events: none;
+    }
+
+    .actual-block-matrix::before {
+      left: 0;
+      border-left: 2px solid #dce8ef;
+    }
+
+    .actual-block-matrix::after {
+      right: 0;
+      border-right: 2px solid #dce8ef;
+    }
+
+    .actual-block-cell {
+      min-width: 180px;
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 14px;
+      text-align: center;
+      font-size: 17px;
+      line-height: 1.18;
+      white-space: nowrap;
+      width: max-content;
+    }
+
+    .actual-block-cell *,
+    .actual-block-label *,
+    .actual-block-side-label * {
+      white-space: nowrap;
+    }
+
+    .actual-block-cell.split-left {
+      border-left: 2px dashed rgba(101, 207, 255, 0.92);
+    }
+
+    .actual-block-cell.split-top {
+      border-top: 2px dashed rgba(101, 207, 255, 0.92);
+    }
+
+    .actual-block-cell.block-ellipsis {
+      color: #9fd5ff;
+      font-size: 22px;
+      width: auto;
+      min-width: 64px;
+    }
+
+    .actual-block-side-labels {
+      display: grid;
+      align-items: center;
+      color: #9fd5ff;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: system-ui, sans-serif;
+    }
+
+    .actual-block-side-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .actual-block-side-label::before {
+      content: "}";
+      color: #dce8ef;
+      font-family: "Cambria Math", "Times New Roman", serif;
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 0.7;
+    }
+
+    .actual-block-order-panel {
+      align-self: stretch;
+      display: grid;
+      gap: 0;
+      min-width: 180px;
+      max-width: 260px;
+      padding: 12px;
+      border: 1px solid rgba(101, 207, 255, 0.38);
+      border-radius: 7px;
+      background: rgba(10, 27, 39, 0.72);
+      color: #dce8ef;
+      font-family: system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+    }
+
+    .actual-block-order-title {
+      color: #cdefff;
+      font-size: 12px;
+      font-weight: 800;
+      align-self: start;
+      padding-bottom: 8px;
+      letter-spacing: 0.01em;
+    }
+
+    .actual-block-order-line {
+      display: grid;
+      grid-template-columns: 24px minmax(64px, 1fr);
+      align-items: center;
+      align-content: center;
+      column-gap: 12px;
+      min-height: 0;
+    }
+
+    .actual-block-order-label {
+      color: #9fb2c0;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: lowercase;
+    }
+
+    .actual-block-order-value {
+      display: grid;
+      gap: 3px;
+      justify-items: start;
+      color: #22c55e;
+      font-size: 16px;
+      line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+
+    .actual-block-order-node {
+      display: block;
+      white-space: nowrap;
+      line-height: 1.35;
+    }
+
+    .formula-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .formula-title-row .formula-name {
+      margin: 0;
+    }
+
+    .copy-draft-button {
+      flex: 0 0 auto;
+      min-height: 28px;
+      padding: 5px 10px;
+      border: 1px solid rgba(101, 207, 255, 0.45);
+      border-radius: 6px;
+      background: #102b42;
+      color: #d8f2ff;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+      transition: border-color 0.14s ease, background 0.14s ease, color 0.14s ease;
+    }
+
+    .copy-draft-button:hover {
+      border-color: #65cfff;
+      color: #fff;
+      background: #123650;
+    }
+
+    .copy-draft-button.copied {
+      border-color: #22c55e;
+      color: #86efac;
+      background: #0f3328;
+    }
+
+    .actual-block-caption {
+      grid-column: 1 / -1;
+      color: var(--output-muted);
+      font-family: system-ui, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      line-height: 1.45;
     }
 
     .math-branch-highlight {
@@ -1151,19 +1785,46 @@
       flex: 0 0 auto;
     }
 
+    .output-body-formulas .formula-lhs {
+      min-width: 82px;
+      text-align: right;
+    }
+
     .formula-eq {
       color: #8fb8ff;
       flex: 0 0 auto;
+      text-align: center;
     }
 
     .formula-rhs {
       color: #f7fbff;
     }
 
+    .output-body-formulas .formula-rhs {
+      min-width: 0;
+      overflow-x: auto;
+      padding: 1px 2px 3px;
+    }
+
     .formula-empty {
-      color: #9fb2c0;
+      color: var(--muted);
       font-size: 13px;
       padding: 4px 0;
+      line-height: 1.5;
+    }
+
+    .output .formula-empty,
+    .modal-output-body .formula-empty {
+      color: var(--output-muted);
+      padding: 7px 9px;
+      border: 1px solid rgba(71, 96, 116, 0.54);
+      border-radius: 7px;
+      background: rgba(8, 31, 45, 0.34);
+    }
+
+    .output-body > .formula-empty {
+      display: inline-block;
+      margin: 2px;
     }
 
     .validation-warning {
@@ -1175,6 +1836,25 @@
       font-size: 12px;
       line-height: 1.45;
       margin: 6px 0 12px;
+    }
+
+    .output .formula-card.validation-warning,
+    .modal-output-body .formula-card.validation-warning {
+      border-color: rgba(248, 113, 113, 0.72);
+      background: linear-gradient(180deg, rgba(69, 26, 32, 0.92), rgba(45, 19, 25, 0.92));
+      color: #fecaca;
+    }
+
+    .output .formula-card.validation-warning .formula-name,
+    .modal-output-body .formula-card.validation-warning .formula-name {
+      color: #fecaca;
+    }
+
+    .output .formula-card.validation-warning .formula-empty,
+    .modal-output-body .formula-card.validation-warning .formula-empty {
+      border-color: rgba(248, 113, 113, 0.32);
+      background: rgba(127, 29, 29, 0.18);
+      color: #fecaca;
     }
 
     .validation-success {
@@ -1341,6 +2021,13 @@
     .modal.output-modal {
       width: min(1180px, calc(100vw - 48px));
       height: min(820px, calc(100vh - 48px));
+    }
+
+    .modal.output-modal.fullscreen {
+      width: calc(100vw - 12px);
+      height: calc(100vh - 12px);
+      max-height: calc(100vh - 12px);
+      border-radius: 6px;
     }
 
     .modal-output-body {
@@ -1660,6 +2347,10 @@
         overflow-x: auto;
       }
 
+      .optimized-summary-grid {
+        grid-template-columns: 1fr;
+      }
+
       .matrix-equation {
         min-width: max-content;
       }
@@ -1750,6 +2441,9 @@
         <button class="tool" id="addCurrentSourceTool" title="添加电流源" aria-label="添加电流源">
           <svg width="22" height="20" viewBox="0 0 28 22" aria-hidden="true"><path d="M1 11h7m12 0h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="14" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11 11h6m-3-3 3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
+        <button class="tool" id="addVoltageSourceTool" title="添加电压源串联 G" aria-label="添加电压源串联 G">
+          <svg width="24" height="20" viewBox="0 0 30 22" aria-hidden="true"><path d="M1 11h7m14 0h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="15" cy="11" r="6.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 6.8v4M13 8.8h4M13 14h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><text x="22.5" y="8" font-size="5.2" font-weight="700" fill="currentColor">Vs</text></svg>
+        </button>
         <button class="tool" id="addGroundTool" title="添加 Ground" aria-label="添加 Ground">
           <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v7M7 11h10M8.5 15h7M10 19h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
@@ -1795,11 +2489,12 @@
           </svg>
         </div>
         <div class="resize-bar" id="outputResizeBar" title="拖动调整输出窗口高度"></div>
-        <section class="output">
+        <section class="output" id="outputPanel">
           <div class="output-tabs">
             <button class="tab active" data-output="formulas">支路电流</button>
             <button class="tab" data-output="nodeEquations">节点方程</button>
             <button class="tab" data-output="reducedEquations">消去版本</button>
+            <button class="tab" data-output="optimizedElimination">优化消元 / C导出</button>
             <button class="tab" data-output="model">模型 JSON</button>
             <button class="tab" data-output="python">Python 草稿</button>
             <button class="output-action text-action" id="toggleReducedBranchCurrents" title="显示支路电流消去版本" aria-label="显示支路电流消去版本">展开支路消去</button>
@@ -1808,6 +2503,10 @@
             </button>
           </div>
           <div id="outputText" class="output-body code"></div>
+          <div class="output-minimap" id="outputMinimap" aria-hidden="true">
+            <div class="output-minimap-content" id="outputMinimapContent"></div>
+            <div class="output-minimap-thumb" id="outputMinimapThumb"></div>
+          </div>
         </section>
       </section>
 
@@ -1854,9 +2553,12 @@
   </div>
 
   <div class="modal-backdrop" id="outputDialog" role="dialog" aria-modal="true" aria-labelledby="outputTitle">
-    <div class="modal output-modal">
+    <div class="modal output-modal" id="outputDialogModal">
       <div class="modal-header">
         <div class="modal-title" id="outputTitle">输出窗口</div>
+        <button class="tool" id="toggleOutputFullscreen" title="全屏" aria-label="全屏">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
         <button class="tool" id="closeOutputDialog" title="关闭" aria-label="关闭">
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
@@ -1971,6 +2673,10 @@
       canvasTabDrag: null,
       language: "zh",
       activeOutput: "formulas",
+      optimizedEliminationDisplay: "compact",
+      optimizedEliminationSimplify: "light",
+      optimizedEliminationAssumeSpd: true,
+      optimizedEliminationUseSuggestedOrder: true,
       nextBranch: 1,
       nextTransformer: 1,
       nextCustom: 1,
@@ -1985,10 +2691,12 @@
     let reducedRenderToken = 0;
     let branchCurrentRenderToken = 0;
     let pythonDraftRenderToken = 0;
+    let optimizedEliminationRenderToken = 0;
     const CACHE_LIMIT = 16;
     const reducedCache = new Map();
     const branchCurrentCache = new Map();
     const pythonDraftCache = new Map();
+    const optimizedEliminationCache = new Map();
 
     function cacheGet(cache, key) {
       const value = cache.get(key);
@@ -2015,6 +2723,7 @@
       reducedRenderToken += 1;
       branchCurrentRenderToken += 1;
       pythonDraftRenderToken += 1;
+      optimizedEliminationRenderToken += 1;
     }
 
     function blankCanvasData(name = "画布") {
@@ -2242,7 +2951,11 @@
     const wireLayer = document.getElementById("wireLayer");
     const editor = document.getElementById("editor");
     const netList = document.getElementById("netList");
+    const outputPanel = document.getElementById("outputPanel");
     const outputText = document.getElementById("outputText");
+    const outputMinimap = document.getElementById("outputMinimap");
+    const outputMinimapContent = document.getElementById("outputMinimapContent");
+    const outputMinimapThumb = document.getElementById("outputMinimapThumb");
     const canvasTabs = document.getElementById("canvasTabs");
     const selectionBox = document.getElementById("selectionBox");
     const importFile = document.getElementById("importFile");
@@ -2253,6 +2966,7 @@
     const workspace = document.querySelector(".workspace");
     const outputResizeBar = document.getElementById("outputResizeBar");
     const outputDialog = document.getElementById("outputDialog");
+    const outputDialogModal = document.getElementById("outputDialogModal");
     const outputDialogBody = document.getElementById("outputDialogBody");
     const renameDialog = document.getElementById("renameDialog");
     const renameTitle = document.getElementById("renameTitle");
@@ -2318,6 +3032,7 @@
       "支路电流": "Branch Currents",
       "节点方程": "Node Equations",
       "消去版本": "Reduced",
+      "优化消元 / C导出": "Optimized Elimination / C Export",
       "展开支路消去": "Expand Currents",
       "隐藏支路消去": "Hide Current Reduction",
       "显示支路电流消去版本": "Show reduced branch currents",
@@ -2400,6 +3115,13 @@
       "A 到 B": "A to B",
       "B 到 A": "B to A",
       "电流源": "Current Source",
+      "电压源串联 G": "Voltage Source + G",
+      "电压源 / Vs": "Voltage Source / Vs",
+      "串联导纳 / G": "Series Conductance / G",
+      "该元件用 Norton 等效 stamp：电流方向为 P 到 N，i = G*(V_P - V_N - Vs)。G 不能为 0 或负数。": "This element stamps the Norton equivalent: current direction P to N, i = G*(V_P - V_N - Vs). G cannot be zero or negative.",
+      "串联导纳不能为空。": "Series conductance is required.",
+      "串联导纳不能为 0。": "Series conductance cannot be 0.",
+      "串联导纳不能为负数。": "Series conductance cannot be negative.",
       "源类型": "Source Type",
       "独立电流源": "Independent Current Source",
       "节点电压相关": "Voltage Controlled",
@@ -2549,6 +3271,7 @@
       select: document.getElementById("selectTool"),
       branch: document.getElementById("addBranchTool"),
       currentSource: document.getElementById("addCurrentSourceTool"),
+      voltageSource: document.getElementById("addVoltageSourceTool"),
       ground: document.getElementById("addGroundTool"),
       transformer: document.getElementById("addTransformerTool"),
       custom: document.getElementById("addCustomTool"),
@@ -2610,6 +3333,30 @@
         controlNegative: "",
         description: "",
         mathEnabled: true
+      };
+      state.branches.push(branch);
+      clampComponent(branch);
+      selectBranch(branch.id);
+      render();
+    }
+
+    function createVoltageSourceSeriesR(x, y) {
+      commitHistory();
+      syncNextCounters();
+      const n = state.nextBranch++;
+      const branch = {
+        id: `B${n}`,
+        name: `V${n}`,
+        kind: "voltage_source_series_r",
+        x,
+        y,
+        width: 160,
+        height: 56,
+        rotation: 0,
+        nodes: { P: `v${n}p`, N: `v${n}n` },
+        voltage: `Vs${n}`,
+        conductance: "G",
+        direction: "PtoN"
       };
       state.branches.push(branch);
       clampComponent(branch);
@@ -2902,15 +3649,17 @@
           ? "点击画布添加二端口支路"
           : tool === "currentSource"
             ? "点击画布添加电流源"
-            : tool === "ground"
-              ? "点击画布添加 Ground"
-              : tool === "transformer"
-                ? "点击画布添加单相变压器"
-                : tool === "custom"
-                  ? "点击画布添加自定义 N 节点支路"
-                  : tool === "pan"
-                    ? "拖动画布平移"
-                    : "选择 / 拖动";
+            : tool === "voltageSource"
+              ? "点击画布添加电压源串联 G"
+              : tool === "ground"
+                ? "点击画布添加 Ground"
+                : tool === "transformer"
+                  ? "点击画布添加单相变压器"
+                  : tool === "custom"
+                    ? "点击画布添加自定义 N 节点支路"
+                    : tool === "pan"
+                      ? "拖动画布平移"
+                      : "选择 / 拖动";
       render();
     }
 
@@ -2995,6 +3744,7 @@
     function resizeMinSize(branch, axis) {
       if (branch.kind === "single_phase_transformer") return axis === "width" ? 120 : 82;
       if (branch.kind === "current_source") return axis === "width" ? 90 : 54;
+      if (branch.kind === "voltage_source_series_r") return axis === "width" ? 100 : 54;
       if (branch.kind === "custom_n_port") return axis === "width" ? 90 : 70;
       if (branch.kind === "ground") return axis === "width" ? 42 : 38;
       return axis === "width" ? 70 : 40;
@@ -3018,13 +3768,14 @@
     function terminalSides(branch) {
       if (branch.kind === "ground") return ["G"];
       if (branch.kind === "single_phase_transformer") return ["P", "N", "S", "T"];
+      if (branch.kind === "voltage_source_series_r") return ["P", "N"];
       if (branch.kind === "custom_n_port") return branch.ports || Object.keys(branch.nodes || {});
       return ["A", "B"];
     }
 
     function branchNodeForSide(branch, side) {
       if (branch.kind === "ground") return branch.nodeG;
-      if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") return branch.nodes?.[side];
+      if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port" || branch.kind === "voltage_source_series_r") return branch.nodes?.[side];
       return side === "A" ? branch.nodeA : branch.nodeB;
     }
 
@@ -3066,6 +3817,7 @@
         return { x, y };
       }
       if (branch.kind === "ground") return { x: 0, y: -(Math.max(38, branch.height || 42) / 2 + 16) };
+      if (branch.kind === "voltage_source_series_r") return { x: side === "P" ? -branch.width / 2 : branch.width / 2, y: 0 };
       return { x: side === "A" ? -branch.width / 2 : branch.width / 2, y: 0 };
     }
 
@@ -3189,7 +3941,8 @@
     function branchTerminalNode(key) {
       const parsed = parseTerminal(key);
       const branch = findBranch(parsed.branchId);
-      if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") return branch.nodes[parsed.side];
+      if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port" || branch.kind === "voltage_source_series_r") return branch.nodes[parsed.side];
+      if (branch.kind === "ground") return branch.nodeG;
       return parsed.side === "A" ? branch.nodeA : branch.nodeB;
     }
 
@@ -3245,7 +3998,7 @@
     }
 
     function autoSnapTerminalToOwnBody(branch, side) {
-      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer" && branch.kind !== "current_source") return;
+      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer" && branch.kind !== "current_source" && branch.kind !== "voltage_source_series_r") return;
       const point = terminalPosition(branch, side);
       const anchorDraw = componentLeadAnchor(branch, side, terminalDrawPosition(branch, side));
       const anchor = anchorDraw ? rotatedDrawPoint(branch, anchorDraw) : null;
@@ -3255,7 +4008,7 @@
     }
 
     function autoSnapBranchLeadsToOwnBody(branch) {
-      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer" && branch.kind !== "current_source") return;
+      if (branch.kind !== "two_node_branch" && branch.kind !== "single_phase_transformer" && branch.kind !== "current_source" && branch.kind !== "voltage_source_series_r") return;
       terminalSides(branch).forEach(side => autoSnapTerminalToOwnBody(branch, side));
     }
 
@@ -3263,6 +4016,11 @@
       if (branch.kind === "two_node_branch" || branch.kind === "current_source") {
         const bodyWidth = Math.max(50, Math.min(120, (branch.width || 150) * 0.5));
         const x = side === "A" ? branch.x - bodyWidth / 2 : branch.x + bodyWidth / 2;
+        return { x, y: branch.y };
+      }
+      if (branch.kind === "voltage_source_series_r") {
+        const bodyWidth = Math.max(74, (branch.width || 160) - 70);
+        const x = side === "P" ? branch.x - bodyWidth / 2 : branch.x + bodyWidth / 2;
         return { x, y: branch.y };
       }
       if (branch.kind === "single_phase_transformer") {
@@ -3604,6 +4362,7 @@
         state.nodeLabels[renamingNodeId] = clean;
       }
       syncPackagedExposedNodeDisplay(renamingNodeId);
+      invalidateMathCaches();
       closeRenameDialog();
       render();
     }
@@ -3624,6 +4383,7 @@
       }
       delete state.nodeLabels[renamingNodeId];
       syncPackagedExposedNodeDisplay(renamingNodeId);
+      invalidateMathCaches();
       closeRenameDialog();
       render();
     }
@@ -4124,7 +4884,7 @@
     }
 
     function normalizeSwitchCases(branch) {
-      if (branch?.kind === "current_source") {
+      if (branch?.kind === "current_source" || branch?.kind === "voltage_source_series_r") {
         delete branch.switchCases;
         branch.activeSwitchCase = 0;
         return;
@@ -4190,9 +4950,12 @@
     }
 
     function currentSourceIhis(branch) {
-      return branch.sourceMode === "node_voltage"
-        ? (branch.sourceIhis || "0")
-        : (branch.currentExpression || branch.sourceIhis || branch.name || "0");
+      if (branch.sourceMode === "node_voltage") return branch.sourceIhis || "0";
+      const expression = String(branch.currentExpression || "").trim();
+      if (expression) return expression;
+      const sourceIhis = String(branch.sourceIhis || "").trim();
+      if (sourceIhis && sourceIhis !== "0") return sourceIhis;
+      return branch.name || "0";
     }
 
     function currentSourceControlText(branch) {
@@ -4319,6 +5082,53 @@
       lines.push(`Ihis[${fromNode}] += ${ihis}`);
       lines.push(`Ihis[${toNode}] -= ${ihis}`);
       return lines.join("\n");
+    }
+
+    function voltageSourceSeriesConductance(branch) {
+      if (branch.conductance !== undefined && String(branch.conductance).trim() !== "") return wrapExpr(branch.conductance);
+      if (branch.resistance !== undefined && String(branch.resistance).trim() !== "") return exprDiv("1", branch.resistance);
+      return "G";
+    }
+
+    function voltageSourceSeriesIhis(branch) {
+      return negateExpr(exprMul(voltageSourceSeriesConductance(branch), branch.voltage || "Vs"));
+    }
+
+    function voltageSourceSeriesCurrentExpression(branch, groupByTerminal = null) {
+      const netName = side => terminalNetNameFromMap(terminalKey(branch.id, side), groupByTerminal);
+      const p = netName("P");
+      const n = netName("N");
+      const gs = voltageSourceSeriesConductance(branch);
+      const vs = branch.voltage || "Vs";
+      return `(${gs}) * (V_${p} - V_${n} - (${vs}))`;
+    }
+
+    function voltageSourceSeriesStampPreview(branch) {
+      const pNode = terminalNetName(terminalKey(branch.id, "P"));
+      const nNode = terminalNetName(terminalKey(branch.id, "N"));
+      const gs = voltageSourceSeriesConductance(branch);
+      const ihis = voltageSourceSeriesIhis(branch);
+      return [
+        `Gs = ${gs}`,
+        `G[${pNode}, ${pNode}] += ${gs}`,
+        `G[${pNode}, ${nNode}] -= ${gs}`,
+        `G[${nNode}, ${pNode}] -= ${gs}`,
+        `G[${nNode}, ${nNode}] += ${gs}`,
+        `Ihis[${pNode}] += ${ihis}`,
+        `Ihis[${nNode}] -= ${ihis}`
+      ].join("\n");
+    }
+
+    function validateVoltageSourceSeriesR(branch) {
+      const warnings = [];
+      const conductance = String(branch.conductance || "").trim();
+      if (!conductance) warnings.push(tr("串联导纳不能为空。"));
+      const numeric = Number(conductance);
+      if (conductance && Number.isFinite(numeric)) {
+        if (numeric === 0) warnings.push(tr("串联导纳不能为 0。"));
+        if (numeric < 0) warnings.push(tr("串联导纳不能为负数。"));
+      }
+      return warnings;
     }
 
     function validateCurrentSourceAgainstGroups(branch, groups) {
@@ -4511,6 +5321,8 @@
           if (!term.error) texts.push(term.coefficient);
         });
         texts.push(currentSourceIhis(branch));
+      } else if (branch.kind === "voltage_source_series_r") {
+        texts.push(voltageSourceSeriesConductance(branch), voltageSourceSeriesIhis(branch));
       } else if (branchUsesMatrix(branch)) {
         parseMatrixRows(branchValue(branch, "gMatrix")).flat().forEach(item => texts.push(item));
         parseMatrixRows(branchValue(branch, "ihisVector")).flat().forEach(item => texts.push(item));
@@ -4610,6 +5422,11 @@
         const expression = currentSourceExpression(branch);
         return `i_${branch.name}_${fromLabel}_to_${toLabel} = ${expression}`;
       }
+      if (branch.kind === "voltage_source_series_r") {
+        const pLabel = terminalNetNameFromMap(terminalKey(branch.id, "P"), groupByTerminal);
+        const nLabel = terminalNetNameFromMap(terminalKey(branch.id, "N"), groupByTerminal);
+        return `i_${branch.name}_${pLabel}_to_${nLabel} = ${voltageSourceSeriesCurrentExpression(branch, groupByTerminal)}`;
+      }
       if (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") {
         const replacements = {};
         terminalSides(branch).forEach(side => {
@@ -4684,6 +5501,9 @@
       if (branch.kind === "current_source") {
         return lines.map(line => ({ line, branchId: branch.id, part: "source" }));
       }
+      if (branch.kind === "voltage_source_series_r") {
+        return lines.map(line => ({ line, branchId: branch.id, part: "voltage-source" }));
+      }
       return lines.map(line => ({ line, branchId: branch.id, part: "whole" }));
     }
 
@@ -4704,8 +5524,8 @@
           ])),
           switchCase: switchCaseLabel(branch) || null,
           switchCases: branch.switchCases || null,
-          G: branch.kind === "current_source" ? "0" : ((branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "gMatrix") : branchValue(branch, "g")),
-          Ihis: branch.kind === "current_source" ? "0" : ((branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "ihisVector") : branchValue(branch, "ihis")),
+          G: branch.kind === "current_source" ? "0" : (branch.kind === "voltage_source_series_r" ? matrixLiteral(localGMatrix(branch)) : ((branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "gMatrix") : branchValue(branch, "g"))),
+          Ihis: branch.kind === "current_source" ? "0" : (branch.kind === "voltage_source_series_r" ? vectorLiteral(localIhisVector(branch)) : ((branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branchValue(branch, "ihisVector") : branchValue(branch, "ihis"))),
           source: branch.kind === "current_source" ? {
             mode: branch.sourceMode || "independent",
             currentExpression: branch.currentExpression || "",
@@ -4718,10 +5538,16 @@
             controlNegative: branch.controlNegative || "",
             description: branch.description || "",
             mathEnabled: Boolean(branch.mathEnabled)
-          } : null,
+          } : (branch.kind === "voltage_source_series_r" ? {
+            kind: "VoltageSourceSeriesR",
+            voltage: branch.voltage || "Vs",
+            conductance: voltageSourceSeriesConductance(branch),
+            nodeP: branch.nodes?.P || "",
+            nodeN: branch.nodes?.N || ""
+          } : null),
           current: {
-            from: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.from) : (branch.direction === "AtoB" ? "A" : "B"),
-            to: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.to) : (branch.direction === "AtoB" ? "B" : "A"),
+            from: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.from) : (branch.kind === "voltage_source_series_r" ? "P" : (branch.direction === "AtoB" ? "A" : "B")),
+            to: (branch.kind === "single_phase_transformer" || branch.kind === "custom_n_port") ? branch.currents.map(item => item.to) : (branch.kind === "voltage_source_series_r" ? "N" : (branch.direction === "AtoB" ? "B" : "A")),
             formula: currentFormula(branch)
           },
           drawing: {
@@ -4949,6 +5775,20 @@
             : (Array.isArray(branch.controlRows) ? branch.controlRows : currentSourceControlRows(branch));
           branch.description = branch.source?.description || branch.description || "";
           branch.mathEnabled = true;
+        } else if (branch.kind === "voltage_source_series_r") {
+          const n = state.nextBranch++;
+          branch.id = `B${n}`;
+          branch.name = branch.name || `V${n}`;
+          branch.width = branch.width || 160;
+          branch.height = branch.height || 56;
+          branch.nodes = branch.nodes || {
+            P: branch.terminals?.P?.node || branch.nodeP || branch.source?.nodeP || `v${n}p`,
+            N: branch.terminals?.N?.node || branch.nodeN || branch.source?.nodeN || `v${n}n`
+          };
+          branch.voltage = branch.voltage || branch.source?.voltage || "Vs";
+          branch.conductance = branch.conductance || branch.source?.conductance || (branch.source?.resistance || branch.resistance ? exprDiv("1", branch.source?.resistance || branch.resistance) : "G");
+          delete branch.resistance;
+          branch.direction = "PtoN";
         } else if (branch.kind === "ground") {
           const n = state.nextBranch++;
           branch.id = `B${n}`;
@@ -5040,6 +5880,10 @@
             terminals: branch.terminals,
             G: branch.G,
             Ihis: branch.Ihis,
+            source: branch.source,
+            voltage: branch.source?.voltage || branch.voltage,
+            conductance: branch.source?.conductance || branch.conductance,
+            resistance: branch.source?.resistance || branch.resistance,
             direction: "AtoB"
           })),
           wires: data.wires || [],
@@ -5089,6 +5933,7 @@
         if (!branch) continue;
         if (branch.kind === "custom_n_port" && branch.nodes?.[parsed.side]) return branch.nodes[parsed.side];
         if (branch.kind === "single_phase_transformer" && branch.nodes?.[parsed.side]) return branch.nodes[parsed.side];
+        if (branch.kind === "voltage_source_series_r" && branch.nodes?.[parsed.side]) return branch.nodes[parsed.side];
         if (parsed.side === "A" && branch.nodeA) return branch.nodeA;
         if (parsed.side === "B" && branch.nodeB) return branch.nodeB;
       }
@@ -5203,6 +6048,7 @@
       if (kind === "single_phase_transformer") return `Tr${state.nextTransformer - 1}`;
       if (kind === "custom_n_port") return `Custom${state.nextCustom - 1}`;
       if (kind === "current_source") return `I${state.nextBranch - 1}`;
+      if (kind === "voltage_source_series_r") return `V${state.nextBranch - 1}`;
       if (kind === "ground") return `GND${state.nextBranch - 1}`;
       return `R${state.nextBranch - 1}`;
     }
@@ -5211,6 +6057,7 @@
       if (kind === "single_phase_transformer") return "Tr";
       if (kind === "custom_n_port") return "Custom";
       if (kind === "current_source") return "I";
+      if (kind === "voltage_source_series_r") return "V";
       if (kind === "ground") return "GND";
       return "R";
     }
@@ -5310,6 +6157,9 @@
           const n = Number(branch.id.slice(1));
           branch.nodeA = `n${n}a`;
           branch.nodeB = `n${n}b`;
+        } else if (branch.kind === "voltage_source_series_r") {
+          const n = Number(branch.id.slice(1));
+          branch.nodes = { P: `v${n}p`, N: `v${n}n` };
         } else if (branch.kind === "ground") {
           const n = Number(branch.id.slice(1));
           branch.nodeG = `gnd${n}`;
@@ -5533,6 +6383,25 @@
       }
     }
 
+    async function copyTextToClipboard(text, fallbackElement = null) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (error) {
+        if (fallbackElement) {
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(fallbackElement);
+          selection.removeAllRanges();
+          selection.addRange(range);
+          document.execCommand("copy");
+          selection.removeAllRanges();
+          return true;
+        }
+        return false;
+      }
+    }
+
     function closeExportDialog() {
       exportDialog.classList.remove("open");
     }
@@ -5541,10 +6410,99 @@
       outputDialogBody.innerHTML = outputText.innerHTML;
       outputDialogBody.className = `modal-output-body ${outputText.classList.contains("code") ? "code" : ""}`;
       outputDialog.classList.add("open");
+      updateOutputFullscreenButton();
     }
 
     function closeOutputDialog() {
       outputDialog.classList.remove("open");
+      outputDialogModal.classList.remove("fullscreen");
+      updateOutputFullscreenButton();
+    }
+
+    const MINIMAP_OUTPUTS = new Set(["nodeEquations", "reducedEquations", "optimizedElimination", "model", "python"]);
+    let outputMinimapFrame = 0;
+    let outputMinimapDragging = false;
+
+    function scheduleOutputMinimapUpdate() {
+      if (outputMinimapFrame) cancelAnimationFrame(outputMinimapFrame);
+      outputMinimapFrame = requestAnimationFrame(() => {
+        outputMinimapFrame = 0;
+        updateOutputMinimap();
+      });
+    }
+
+    function outputMinimapEnabled() {
+      return MINIMAP_OUTPUTS.has(state.activeOutput) && (
+        outputText.scrollHeight > outputText.clientHeight + 24 ||
+        outputText.scrollWidth > outputText.clientWidth + 24
+      );
+    }
+
+    function updateOutputMinimap() {
+      const enabled = outputMinimapEnabled();
+      outputPanel.classList.toggle("has-minimap", enabled);
+      if (!enabled) {
+        outputMinimapContent.innerHTML = "";
+        outputMinimapThumb.style.display = "none";
+        return;
+      }
+
+      const scrollHeight = Math.max(1, outputText.scrollHeight);
+      const minimapHeight = Math.max(1, outputMinimapContent.clientHeight);
+      const cards = Array.from(outputText.querySelectorAll(".formula-card"));
+      const marks = cards.length ? cards : Array.from(outputText.querySelectorAll("pre, .code"));
+      outputMinimapContent.innerHTML = marks.map(item => {
+        const top = Math.max(0, (item.offsetTop / scrollHeight) * minimapHeight);
+        const height = Math.max(3, (item.offsetHeight / scrollHeight) * minimapHeight);
+        const isMatrix = Boolean(item.querySelector?.(".matrix-equation, .actual-block-preview, .ihis-block-preview"));
+        const isWarning = item.classList?.contains("validation-warning");
+        const classes = ["output-minimap-mark", isMatrix ? "matrix" : "", isWarning ? "warning" : ""].filter(Boolean).join(" ");
+        return `<div class="${classes}" style="top:${top.toFixed(2)}px;height:${height.toFixed(2)}px"></div>`;
+      }).join("");
+      updateOutputMinimapThumb();
+    }
+
+    function updateOutputMinimapThumb() {
+      if (!outputPanel.classList.contains("has-minimap")) return;
+      const trackHeight = Math.max(1, outputMinimap.clientHeight - 4);
+      const trackWidth = Math.max(1, outputMinimap.clientWidth - 4);
+      const scrollHeight = Math.max(1, outputText.scrollHeight);
+      const scrollWidth = Math.max(1, outputText.scrollWidth);
+      const viewportRatio = Math.min(1, outputText.clientHeight / scrollHeight);
+      const viewportRatioX = Math.min(1, outputText.clientWidth / scrollWidth);
+      const thumbHeight = Math.max(20, trackHeight * viewportRatio);
+      const thumbWidth = Math.max(16, trackWidth * viewportRatioX);
+      const maxTop = Math.max(0, trackHeight - thumbHeight);
+      const maxLeft = Math.max(0, trackWidth - thumbWidth);
+      const maxScroll = Math.max(1, outputText.scrollHeight - outputText.clientHeight);
+      const maxScrollX = Math.max(1, outputText.scrollWidth - outputText.clientWidth);
+      const thumbTop = Math.min(maxTop, (outputText.scrollTop / maxScroll) * maxTop);
+      const thumbLeft = Math.min(maxLeft, (outputText.scrollLeft / maxScrollX) * maxLeft);
+      outputMinimapThumb.style.display = "block";
+      outputMinimapThumb.style.height = `${thumbHeight}px`;
+      outputMinimapThumb.style.width = `${thumbWidth}px`;
+      outputMinimapThumb.style.transform = `translate(${thumbLeft + 2}px, ${thumbTop + 2}px)`;
+    }
+
+    function scrollOutputFromMinimap(clientX, clientY) {
+      if (!outputPanel.classList.contains("has-minimap")) return;
+      const rect = outputMinimap.getBoundingClientRect();
+      const ratioX = Math.max(0, Math.min(1, (clientX - rect.left) / Math.max(1, rect.width)));
+      const ratioY = Math.max(0, Math.min(1, (clientY - rect.top) / Math.max(1, rect.height)));
+      outputText.scrollLeft = ratioX * Math.max(0, outputText.scrollWidth - outputText.clientWidth);
+      outputText.scrollTop = ratioY * Math.max(0, outputText.scrollHeight - outputText.clientHeight);
+    }
+
+    function updateOutputFullscreenButton() {
+      const button = document.getElementById("toggleOutputFullscreen");
+      const active = outputDialogModal.classList.contains("fullscreen");
+      button.title = active ? "退出全屏" : "全屏";
+      button.setAttribute("aria-label", button.title);
+    }
+
+    function toggleOutputFullscreen() {
+      outputDialogModal.classList.toggle("fullscreen");
+      updateOutputFullscreenButton();
     }
 
     function pythonStringList(items) {
@@ -5648,6 +6606,9 @@
             if (!term.error) addText(term.coefficient);
           });
           addText(currentSourceIhis(branch));
+        } else if (branch.kind === "voltage_source_series_r") {
+          addText(branch.voltage);
+          addText(voltageSourceSeriesConductance(branch));
         }
         (branch.switchCases || []).forEach(item => {
           switchedValueFields(branch).forEach(field => addText(item[field]));
@@ -5717,6 +6678,14 @@
           lines.push(`# ${branch.name} is a linear current source stamped directly into global G/Ihis.`);
           lines.push(`# Output direction: ${branch.direction === "AtoB" ? "A -> B" : "B -> A"}`);
           lines.push(`# ${currentFormula(branch)}`);
+        } else if (branch.kind === "voltage_source_series_r") {
+          const gs = voltageSourceSeriesConductance(branch);
+          const ihis = voltageSourceSeriesIhis(branch);
+          lines.push(`# ${branch.name} is a voltage source with series conductance, stamped as a Norton equivalent.`);
+          lines.push(`# Direction: P -> N; i = Gs*(V_P - V_N - Vs); Gs = ${gs}; Ihis_P = ${ihis}; Ihis_N = -(${ihis})`);
+          lines.push(`G_${branch.name} = sp.Matrix(${matrixLiteral(localGMatrix(branch))})`);
+          lines.push(`Ihis_${branch.name} = sp.Matrix(${vectorLiteral(localIhisVector(branch))})`);
+          lines.push(`${branch.name} = SubNetwork(name="${branch.name}", local_nodes=["P", "N"], G_local=G_${branch.name}, Ihis_local=Ihis_${branch.name})`);
         } else if (branch.kind === "ground") {
           lines.push(`# ${branch.name} is a ground constraint: ${currentFormula(branch)}`);
           lines.push(`# Ground is applied after full stamping by removing its row/column because V_ground = 0.`);
@@ -5824,7 +6793,15 @@
         renderReducedEquationsAsync(token);
         return;
       }
-      outputText.className = "output-body";
+      if (state.activeOutput === "optimizedElimination") {
+        outputText.className = "output-body";
+        const token = ++optimizedEliminationRenderToken;
+        const payload = optimizedEliminationPayload();
+        outputText.innerHTML = `<div class="formula-list"><div class="formula-empty">${optText("正在计算优化消元 / C导出...", "Computing optimized elimination / C export...")}</div></div>`;
+        renderOptimizedEliminationAsync(token, payload);
+        return;
+      }
+      outputText.className = "output-body output-body-formulas";
       if (!state.branches.length) {
         outputText.innerHTML = `<div class="formula-empty">尚未创建支路。</div>`;
         return;
@@ -6114,12 +7091,18 @@
     const MATH_FORMAT_MAX_DEPTH = 80;
     const MATH_FORMAT_MAX_EXPR_LENGTH = 9000;
 
+    function normalizeMathPowers(text) {
+      return String(text ?? "0")
+        .replace(/\^\{([^{}]+)\}/g, "**($1)")
+        .replace(/\^([A-Za-z0-9_]+)/g, "**$1");
+    }
+
     function formatMath(text) {
-      return formatExpr(String(text ?? "0").trim() || "0", 0, true);
+      return formatExpr(normalizeMathPowers(text).trim() || "0", 0, true);
     }
 
     function formatMathNoHighlight(text) {
-      return formatExpr(String(text ?? "0").trim() || "0", 0, false);
+      return formatExpr(normalizeMathPowers(text).trim() || "0", 0, false);
     }
 
     function formatMathWithTagged(displayText, taggedText = null) {
@@ -6640,6 +7623,66 @@
       }</span>`;
     }
 
+    function isZeroText(value) {
+      return /^(?:0|0\.0+)$/.test(String(value ?? "").trim());
+    }
+
+    function isSimpleSymbolText(value) {
+      const text = String(value ?? "").trim();
+      return /^-?[A-Za-z][A-Za-z0-9_]*(?:\^\{?\d+\}?)?$/.test(text);
+    }
+
+    function compactMatrixToken(value, prefix, rowIndex, colIndex) {
+      const text = String(value ?? "0").trim() || "0";
+      if (isZeroText(text) || isSimpleSymbolText(text)) return text;
+      return `${prefix}[${rowIndex}][${colIndex}]`;
+    }
+
+    function compactMatrixRows(rows, prefix) {
+      return (rows || []).map((row, rowIndex) =>
+        (row || []).map((value, colIndex) => compactMatrixToken(value, prefix, rowIndex, colIndex))
+      );
+    }
+
+    function renderCompactMatrix(rows, prefix, cols = null) {
+      return renderMatrix(compactMatrixRows(rows || [], prefix), cols);
+    }
+
+    function compactMatrixRowsFromSource(rows, sourcePrefix, rowSourceIndices, colSourceIndices) {
+      return (rows || []).map((row, rowIndex) =>
+        (row || []).map((value, colIndex) => {
+          const sourceRow = rowSourceIndices?.[rowIndex] ?? rowIndex;
+          const sourceCol = colSourceIndices?.[colIndex] ?? colIndex;
+          return compactMatrixToken(value, sourcePrefix, sourceRow, sourceCol);
+        })
+      );
+    }
+
+    function renderCompactMatrixFromSource(rows, sourcePrefix, rowSourceIndices, colSourceIndices, cols = null) {
+      return renderMatrix(compactMatrixRowsFromSource(rows || [], sourcePrefix, rowSourceIndices, colSourceIndices), cols);
+    }
+
+    function renderCompactVector(items, prefix) {
+      return renderVectorMatrix((items || []).map((value, index) => compactMatrixToken(value, prefix, index, 0)));
+    }
+
+    function optText(zh, en) {
+      return state.language === "en" ? en : zh;
+    }
+
+    function optimizedBlockTypeLabel(type) {
+      const labels = {
+        pure_diagonal: optText("纯对角", "pure diagonal"),
+        diagonal_plus_coupled: optText("对角 + 耦合", "diagonal + coupled"),
+        general: optText("一般", "general")
+      };
+      return labels[type] || type || optText("未知", "unknown");
+    }
+
+    function optimizedBooleanLabel(value) {
+      return value ? optText("是", "true") : optText("否", "false");
+    }
+
     async function renderReducedEquationsAsync(token) {
       const payload = buildReducedPayload();
       const staticHtml = reducedStaticMessage(payload);
@@ -6780,6 +7823,457 @@
       throw lastError || new Error("节点消去失败");
     }
 
+    function optimizedEliminationPayload() {
+      return {
+        ...buildReducedPayload(),
+        mode: "structured_formula",
+        display_mode: state.optimizedEliminationDisplay || "compact",
+        simplify_level: state.optimizedEliminationSimplify || "light",
+        assume_spd: state.optimizedEliminationAssumeSpd !== false,
+        use_suggested_order: state.optimizedEliminationUseSuggestedOrder !== false
+      };
+    }
+
+    function optimizedEliminationCacheKey(payload) {
+      return JSON.stringify({
+        language: state.language,
+        display_mode: payload.display_mode,
+        simplify_level: payload.simplify_level,
+        assume_spd: payload.assume_spd,
+        use_suggested_order: payload.use_suggested_order,
+        all_nodes: payload.all_nodes,
+        external_nodes: payload.external_nodes,
+        internal_nodes: payload.internal_nodes,
+        node_display_names: payload.node_display_names,
+        ground_nodes: payload.ground_nodes,
+        G_full: payload.G_full,
+        Ihis_full: payload.Ihis_full
+      });
+    }
+
+    async function requestOptimizedElimination(payload) {
+      const urls = localApiUrls("/optimized-elimination");
+      let lastError = null;
+      for (const url of urls) {
+        try {
+          const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          const result = await response.json();
+          if (!response.ok || result.ok === false) {
+            throw Object.assign(new Error(result.error || optText("优化消元失败", "Optimized elimination failed")), { backendError: true });
+          }
+          return result;
+        } catch (error) {
+          if (error.backendError) throw error;
+          lastError = error;
+        }
+      }
+      throw lastError || new Error(optText("优化消元失败", "Optimized elimination failed"));
+    }
+
+    function renderOptimizedControls() {
+      const display = state.optimizedEliminationDisplay || "compact";
+      const simplify = state.optimizedEliminationSimplify || "light";
+      const spd = state.optimizedEliminationAssumeSpd !== false;
+      return `
+        <div class="formula-card">
+          <div class="formula-name">优化消元设置 / Optimized elimination controls</div>
+          <div class="property-grid">
+            <label class="field">
+              <span>计算模式 / Mode</span>
+              <input value="结构化公式 / Structured Formula" readonly>
+            </label>
+            <label class="field">
+              <span>显示方式 / Display</span>
+              <select data-optimized-control="display">
+                <option value="compact" ${display === "compact" ? "selected" : ""}>紧凑 / Compact</option>
+                <option value="step" ${display === "step" ? "selected" : ""}>分步 / Step-by-step</option>
+                <option value="expanded" ${display === "expanded" ? "selected" : ""}>展开 / Expanded</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>化简程度 / Simplification</span>
+              <select data-optimized-control="simplify">
+                <option value="none" ${simplify === "none" ? "selected" : ""}>不化简 / None</option>
+                <option value="light" ${simplify === "light" ? "selected" : ""}>轻量 / Light</option>
+                <option value="full" ${simplify === "full" ? "selected" : ""}>完整 / Full</option>
+              </select>
+            </label>
+            <label class="field checkbox-field">
+              <span>SPD/对称假设</span>
+              <input data-optimized-control="spd" type="checkbox" ${spd ? "checked" : ""}>
+            </label>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderOptimizedWarningBox(result = null) {
+      const warnings = state.language === "en"
+        ? [
+            "This tab assumes the eliminated block is symmetric positive definite, or at least suitable for symmetric Schur-style reduction. Treat results with controlled current sources or asymmetric black-box stamps as reference.",
+            "Structured formulas are shown as matrices, vectors, and block matrices by default. Large scalar expressions are not expanded."
+          ]
+        : [
+            "该优化消元页面假设待消元矩阵为对称正定，或至少适合对称舒尔消元；如果包含受控电流源、非对称黑盒等非对称元件贡献，请只作为参考。",
+            "结构化公式默认显示矩阵、向量和块矩阵形式，不默认展开巨大的标量表达式。"
+          ];
+      if (result?.warnings?.length) warnings.push(...result.warnings);
+      return `
+        <div class="formula-card validation-warning">
+          <div class="formula-name">${optText("提示", "Warning")}</div>
+          <div class="formula-empty">${warnings.map(escapeHtml).join("<br>")}</div>
+        </div>
+      `;
+    }
+
+    function displayNodeList(nodes, displayNames = {}) {
+      return (nodes || []).map(node => displayNames[node] || nodeDisplayName(node)).join(", ");
+    }
+
+    function renderOptimizedPartition(payload, result = null) {
+      const displayNames = payload.node_display_names || {};
+      const external = result?.external_nodes || payload.external_nodes || [];
+      const internal = result?.internal_nodes || payload.internal_nodes || [];
+      const structuredOrder = result?.effective_internal_nodes || internal;
+      return `
+        <div class="formula-card">
+          <div class="formula-name">Node partition</div>
+          <div class="formula-line"><span class="formula-rhs">External: ${escapeHtml(displayNodeList(external, displayNames))}</span></div>
+          <div class="formula-line"><span class="formula-rhs">Internal: ${escapeHtml(displayNodeList(internal, displayNames))}</span></div>
+          <div class="formula-line"><span class="formula-rhs">Structured k order: ${escapeHtml(displayNodeList(structuredOrder, displayNames))}</span></div>
+        </div>
+      `;
+    }
+
+    function compactBlockEntries(nodes) {
+      if (nodes.length <= 3) {
+        return nodes.map(node => ({ type: "node", node }));
+      }
+      return [
+        { type: "node", node: nodes[0] },
+        { type: "ellipsis" },
+        { type: "node", node: nodes[nodes.length - 1] }
+      ];
+    }
+
+    function blockEntryLabel(entry, displayNames = {}) {
+      if (entry.type === "ellipsis") return "…";
+      return displayNames[entry.node] || nodeDisplayName(entry.node);
+    }
+
+    function blockMatrixCellValue(payload, rowEntry, colEntry, nodeIndex) {
+      if (rowEntry.type === "ellipsis" && colEntry.type === "ellipsis") return "⋱";
+      if (rowEntry.type === "ellipsis") return "⋮";
+      if (colEntry.type === "ellipsis") return "⋯";
+      const row = nodeIndex.get(rowEntry.node);
+      const col = nodeIndex.get(colEntry.node);
+      return payload.G_full?.[row]?.[col] ?? "0";
+    }
+
+    function renderFormulaModeActualBlock(payload) {
+      const displayNames = payload.node_display_names || {};
+      const external = payload.external_nodes || [];
+      const internal = payload.internal_nodes || [];
+      if (!internal.length) return "";
+      const orderTitle = optText("当前 G 矩阵节点顺序", "Current G Matrix Node Order");
+      const orderNodeStack = nodes => (nodes || []).length
+        ? nodes.map(node => `<span class="actual-block-order-node">${escapeHtml(displayNames[node] || nodeDisplayName(node))}</span>`).join("")
+        : `<span class="actual-block-order-node">-</span>`;
+      const rOrder = orderNodeStack(external);
+      const kOrder = orderNodeStack(internal);
+      const externalEntries = compactBlockEntries(external).map(entry => ({ ...entry, role: "external" }));
+      const internalEntries = compactBlockEntries(internal).map(entry => ({ ...entry, role: "internal" }));
+      const rowEntries = [...externalEntries, ...internalEntries];
+      const colEntries = [...externalEntries, ...internalEntries];
+      const nodeIndex = new Map((payload.all_nodes || []).map((node, index) => [node, index]));
+      const gridColumns = `repeat(${colEntries.length}, minmax(180px, max-content))`;
+      const gridRows = `repeat(${rowEntries.length}, minmax(42px, auto))`;
+      const externalColSpan = Math.max(1, externalEntries.length);
+      const internalColStart = externalEntries.length + 1;
+      const internalColSpan = Math.max(1, internalEntries.length);
+      const externalRowSpan = Math.max(1, externalEntries.length);
+      const internalRowStart = externalEntries.length + 1;
+      const internalRowSpan = Math.max(1, internalEntries.length);
+      const cells = rowEntries.flatMap((rowEntry, rowIndex) => colEntries.map((colEntry, colIndex) => {
+        const isInternalBoundaryRow = rowIndex === externalEntries.length;
+        const isInternalBoundaryCol = colIndex === externalEntries.length;
+        const value = blockMatrixCellValue(payload, rowEntry, colEntry, nodeIndex);
+        const classes = [
+          "actual-block-cell",
+          isInternalBoundaryCol ? "split-left" : "",
+          isInternalBoundaryRow ? "split-top" : "",
+          rowEntry.type === "ellipsis" || colEntry.type === "ellipsis" ? "block-ellipsis" : ""
+        ].filter(Boolean).join(" ");
+        return `<span class="${classes}" title="${escapeHtml(blockEntryLabel(rowEntry, displayNames))}, ${escapeHtml(blockEntryLabel(colEntry, displayNames))}">${formatMath(value)}</span>`;
+      })).join("");
+
+      return `
+        <div class="actual-block-preview" aria-label="${escapeHtml(optText("G 矩阵分块预览", "G matrix block preview"))}">
+          <div class="actual-block-column-labels" style="grid-template-columns: ${gridColumns};">
+            <span class="actual-block-label" style="grid-column: 1 / span ${externalColSpan};">Grr</span>
+            <span class="actual-block-label" style="grid-column: ${internalColStart} / span ${internalColSpan};">Grk</span>
+          </div>
+          <div></div>
+          <div class="actual-block-matrix-row">
+            <div class="actual-block-matrix" style="grid-template-columns: ${gridColumns}; grid-template-rows: ${gridRows};">
+              ${cells}
+            </div>
+            <div class="actual-block-side-labels" style="grid-template-rows: ${gridRows};">
+              <div class="actual-block-side-label" style="grid-row: 1 / span ${externalRowSpan};">Grr / Grk</div>
+              <div class="actual-block-side-label" style="grid-row: ${internalRowStart} / span ${internalRowSpan};">Gkr / Gkk</div>
+            </div>
+            <div class="actual-block-order-panel" style="grid-template-rows: auto ${gridRows};">
+              <div class="actual-block-order-title" style="grid-row: 1;">${escapeHtml(orderTitle)}</div>
+              <div class="actual-block-order-line" style="grid-row: 2 / span ${externalRowSpan};">
+                <span class="actual-block-order-label">r</span>
+                <span class="actual-block-order-value">${rOrder}</span>
+              </div>
+              <div class="actual-block-order-line" style="grid-row: ${externalRowSpan + 2} / span ${internalRowSpan};">
+                <span class="actual-block-order-label">k</span>
+                <span class="actual-block-order-value">${kOrder}</span>
+              </div>
+            </div>
+          </div>
+          <div></div>
+          <div class="actual-block-bottom-labels" style="grid-template-columns: ${gridColumns};">
+            <span class="actual-block-label" style="grid-column: 1 / span ${externalColSpan};">Gkr</span>
+            <span class="actual-block-label" style="grid-column: ${internalColStart} / span ${internalColSpan};">Gkk</span>
+          </div>
+          <div></div>
+          <div class="actual-block-caption">${optText("真实 G 矩阵按 r/k 整体分成四块；r 是保留节点，k 是所有内部节点组成的块。任一方向超过 3 个节点时用省略号压缩。", "The real G matrix is split into r/k blocks. r contains retained nodes; k contains all internal nodes. More than 3 nodes in one direction are compressed with ellipses.")}</div>
+        </div>
+      `;
+    }
+
+    function renderStructuredFormulaSummary() {
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("最终紧凑公式", "Final Compact Formulas")}</div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("G_red")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("G_rr - G_rk*W*G_kr")}</span></div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("Ihis_red")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("Ihis_r - G_rk*W*Ihis_k")}</span></div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("V_k")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("-W*G_kr*V_r - W*Ihis_k")}</span></div>
+        </div>
+      `;
+    }
+
+    function renderStructuredAnalysis(result, payload = {}) {
+      const structured = result.structured || {};
+      const analysis = structured.analysis || {};
+      const effective = structured.effective_analysis || analysis;
+      const suggested = analysis.suggested_order || [];
+      const user = result.internal_nodes || [];
+      const displayNames = payload.node_display_names || {};
+      const differs = JSON.stringify(suggested) !== JSON.stringify(user);
+      const autoOrderNote = differs
+        ? `<div class="actual-block-caption">${optText("已自动按结构建议顺序重排 k 节点。", "The k nodes have been automatically reordered using the suggested structured order.")}</div>`
+        : "";
+      return `
+        <div>
+          <div class="formula-name">${optText("分块分析", "Block Analysis")}</div>
+          <table class="analysis-table">
+            <tbody>
+              <tr><th>${optText("块类型", "Block type")}</th><td>${escapeHtml(optimizedBlockTypeLabel(effective.block_type || structured.block_type))}</td></tr>
+              <tr><th>${optText("用户顺序", "User order")}</th><td>${escapeHtml(displayNodeList(result.internal_nodes || [], displayNames))}</td></tr>
+              <tr><th>${optText("建议顺序", "Suggested order")}</th><td>${escapeHtml(displayNodeList(suggested, displayNames))}</td></tr>
+              <tr><th>${optText("对角节点", "Diagonal nodes")}</th><td>${escapeHtml(displayNodeList(effective.diagonal_nodes || [], displayNames) || "-")}</td></tr>
+              <tr><th>${optText("耦合节点", "Coupled nodes")}</th><td>${escapeHtml(displayNodeList(effective.coupled_nodes || [], displayNames) || "-")}</td></tr>
+              <tr><th>${optText("对称", "Symmetric")}</th><td>${escapeHtml(optimizedBooleanLabel(Boolean(effective.is_symmetric)))}</td></tr>
+            </tbody>
+          </table>
+          ${autoOrderNote}
+        </div>
+      `;
+    }
+
+    function renderIhisPartition(result) {
+      const blocks = result.structured?.blocks || {};
+      const rRows = blocks.Ihis_r || [];
+      const kRows = blocks.Ihis_i || [];
+      const values = [...rRows, ...kRows];
+      const rCount = rRows.length;
+      const kCount = kRows.length;
+      const cells = values.map((value, index) => {
+        const isKStart = index === rCount && rCount > 0;
+        return `<span class="ihis-block-cell ${isKStart ? "split-top" : ""}">${formatMath(value || "0")}</span>`;
+      }).join("");
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("Ihis 分块预览", "Ihis Block Preview")}</div>
+          <div class="ihis-block-preview">
+            <span class="formula-lhs">${formatMath("Ihis")}</span>
+            <span class="formula-eq">=</span>
+            <div class="ihis-block-vector" style="grid-template-rows: repeat(${Math.max(1, values.length)}, minmax(34px, auto));">
+              ${cells || `<span class="ihis-block-cell">0</span>`}
+            </div>
+            <div class="ihis-block-labels" style="grid-template-rows: repeat(${Math.max(1, values.length)}, minmax(34px, auto));">
+              <div class="ihis-block-label" style="grid-row: 1 / span ${Math.max(1, rCount)};">Ihis<sub>r</sub></div>
+              <div class="ihis-block-label" style="grid-row: ${rCount + 1} / span ${Math.max(1, kCount)};">Ihis<sub>k</sub></div>
+            </div>
+          </div>
+          <div class="actual-block-caption">${optText("右端向量按保留节点 r 和待消去节点 k 分块。", "The right-hand vector is split into retained nodes r and eliminated nodes k.")}</div>
+        </div>
+      `;
+    }
+
+    function renderStructuredBlocks(result, payload) {
+      const blocks = result.structured?.blocks || {};
+      const blockPayload = { ...payload, internal_nodes: result.effective_internal_nodes || payload.internal_nodes || [] };
+      const userOrder = result.internal_nodes || payload.internal_nodes || [];
+      const effectiveOrder = result.effective_internal_nodes || userOrder;
+      const isReordered = JSON.stringify(userOrder) !== JSON.stringify(effectiveOrder);
+      const orderNotice = isReordered
+        ? `<div class="formula-empty">${optText("提示：优化消元会自动按结构重排内部 k 节点；下方 G 矩阵和 C Draft 使用右侧显示的重排顺序。", "Note: optimized elimination automatically reorders internal k nodes by structure; the G matrix below and the C draft use the reordered sequence shown on the right.")}</div>`
+        : `<div class="formula-empty">${optText("提示：优化消元会自动检查并按结构重排内部 k 节点；当前顺序已适合，右侧显示的是实际使用顺序。", "Note: optimized elimination automatically checks and reorders internal k nodes by structure; the current order is already suitable, and the right side shows the sequence actually used.")}</div>`;
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("G 分块预览", "G Block Preview")}</div>
+          ${orderNotice}
+          ${renderFormulaModeActualBlock(blockPayload)}
+        </div>
+        ${renderIhisPartition(result)}
+        <div class="formula-card">
+          <div class="gkk-analysis-layout">
+          <div>
+            <div class="formula-name">${optText("Gkk 紧凑矩阵", "Gkk Compact Matrix")}</div>
+            <div class="matrix-equation"><span class="formula-lhs">${formatMath("G_kk")}</span><span class="formula-eq">=</span>${renderCompactMatrix(blocks.G_ii || [], "Gkk")}</div>
+            <div class="actual-block-caption">${optText("复杂元素默认用 Gkk[row][col] 代替；单个符号会直接保留，例如 AP。", "Complex entries are shown as Gkk[row][col]; simple symbols such as AP are kept.")}</div>
+          </div>
+          ${renderStructuredAnalysis(result, payload)}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPureDiagonalStructured(result) {
+      const details = result.structured?.details || {};
+      const size = (details.W || []).length;
+      const wRows = Array.from({ length: size }, (_, row) =>
+        Array.from({ length: size }, (_, col) => row === col ? `1/Gkk[${row}][${col}]` : "0")
+      );
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("纯对角 Gkk 的 W", "W for Pure Diagonal Gkk")}</div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("G_kk")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("diag(Gkk[0][0], ..., Gkk[k][k])")}</span></div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("W")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("G_kk^{-1}")}</span><span class="formula-eq">=</span>${renderMatrix(wRows)}</div>
+        </div>
+      `;
+    }
+
+    function renderDiagonalCoupledStructured(result) {
+      const details = result.structured?.details || {};
+      const effectiveNodes = result.effective_internal_nodes || result.internal_nodes || [];
+      const analysis = result.structured?.effective_analysis || {};
+      const nodeToKIndex = new Map(effectiveNodes.map((node, index) => [node, index]));
+      const diagonalIndices = (analysis.diagonal_nodes || []).map(node => nodeToKIndex.get(node)).filter(index => index !== undefined);
+      const coupledIndices = (analysis.coupled_nodes || []).map(node => nodeToKIndex.get(node)).filter(index => index !== undefined);
+      const M = details.M || [];
+      const is2x2 = M.length === 2 && M[0]?.length === 2;
+      const mSymbol = is2x2 ? [["M11", "M12"], ["M12", "M22"]] : compactMatrixRows(M, "M");
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("对角 + 耦合块结构", "Diagonal + Coupled Block Structure")}</div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("G_kk")}</span><span class="formula-eq">=</span>${renderMatrix([["D", "U"], ["U^T", "S"]])}</div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("D")}</span><span class="formula-eq">=</span>${renderCompactMatrixFromSource(details.D || [], "Gkk", diagonalIndices, diagonalIndices)}</div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("U")}</span><span class="formula-eq">=</span>${renderCompactMatrixFromSource(details.U || [], "Gkk", diagonalIndices, coupledIndices)}</div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("S")}</span><span class="formula-eq">=</span>${renderCompactMatrixFromSource(details.S || [], "Gkk", coupledIndices, coupledIndices)}</div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("M")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("S - U^T*D^{-1}*U")}</span></div>
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("M")}</span><span class="formula-eq">=</span>${renderMatrix(mSymbol)}</div>
+          ${is2x2 ? `
+            <div class="formula-line"><span class="formula-lhs">${formatMath("detM")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("M11*M22 - M12^2")}</span></div>
+            <div class="matrix-equation"><span class="formula-lhs">${formatMath("M^{-1}")}</span><span class="formula-eq">=</span>${renderMatrix([["M22/detM", "-M12/detM"], ["-M12/detM", "M11/detM"]])}</div>
+          ` : `<div class="formula-line"><span class="formula-lhs">${formatMath("M^{-1}")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("M^{-1}")}</span></div>`}
+          <div class="matrix-equation"><span class="formula-lhs">${formatMath("W")}</span><span class="formula-eq">=</span>${renderMatrix([["D^{-1}+D^{-1}*U*M^{-1}*U^T*D^{-1}", "-D^{-1}*U*M^{-1}"], ["-M^{-1}*U^T*D^{-1}", "M^{-1}"]])}</div>
+        </div>
+      `;
+    }
+
+    function renderGeneralStructured() {
+      return `
+        <div class="formula-card">
+          <div class="formula-name">${optText("一般块结构", "General Block Structure")}</div>
+          <div class="formula-line"><span class="formula-lhs">${formatMath("W")}</span><span class="formula-eq">=</span><span class="formula-rhs">${formatMath("G_kk^{-1}")}</span></div>
+          <div class="formula-empty">${optText("无法识别简单对角块或对角+小耦合块结构，因此仅显示 W = Gkk^{-1} 的矩阵形式。若需要更简单的表达式，请调整内部节点排序或分组。", "No simple diagonal or diagonal-plus-small-coupled structure was detected, so only W = Gkk^{-1} is shown in matrix form. Adjust internal-node ordering or grouping for simpler expressions.")}</div>
+        </div>
+      `;
+    }
+
+    function renderStructuredByType(result) {
+      const type = result.structured?.block_type;
+      if (type === "pure_diagonal") return renderPureDiagonalStructured(result);
+      if (type === "diagonal_plus_coupled") return renderDiagonalCoupledStructured(result);
+      return renderGeneralStructured();
+    }
+
+    function renderOptimizedFormulaResult(result, payload) {
+      const cDraft = `
+        <div class="formula-card" data-c-draft-card>
+          <div class="formula-title-row">
+            <div class="formula-name">${optText("结构化 C 草稿", "Structured C Draft")}</div>
+            <button class="copy-draft-button" type="button" data-copy-c-draft>${optText("复制 C", "Copy C")}</button>
+          </div>
+          <pre class="code" data-c-draft-code>${escapeHtml(result.structured?.c_draft || "")}</pre>
+        </div>
+      `;
+      return `${renderStructuredBlocks(result, payload)}${renderStructuredByType(result)}${renderStructuredFormulaSummary()}${cDraft}`;
+    }
+
+    function renderOptimizedEliminationResult(result, payload) {
+      return `
+        <div class="formula-list">
+          ${renderOptimizedWarningBox(result)}
+          ${renderOptimizedFormulaResult(result, payload)}
+        </div>
+      `;
+    }
+
+    async function renderOptimizedEliminationAsync(token, payload) {
+      const staticHtml = reducedStaticMessage(payload);
+      if (staticHtml) {
+        if (token === optimizedEliminationRenderToken) {
+          outputText.innerHTML = `<div class="formula-list">${staticHtml}</div>`;
+        }
+        return;
+      }
+
+      const key = optimizedEliminationCacheKey(payload);
+      const cachedEntry = cacheGet(optimizedEliminationCache, key);
+      if (cachedEntry?.result) {
+        if (token === optimizedEliminationRenderToken) outputText.innerHTML = renderOptimizedEliminationResult(cachedEntry.result, payload);
+        return;
+      }
+      if (cachedEntry?.pending) {
+        try {
+          const result = await cachedEntry.pending;
+          if (token === optimizedEliminationRenderToken) outputText.innerHTML = renderOptimizedEliminationResult(result, payload);
+        } catch (error) {
+          if (token === optimizedEliminationRenderToken) outputText.innerHTML = `<div class="formula-empty">${optText("优化消元失败", "Optimized elimination failed")}：${escapeHtml(error.message || String(error))}</div>`;
+        }
+        return;
+      }
+
+      const pending = requestOptimizedElimination(payload).then(result => {
+        const current = optimizedEliminationCache.get(key);
+        if (current?.pending === pending) cacheSet(optimizedEliminationCache, key, { result, pending: null });
+        return result;
+      }).catch(error => {
+        const current = optimizedEliminationCache.get(key);
+        if (current?.pending === pending) optimizedEliminationCache.delete(key);
+        throw error;
+      });
+      cacheSet(optimizedEliminationCache, key, { result: null, pending });
+
+      try {
+        const result = await pending;
+        if (token === optimizedEliminationRenderToken) outputText.innerHTML = renderOptimizedEliminationResult(result, payload);
+      } catch (error) {
+        if (token === optimizedEliminationRenderToken) outputText.innerHTML = `<div class="formula-empty">${optText("优化消元失败", "Optimized elimination failed")}：${escapeHtml(error.message || String(error))}</div>`;
+      }
+    }
+
     function packagedObserverEntries(branch, groupByTerminal, internalNames) {
       return (branch.packageOriginal?.branches || []).flatMap(inner => {
         if (inner.kind === "ground") return [];
@@ -6808,8 +8302,8 @@
         const eqIndex = line.indexOf("=");
         const lhs = eqIndex >= 0 ? line.slice(0, eqIndex).trim() : line.trim();
         const rhs = eqIndex >= 0 ? line.slice(eqIndex + 1).trim() : "0";
-        const fromSide = inner.direction === "AtoB" ? "A" : "B";
-        const toSide = inner.direction === "AtoB" ? "B" : "A";
+        const fromSide = inner.kind === "voltage_source_series_r" ? "P" : (inner.direction === "AtoB" ? "A" : "B");
+        const toSide = inner.kind === "voltage_source_series_r" ? "N" : (inner.direction === "AtoB" ? "B" : "A");
         const fromLabel = displayForSide(fromSide);
         const toLabel = displayForSide(toSide);
         return [{
@@ -7017,6 +8511,10 @@
           stampCurrentSourceBranch(branch, side => groupByTerminal.get(terminalKey(branch.id, side))?.id, groupLookup, groupIndex, G, Ihis, warnings);
           return;
         }
+        if (branch.kind === "voltage_source_series_r") {
+          stampVoltageSourceSeriesRBranch(branch, side => groupByTerminal.get(terminalKey(branch.id, side))?.id, groupIndex, G, Ihis, warnings);
+          return;
+        }
         const sourceId = branch.id;
         const sides = terminalSides(branch);
         const localG = localGMatrix(branch);
@@ -7075,8 +8573,8 @@
         }).join("\n");
       }
       if (branch.kind === "current_source") {
-        const fromSide = branch.direction === "AtoB" ? "A" : "B";
-        const toSide = branch.direction === "AtoB" ? "B" : "A";
+        const fromSide = branch.kind === "voltage_source_series_r" ? "P" : (branch.direction === "AtoB" ? "A" : "B");
+        const toSide = branch.kind === "voltage_source_series_r" ? "N" : (branch.direction === "AtoB" ? "B" : "A");
         const fromLabel = displayForSide(fromSide);
         const toLabel = displayForSide(toSide);
         const displayByNode = new Map();
@@ -7085,6 +8583,11 @@
           if (group?.id) displayByNode.set(group.id, group.display || group.id);
         });
         return `i_${branch.name}_${fromLabel}_to_${toLabel} = ${currentSourceExpression(branch, displayByNode)}`;
+      }
+      if (branch.kind === "voltage_source_series_r") {
+        const fromLabel = displayForSide("P");
+        const toLabel = displayForSide("N");
+        return `i_${branch.name}_${fromLabel}_to_${toLabel} = (${voltageSourceSeriesConductance(branch)}) * (V_${fromLabel} - V_${toLabel} - (${branch.voltage || "Vs"}))`;
       }
 
       const fromSide = branch.direction === "AtoB" ? "A" : "B";
@@ -7813,8 +9316,8 @@
           stampCurrentSourceBranch(branch, side => netByTerminal.get(terminalKey(branch.id, side)), nodeLookup, nodeIndex, G, Ihis, warnings);
           return;
         }
-        if (expandPackaged && branch.kind === "custom_n_port" && branch.packageOriginal) {
-          stampPackagedOriginal(branch, netByTerminal, nodeIndex, G, Ihis);
+        if (branch.kind === "voltage_source_series_r") {
+          stampVoltageSourceSeriesRBranch(branch, side => netByTerminal.get(terminalKey(branch.id, side)), nodeIndex, G, Ihis, warnings);
           return;
         }
         const sourceId = branch.id;
@@ -7922,23 +9425,46 @@
       addTerm(Ihis[toRow], negateExpr(ihis), branch.id);
     }
 
+    function stampVoltageSourceSeriesRBranch(branch, netForSide, nodeIndex, G, Ihis, warnings = null) {
+      validateVoltageSourceSeriesR(branch).forEach(message => warnings?.push(`${branch.name}: ${message}`));
+      const pNode = netForSide("P");
+      const nNode = netForSide("N");
+      const pRow = nodeIndex.get(pNode);
+      const nRow = nodeIndex.get(nNode);
+      if (pRow === undefined || nRow === undefined) return;
+      const gs = voltageSourceSeriesConductance(branch);
+      const j = voltageSourceSeriesIhis(branch);
+      addTerm(G[pRow][pRow], gs, branch.id);
+      addTerm(G[pRow][nRow], negateExpr(gs), branch.id);
+      addTerm(G[nRow][pRow], negateExpr(gs), branch.id);
+      addTerm(G[nRow][nRow], gs, branch.id);
+      addTerm(Ihis[pRow], j, branch.id);
+      addTerm(Ihis[nRow], negateExpr(j), branch.id);
+    }
+
     function displayNameForAssembledNode(assembled, node) {
       return assembled.displayByNode?.get(node) || nodeDisplayName(node);
     }
 
     function stampPackagedOriginal(branch, netByTerminal, nodeIndex, G, Ihis) {
       const packed = packagedOriginalSystem(branch, netByTerminal);
-      if (!packed) return;
+      if (!packed) return false;
+      let stamped = false;
       packed.nodeIds.forEach((rowNode, r) => {
         const row = nodeIndex.get(rowNode);
         if (row === undefined) return;
+        const beforeIhis = Ihis[row].length;
         addTerms(Ihis[row], packed.Ihis[r] || []);
+        if (Ihis[row].length !== beforeIhis) stamped = true;
         packed.nodeIds.forEach((colNode, c) => {
           const col = nodeIndex.get(colNode);
           if (col === undefined) return;
+          const beforeG = G[row][col].length;
           addTerms(G[row][col], packed.G[r]?.[c] || []);
+          if (G[row][col].length !== beforeG) stamped = true;
         });
       });
+      return stamped;
     }
 
     function packagedOriginalSystem(branch, netByTerminal) {
@@ -8033,6 +9559,13 @@
           }, orderedNodeLookup, orderedNodeIndex, localG, localIhis);
           return;
         }
+        if (item.kind === "voltage_source_series_r") {
+          stampVoltageSourceSeriesRBranch(item, side => {
+            const index = groupByTerminal.get(terminalKey(item.id, side));
+            return index === undefined ? null : ordered[index]?.id;
+          }, orderedNodeIndex, localG, localIhis);
+          return;
+        }
         const sourceId = item.id;
         const sides = terminalSides(item);
         const g = localGMatrix(item);
@@ -8081,6 +9614,13 @@
       if (branch.kind === "current_source") {
         return [["0", "0"], ["0", "0"]];
       }
+      if (branch.kind === "voltage_source_series_r") {
+        const gs = voltageSourceSeriesConductance(branch);
+        return [
+          [gs, negateExpr(gs)],
+          [negateExpr(gs), gs]
+        ];
+      }
       const g = wrapExpr(branchValue(branch, "g") || "0");
       return [
         [g, negateExpr(g)],
@@ -8095,6 +9635,10 @@
       }
       if (branch.kind === "current_source") {
         return ["0", "0"];
+      }
+      if (branch.kind === "voltage_source_series_r") {
+        const j = voltageSourceSeriesIhis(branch);
+        return [j, negateExpr(j)];
       }
       const j = wrapExpr(branchValue(branch, "ihis") || "0");
       return [j, negateExpr(j)];
@@ -8380,6 +9924,12 @@
         render();
         return;
       }
+      if (branch.kind === "voltage_source_series_r") {
+        if (field.startsWith("node.")) branch.nodes[field.slice(5)] = value.trim();
+        else if (field === "name" || field === "voltage" || field === "conductance") branch[field] = value.trim();
+        renderAfterSidePanelEdit();
+        return;
+      }
       if (branch.kind === "single_phase_transformer") {
         if (field.startsWith("node.")) branch.nodes[field.slice(5)] = value.trim();
         else if (field === "ihisVector") {
@@ -8620,6 +10170,45 @@
         editor.innerHTML = editorGroupList([
           editorGroup("basics", "名称配置", basics, false),
           editorGroup("source", "源类型", sourceConfig, true),
+          editorGroup("math", "数学模型", mathModel, true),
+          editorGroup("highlight", "高亮", branchHighlightEditor(branch, false), false),
+          editorGroup("terminals", "端点标识", terminals, false)
+        ]);
+        bindEditorInputs();
+        bindEditorEditButtons();
+        bindEditorGroups();
+        return;
+      }
+
+      if (branch.kind === "voltage_source_series_r") {
+        const basics = `
+          ${editableField("元件名", "name", branch.name)}
+          <div class="row">
+            ${editableField("宽度", "width", branch.width || 160)}
+            ${editableField("高度", "height", branch.height || 56)}
+          </div>
+        `;
+        const warnings = validateVoltageSourceSeriesR(branch);
+        const mathModel = `
+          <div class="row">
+            ${editableField("电压源 / Vs", "voltage", branch.voltage || "Vs")}
+            ${editableField("串联导纳 / G", "conductance", voltageSourceSeriesConductance(branch))}
+          </div>
+          ${warnings.length ? `<div class="validation-warning">${warnings.map(escapeHtml).join("<br>")}</div>` : ""}
+          <div class="field">
+            <label>${escapeHtml(tr("Stamp 预览"))}</label>
+            <div class="stamp-preview">${escapeHtml(voltageSourceSeriesStampPreview(branch))}</div>
+          </div>
+          <div class="modal-help">${escapeHtml(tr("该元件用 Norton 等效 stamp：电流方向为 P 到 N，i = G*(V_P - V_N - Vs)。G 不能为 0 或负数。"))}</div>
+        `;
+        const terminals = `
+          <div class="row">
+            ${editableField("P 节点", "node.P", branch.nodes?.P || "")}
+            ${editableField("N 节点", "node.N", branch.nodes?.N || "")}
+          </div>
+        `;
+        editor.innerHTML = editorGroupList([
+          editorGroup("basics", "名称配置", basics, false),
           editorGroup("math", "数学模型", mathModel, true),
           editorGroup("highlight", "高亮", branchHighlightEditor(branch, false), false),
           editorGroup("terminals", "端点标识", terminals, false)
@@ -9768,6 +11357,10 @@
           renderCurrentSource(branch, selected, nets);
           return;
         }
+        if (branch.kind === "voltage_source_series_r") {
+          renderVoltageSourceSeriesR(branch, selected, nets);
+          return;
+        }
         if (branch.kind === "ground") {
           renderGround(branch, selected, nets);
           return;
@@ -9939,6 +11532,72 @@
         <text class="net-badge" data-net-id="${netBId}" data-port-side="B" x="${posB.x}" y="${posB.y - 33}">${escapeSvg(netB)}</text>
         ${state.showLocalLabels ? `<text class="node-label" data-port-side="A" x="${posA.x}" y="${posA.y + 24}">${escapeSvg(branch.nodeA)}</text>` : ""}
         ${state.showLocalLabels ? `<text class="node-label" data-port-side="B" x="${posB.x}" y="${posB.y + 24}">${escapeSvg(branch.nodeB)}</text>` : ""}
+      `;
+
+      bindBranchGroupInteractions(group, branch);
+      branchLayer.appendChild(group);
+    }
+
+    function renderVoltageSourceSeriesR(branch, selected, nets) {
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      const currentHighlight = branchCurrentHighlight(branch);
+      const canvasHighlight = branchCanvasHighlight(branch);
+      group.setAttribute("class", `branch${selected ? " selected" : ""}${currentHighlight ? " current-hover" : ""}${canvasHighlight.className}`);
+      if (canvasHighlight.style) group.setAttribute("style", canvasHighlight.style);
+      group.setAttribute("transform", `rotate(${branch.rotation} ${branch.x} ${branch.y})`);
+      group.dataset.branchId = branch.id;
+
+      const width = Math.max(120, branch.width || 160);
+      const height = Math.max(54, branch.height || 56);
+      const bodyHeight = Math.max(36, Math.min(54, height));
+      const bodyWidth = Math.max(74, width - 70);
+      const bodyX = branch.x - bodyWidth / 2;
+      const bodyY = branch.y - bodyHeight / 2;
+      const posP = terminalDrawPosition(branch, "P");
+      const posN = terminalDrawPosition(branch, "N");
+      const netPId = nets.get(terminalKey(branch.id, "P")) || "";
+      const netNId = nets.get(terminalKey(branch.id, "N")) || "";
+      const netP = nodeDisplayName(netPId);
+      const netN = nodeDisplayName(netNId);
+      const colorP = netColor(netPId);
+      const colorN = netColor(netNId);
+      const resistorX1 = branch.x - 43;
+      const resistorX2 = branch.x - 3;
+      const resistorY = branch.y;
+      const zigStep = 7;
+      const resistorPath = `M ${resistorX1} ${resistorY} l ${zigStep * 0.5} -7 l ${zigStep} 14 l ${zigStep} -14 l ${zigStep} 14 l ${zigStep} -14 l ${zigStep * 0.5} 7`;
+      const sourceCx = branch.x + 28;
+      const sourceR = Math.min(16, bodyHeight * 0.36);
+      const arrowY = branch.y - 9;
+      const arrowStartX = bodyX + bodyWidth + 7;
+      const arrowEndX = Math.min(posN.x - 6, arrowStartX + 34);
+      const arrowPath = `M ${arrowStartX} ${arrowY} L ${arrowEndX} ${arrowY}`;
+
+      group.innerHTML = `
+        <rect class="hitbox" x="${Math.min(posP.x, bodyX) - 24}" y="${bodyY - 26}" width="${Math.max(posN.x, bodyX + bodyWidth) - Math.min(posP.x, bodyX) + 48}" height="${bodyHeight + 52}" rx="8"></rect>
+        <line class="lead" x1="${posP.x}" y1="${posP.y}" x2="${bodyX}" y2="${branch.y}"></line>
+        <line class="lead" x1="${bodyX + bodyWidth}" y1="${branch.y}" x2="${posN.x}" y2="${posN.y}"></line>
+        <rect class="branch-body" x="${bodyX}" y="${bodyY}" width="${bodyWidth}" height="${bodyHeight}" rx="4"></rect>
+        <line class="lead" x1="${bodyX}" y1="${branch.y}" x2="${resistorX1}" y2="${branch.y}"></line>
+        <path class="resistor-symbol" d="${resistorPath}"></path>
+        <line class="lead" x1="${resistorX2}" y1="${branch.y}" x2="${sourceCx - sourceR}" y2="${branch.y}"></line>
+        <circle class="voltage-source-symbol" cx="${sourceCx}" cy="${branch.y}" r="${sourceR}"></circle>
+        <path class="source-plus" d="M ${sourceCx - 6} ${branch.y - 4} V ${branch.y + 4} M ${sourceCx - 10} ${branch.y} H ${sourceCx - 2} M ${sourceCx + 4} ${branch.y} H ${sourceCx + 12}"></path>
+        <line class="lead" x1="${sourceCx + sourceR}" y1="${branch.y}" x2="${bodyX + bodyWidth}" y2="${branch.y}"></line>
+        <path class="direction" d="${arrowPath}"></path>
+        <text class="branch-label" x="${branch.x}" y="${bodyY - 10}">${escapeSvg(branch.name)}</text>
+        <text class="component-subtext" x="${branch.x}" y="${bodyY + bodyHeight + 17}">${escapeSvg(`${branch.voltage || "Vs"}, ${voltageSourceSeriesConductance(branch)}`)}</text>
+        ${resizeHandlesSvg(branch, selected)}
+        <circle class="port-drag-hit" cx="${posP.x}" cy="${posP.y}" r="24" data-port-side="P"></circle>
+        <circle class="port-drag-hit" cx="${posN.x}" cy="${posN.y}" r="24" data-port-side="N"></circle>
+        <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "P") ? "hot" : ""}${netHoverClass(netPId)}" cx="${posP.x}" cy="${posP.y}" r="8" data-terminal="${terminalKey(branch.id, "P")}" data-port-side="P"></circle>
+        <circle class="terminal ${state.pendingTerminal === terminalKey(branch.id, "N") ? "hot" : ""}${netHoverClass(netNId)}" cx="${posN.x}" cy="${posN.y}" r="8" data-terminal="${terminalKey(branch.id, "N")}" data-port-side="N"></circle>
+        <rect class="net-badge-bg${netHoverClass(netPId)}" data-net-id="${netPId}" data-port-side="P" x="${posP.x - 17}" y="${posP.y - 42}" width="34" height="18" rx="5" fill="${colorP}"></rect>
+        <rect class="net-badge-bg${netHoverClass(netNId)}" data-net-id="${netNId}" data-port-side="N" x="${posN.x - 17}" y="${posN.y - 42}" width="34" height="18" rx="5" fill="${colorN}"></rect>
+        <text class="net-badge" data-net-id="${netPId}" data-port-side="P" x="${posP.x}" y="${posP.y - 33}">${escapeSvg(netP)}</text>
+        <text class="net-badge" data-net-id="${netNId}" data-port-side="N" x="${posN.x}" y="${posN.y - 33}">${escapeSvg(netN)}</text>
+        ${state.showLocalLabels ? `<text class="node-label" data-port-side="P" x="${posP.x}" y="${posP.y + 24}">${escapeSvg(branch.nodes?.P || "")}</text>` : ""}
+        ${state.showLocalLabels ? `<text class="node-label" data-port-side="N" x="${posN.x}" y="${posN.y + 24}">${escapeSvg(branch.nodes?.N || "")}</text>` : ""}
       `;
 
       bindBranchGroupInteractions(group, branch);
@@ -10870,6 +12529,11 @@ function startResizeDrag(branch, handle, event) {
         setTool("select");
         return;
       }
+      if (state.tool === "voltageSource") {
+        createVoltageSourceSeriesR(point.x, point.y);
+        setTool("select");
+        return;
+      }
       if (state.tool === "ground") {
         createGround(point.x, point.y);
         setTool("select");
@@ -11067,11 +12731,71 @@ function startResizeDrag(branch, handle, event) {
       render();
     });
     document.getElementById("closeOutputDialog").addEventListener("click", closeOutputDialog);
+    document.getElementById("toggleOutputFullscreen").addEventListener("click", toggleOutputFullscreen);
     outputDialog.addEventListener("pointerdown", event => {
       if (event.target === outputDialog) closeOutputDialog();
     });
+    const outputMinimapObserver = new MutationObserver(scheduleOutputMinimapUpdate);
+    outputMinimapObserver.observe(outputText, { childList: true, subtree: true, characterData: true });
+    const outputResizeObserver = new ResizeObserver(scheduleOutputMinimapUpdate);
+    outputResizeObserver.observe(outputText);
+    outputText.addEventListener("scroll", updateOutputMinimapThumb);
+    window.addEventListener("resize", scheduleOutputMinimapUpdate);
+    outputMinimap.addEventListener("pointerdown", event => {
+      outputMinimapDragging = true;
+      outputMinimap.setPointerCapture(event.pointerId);
+      scrollOutputFromMinimap(event.clientX, event.clientY);
+      event.preventDefault();
+    });
+    outputMinimap.addEventListener("pointermove", event => {
+      if (!outputMinimapDragging) return;
+      scrollOutputFromMinimap(event.clientX, event.clientY);
+      event.preventDefault();
+    });
+    outputMinimap.addEventListener("pointerup", event => {
+      outputMinimapDragging = false;
+      outputMinimap.releasePointerCapture(event.pointerId);
+    });
+    outputMinimap.addEventListener("pointercancel", () => {
+      outputMinimapDragging = false;
+    });
     outputText.addEventListener("pointerover", handleFormulaHover);
     outputText.addEventListener("pointerout", handleFormulaHoverOut);
+    outputText.addEventListener("change", event => {
+      const control = event.target.closest?.("[data-optimized-control]");
+      if (!control) return;
+      const kind = control.dataset.optimizedControl;
+      if (kind === "display") state.optimizedEliminationDisplay = control.value || "compact";
+      if (kind === "simplify") state.optimizedEliminationSimplify = control.value || "light";
+      if (kind === "spd") state.optimizedEliminationAssumeSpd = Boolean(control.checked);
+      optimizedEliminationRenderToken += 1;
+      renderOutput();
+    });
+    outputText.addEventListener("click", event => {
+      const copyButton = event.target.closest?.("[data-copy-c-draft]");
+      if (copyButton) {
+        const card = copyButton.closest("[data-c-draft-card]");
+        const code = card?.querySelector("[data-c-draft-code]");
+        const text = code?.textContent || "";
+        copyTextToClipboard(text, code).then(ok => {
+          copyButton.textContent = ok ? optText("已复制", "Copied") : optText("复制失败", "Copy failed");
+          copyButton.classList.toggle("copied", ok);
+          statusEl.textContent = ok ? optText("已复制 C 草稿", "C draft copied") : optText("复制 C 草稿失败", "Failed to copy C draft");
+          window.setTimeout(() => {
+            copyButton.textContent = optText("复制 C", "Copy C");
+            copyButton.classList.remove("copied");
+          }, 1400);
+        });
+        return;
+      }
+      const action = event.target.closest?.("[data-optimized-action]");
+      if (!action) return;
+      if (action.dataset.optimizedAction === "useSuggested") {
+        state.optimizedEliminationUseSuggestedOrder = true;
+        optimizedEliminationRenderToken += 1;
+        renderOutput();
+      }
+    });
     outputDialogBody.addEventListener("pointerover", handleFormulaHover);
     outputDialogBody.addEventListener("pointerout", handleFormulaHoverOut);
     document.getElementById("closeRenameDialog").addEventListener("click", closeRenameDialog);
@@ -11136,6 +12860,7 @@ function startResizeDrag(branch, handle, event) {
     });
     document.getElementById("addBranchTool").addEventListener("click", () => setTool("branch"));
     document.getElementById("addCurrentSourceTool").addEventListener("click", () => setTool("currentSource"));
+    document.getElementById("addVoltageSourceTool").addEventListener("click", () => setTool("voltageSource"));
     document.getElementById("addGroundTool").addEventListener("click", () => setTool("ground"));
     document.getElementById("addTransformerTool").addEventListener("click", () => setTool("transformer"));
     document.getElementById("addCustomTool").addEventListener("click", () => {

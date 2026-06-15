@@ -30,6 +30,7 @@ Branch Builder 是一个本地运行的浏览器工具，用于搭建和分析�
 - 支持二节点支路、单相变压器、自定义 N 节点黑盒和 YBox。
 - 输出统一形式的节点方程：`I = G V + Ihis`。
 - 使用 Schur complement 对内部节点进行消去。
+- 新增“优化消元 / C导出”tab：面向大型符号系统，使用结构化 `Gkk` 块公式展示消元过程，自动识别对角/耦合子块，并导出不含 solve/LU/Cholesky 的 C 风格步骤。
 - 显示内部节点电压恢复公式。
 - 为黑盒元件定义支路观测电流，并进行一致性校验。
 - 为每个元件定义多个 `G`/`Ihis` 开关工况，并在画布中双击元件切换。
@@ -40,8 +41,21 @@ Branch Builder 是一个本地运行的浏览器工具，用于搭建和分析�
 - 将电路保存到项目目录下的 `exports/` 文件夹。
 - 支持中英文界面切换。
 
+## 电压源近似
+
+`VoltageSourceSeriesR` 表示外部显式输入的电压源 `Vs` 串联导纳 `G`。由于本项目统一使用 `I = G * V + Ihis`，且不使用 MNA，该元件会转换为 Norton 等效：
+
+```text
+i(p -> n) = G * (V_p - V_n - Vs)
+```
+
+它会生成对称的导纳矩阵 stamp，并写入历史电流项：`Ihis[p] += -G*Vs`，`Ihis[n] += G*Vs`，因此可以直接参与内部节点消去和黑盒约简。
+
+`G` 越大越接近理想电压源，但过大会导致矩阵病态。`G` 必须为正数，0 或负数会报错。
+
 ## 最近更新
 
+- 新增“优化消元 / C导出”结果 tab。它不改变现有完整矩阵和消去矩阵页面；保留用户定义的 internal node 顺序，显示真实 `G` 和 `Ihis` 的 r/k 分块预览，并在可行时建议更清晰的 `Gkk = [[D, U], [U^T, S]]` 分块顺序；C 草稿只导出紧凑矩阵步骤，不展开巨大标量表达式。
 - 画布标签支持拖拽排序。电路导出升级为 `version: 3`，会保存更完整的工程状态，包括所有画布、节点样式、开关工况、打包黑盒设置、界面选项和已缓存的推导结果。
 - 开关工况保存在每个元件上。普通支路可编辑每个工况的 `G` 和 `Ihis`；变压器和自定义黑盒等矩阵元件可编辑每个工况的局部 `G` 矩阵和 `Ihis` 向量。
 - 画布中双击元件可循环切换工况，节点方程、消去版本和 Python 草稿都会使用当前工况。
@@ -162,9 +176,11 @@ node server.js
 - `local_server.py`：推荐使用的本地服务。
 - `server.js`：可选 Node.js 本地服务。
 - `reduce_api.py`：节点方程消元 API。
+- `optimized_elimination_api.py`：优化消元 / C 导出 API。
 - `elimination.py`：符号节点消去逻辑。
 - `observers.py`：支路观测电流消去逻辑。
 - `blackbox_validation_api.py`：黑盒观测电流校验 API。
+- `nodal_tool/optimized_elimination.py`：结构化 `Gkk` 分块分析，以及不含 solve/LU/Cholesky 的 C 草稿生成。
 - `nodal_tool/blackbox_validation.py`：黑盒观测电流一致性检查。
 - `exports/`：保存的电路 JSON 文件。
 - `tests/`：回归测试。

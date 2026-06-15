@@ -48,6 +48,8 @@ If Windows blocks the script, right-click `start.bat`, choose **Properties**, un
 - Build two-node branches, single-phase transformers, custom N-node black boxes, and Y-box packages.
 - Generate full nodal equations in the form `I = G V + Ihis`.
 - Reduce internal nodes with Schur complement logic.
+- Use the Optimized Elimination / C Export tab for large symbolic systems: it keeps the eliminated block as structured `Gkk` formulas, detects diagonal/coupled sub-blocks, and exports RTDS-oriented C-style matrix steps without solve/LU/Cholesky calls.
+- Review long formula outputs with the engineering-style results panel, including compact branch-current cards and a VS Code-like minimap for large matrix pages.
 - Display internal-node voltage recovery formulas.
 - Define and validate branch-current observers for black-box components.
 - Define per-component switch cases for `G` and `Ihis`, then double-click a component on the canvas to switch cases.
@@ -58,12 +60,25 @@ If Windows blocks the script, right-click `start.bat`, choose **Properties**, un
 - Save exported circuits into the local `exports/` folder.
 - Switch between Chinese and English UI text.
 
+### Voltage Source Approximation / 电压源近似
+
+`VoltageSourceSeriesR` represents an explicitly supplied voltage source `Vs` with a series conductance `G`. Because the project uses the unified nodal form `I = G * V + Ihis` and does not use MNA, this element is stamped as a Norton equivalent:
+
+```text
+i(p -> n) = G * (V_p - V_n - Vs)
+```
+
+This produces a symmetric conductance stamp and history-current terms `Ihis[p] += -G*Vs`, `Ihis[n] += G*Vs`, fully compatible with internal-node elimination and black-box reduction.
+
+Use a larger `G` to approximate an ideal voltage source more closely, but avoid making it too large because the matrix can become ill-conditioned. `G` must be positive; zero or negative series conductance is rejected.
+
 中文功能概览：
 
 - 在画布上绘制、拖拽和编辑电路元件。
 - 支持二节点支路、单相变压器、自定义 N 节点黑盒和 YBox 打包元件。
 - 生成统一形式的完整节点方程：`I = G V + Ihis`。
 - 使用 Schur complement 对内部节点进行消去。
+- 新增“优化消元 / C导出”tab：面向大型符号系统，使用结构化 `Gkk` 块公式展示消元过程，自动识别对角/耦合子块，并导出不含 solve/LU/Cholesky 的 C 风格步骤。
 - 显示内部节点电压恢复公式。
 - 为黑盒元件定义和校验支路观测电流。
 - 为元件定义多个 `G`/`Ihis` 开关工况，并可在画布中双击元件切换。
@@ -74,8 +89,23 @@ If Windows blocks the script, right-click `start.bat`, choose **Properties**, un
 - 将导出的电路保存到本地 `exports/` 文件夹。
 - 支持中英文界面切换。
 
+### 电压源近似
+
+`VoltageSourceSeriesR` 表示外部显式输入的电压源 `Vs` 串联导纳 `G`。由于本项目统一使用 `I = G * V + Ihis`，且不使用 MNA，该元件会转换为 Norton 等效：
+
+```text
+i(p -> n) = G * (V_p - V_n - Vs)
+```
+
+它会生成对称的导纳矩阵 stamp，并写入历史电流项：`Ihis[p] += -G*Vs`，`Ihis[n] += G*Vs`，因此可以直接参与内部节点消去和黑盒约简。
+
+`G` 越大越接近理想电压源，但过大会导致矩阵病态。`G` 必须为正数，0 或负数会报错。
+
 ## Recent Updates / 最近更新
 
+- Refined the lower results panel with denser branch-current cards, clearer formula alignment, engineering-style matrix cards, and a minimap navigator for long node-equation, reduced-equation, C export, JSON, and Python draft outputs.
+- Improved the Optimized Elimination / C Export tab for RTDS-style C drafting. It shows real `G` and `Ihis` r/k block previews, automatically uses the effective reordered k-node sequence when needed, keeps user-defined node names in generated voltage recovery variables, and emits compact matrix-form C steps without expanding large scalar expressions.
+- The one-click Windows launcher `start.bat` is now the recommended way to run the project. It finds Python, checks/installs `sympy`, starts `local_server.py`, and opens `http://127.0.0.1:4177/`.
 - Canvas tabs can be reordered by dragging. Circuit exports now use `version: 3` and preserve more project state, including all canvases, node styling, switch cases, packaged-box settings, UI options, and cached derivation results.
 - Switch cases are stored with each component. For ordinary branches, edit case-specific `G` and `Ihis`; for matrix components, edit case-specific local `G` and `Ihis` matrices. Double-click the component to cycle cases.
 - Packaged Y-boxes do not use an outer switch case. Instead, their editor lists internal branches that have multiple cases; changing an internal case recomputes the packaged box through the local SymPy backend.
@@ -85,6 +115,7 @@ If Windows blocks the script, right-click `start.bat`, choose **Properties**, un
 
 中文最近更新：
 
+- 新增“优化消元 / C导出”结果 tab。它不改变现有完整矩阵和消去矩阵页面；保留用户定义的 internal node 顺序，显示真实 `G` 和 `Ihis` 的 r/k 分块预览，并在可行时建议更清晰的 `Gkk = [[D, U], [U^T, S]]` 分块顺序；C 草稿只导出紧凑矩阵步骤，不展开巨大标量表达式。
 - 画布标签支持拖拽排序。电路导出升级为 `version: 3`，会保存更完整的工程状态，包括所有画布、节点样式、开关工况、打包黑盒设置、界面选项和已缓存的推导结果。
 - 开关工况保存在每个元件上。普通支路可编辑每个工况的 `G` 和 `Ihis`；矩阵元件可编辑每个工况的局部 `G` 矩阵和 `Ihis` 向量。画布中双击元件可切换工况。
 - 打包后的 YBox 不使用外层 switch case。它会在编辑器中列出内部具有多个工况的支路；切换内部工况后，通过本地 SymPy 后端重新计算打包黑盒。
@@ -227,14 +258,17 @@ The Python server is recommended for first-time users because it can automatical
 
 ## Project Structure / 项目结构
 
+- `start.bat` - Windows one-click launcher that starts the Python local server and opens the app / Windows 一键启动脚本。
 - `index.html` - main browser interface / 主浏览器界面。
 - `local_server.py` - recommended local server / 推荐使用的本地服务。
 - `server.js` - optional Node.js local server / 可选 Node.js 本地服务。
 - `reduce_api.py` - backend API wrapper for equation reduction / 节点方程消元 API。
+- `optimized_elimination_api.py` - API wrapper for the Optimized Elimination / C Export tab / 优化消元与 C 导出 API。
 - `elimination.py` - symbolic node-elimination logic / 符号节点消去逻辑。
 - `observers.py` - branch-current observer reduction logic / 支路观测电流消去逻辑。
 - `blackbox_validation_api.py` - API wrapper for black-box observer validation / 黑盒观测电流校验 API。
 - `nodal_tool/blackbox_validation.py` - black-box observer consistency checks / 黑盒观测电流一致性检查。
+- `nodal_tool/optimized_elimination.py` - structured `Gkk` block analysis and C draft helpers without solve/LU/Cholesky calls / 结构化 `Gkk` 分块分析，以及不含 solve/LU/Cholesky 的 C 草稿生成。
 - `exports/` - saved circuit JSON files / 保存的电路 JSON 文件。
 - `tests/` - regression tests / 回归测试。
 
