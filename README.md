@@ -48,7 +48,8 @@ If Windows blocks the script, right-click `start.bat`, choose **Properties**, un
 - Build two-node branches, single-phase transformers, custom N-node black boxes, and Y-box packages.
 - Generate full nodal equations in the form `I = G V + Ihis`.
 - Reduce internal nodes with Schur complement logic.
-- Use the new Optimized Elimination / C Export tab for large symbolic systems: it keeps the eliminated block as structured `Gkk` formulas, detects diagonal/coupled sub-blocks, and exports C-style steps without solve/LU/Cholesky calls.
+- Use the Optimized Elimination / C Export tab for large symbolic systems: it keeps the eliminated block as structured `Gkk` formulas, detects diagonal/coupled sub-blocks, and exports RTDS-oriented C-style matrix steps without solve/LU/Cholesky calls.
+- Review long formula outputs with the engineering-style results panel, including compact branch-current cards and a VS Code-like minimap for large matrix pages.
 - Display internal-node voltage recovery formulas.
 - Define and validate branch-current observers for black-box components.
 - Define per-component switch cases for `G` and `Ihis`, then double-click a component on the canvas to switch cases.
@@ -102,7 +103,9 @@ i(p -> n) = G * (V_p - V_n - Vs)
 
 ## Recent Updates / 最近更新
 
-- Added the Optimized Elimination / C Export result tab. It leaves the existing full and reduced matrix pages unchanged, preserves the user-defined internal-node order, shows real `G` and `Ihis` r/k block previews, suggests clearer `Gkk = [[D, U], [U^T, S]]` block order when possible, and exports compact matrix-form C draft steps without expanding large scalar expressions.
+- Refined the lower results panel with denser branch-current cards, clearer formula alignment, engineering-style matrix cards, and a minimap navigator for long node-equation, reduced-equation, C export, JSON, and Python draft outputs.
+- Improved the Optimized Elimination / C Export tab for RTDS-style C drafting. It shows real `G` and `Ihis` r/k block previews, automatically uses the effective reordered k-node sequence when needed, keeps user-defined node names in generated voltage recovery variables, and emits compact matrix-form C steps without expanding large scalar expressions.
+- The one-click Windows launcher `start.bat` is now the recommended way to run the project. It finds Python, checks/installs `sympy`, starts `local_server.py`, and opens `http://127.0.0.1:4177/`.
 - Canvas tabs can be reordered by dragging. Circuit exports now use `version: 3` and preserve more project state, including all canvases, node styling, switch cases, packaged-box settings, UI options, and cached derivation results.
 - Switch cases are stored with each component. For ordinary branches, edit case-specific `G` and `Ihis`; for matrix components, edit case-specific local `G` and `Ihis` matrices. Double-click the component to cycle cases.
 - Packaged Y-boxes do not use an outer switch case. Instead, their editor lists internal branches that have multiple cases; changing an internal case recomputes the packaged box through the local SymPy backend.
@@ -255,6 +258,7 @@ The Python server is recommended for first-time users because it can automatical
 
 ## Project Structure / 项目结构
 
+- `start.bat` - Windows one-click launcher that starts the Python local server and opens the app / Windows 一键启动脚本。
 - `index.html` - main browser interface / 主浏览器界面。
 - `local_server.py` - recommended local server / 推荐使用的本地服务。
 - `server.js` - optional Node.js local server / 可选 Node.js 本地服务。
